@@ -14,6 +14,10 @@ import ViewSubCategory from "./components/SubCategory/ViewSubCategory";
 import AddCarousel from "./components/Carousel/AddCarousel";
 import ViewCarousels from "./components/Carousel/ViewCarousels";
 import HomescreenCategory from "./components/HomescreenCategory/HomescreenCategory";
+import AddVideos from "./components/Videos/AddVideos";
+import ViewVideo from "./components/Videos/ViewVideo";
+import ViewParticularVideo from "./components/Videos/ViewParticularVideo";
+import ViewSingleVideo from "./components/Videos/ViewSingleVideo";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -86,6 +90,39 @@ root.render(
           element={
             <ProtectedRoute>
               <ViewSubCategory />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/Add-Video"
+          element={
+            <ProtectedRoute>
+              <AddVideos />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/Videos"
+          element={
+            <ProtectedRoute>
+              <ViewVideo />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/category/sub/:cat"
+          element={
+            <ProtectedRoute>
+              <ViewParticularVideo />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/category/:cat"
+          element={
+            <ProtectedRoute>
+              <ViewSingleVideo />
             </ProtectedRoute>
           }
         />

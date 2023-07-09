@@ -112,6 +112,32 @@ const Header = () => {
             </ul>
           </li>
 
+          <li className="menu-item tag-video">
+            <a
+              href="#/"
+              className="menu-link menu-toggle"
+              onClick={() => {
+                menu("tag-video");
+              }}
+            >
+              <Users size={22} className="menu-icon" />
+              <div data-i18n="Authentications">Videos</div>
+            </a>
+            <ul className="menu-sub">
+              <li className="menu-item">
+                <a href="/Add-Video" className="menu-link">
+                  <div data-i18n="Basic">Add Video</div>
+                </a>
+              </li>
+
+              <li className="menu-item">
+                <a href="/Videos" className="menu-link">
+                  <div data-i18n="Basic">View Videos</div>
+                </a>
+              </li>
+            </ul>
+          </li>
+
           <li className="menu-item tag-carousel">
             <a
               href="#/"
