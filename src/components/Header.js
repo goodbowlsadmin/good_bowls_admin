@@ -138,6 +138,32 @@ const Header = () => {
             </ul>
           </li>
 
+          <li className="menu-item tag-tip">
+            <a
+              href="#/"
+              className="menu-link menu-toggle"
+              onClick={() => {
+                menu("tag-tip");
+              }}
+            >
+              <Users size={22} className="menu-icon" />
+              <div data-i18n="Authentications">Tips</div>
+            </a>
+            <ul className="menu-sub">
+              <li className="menu-item">
+                <a href="/Add-Tip" className="menu-link">
+                  <div data-i18n="Basic">Add Tips</div>
+                </a>
+              </li>
+
+              <li className="menu-item">
+                <a href="/Tips" className="menu-link">
+                  <div data-i18n="Basic">View Tips</div>
+                </a>
+              </li>
+            </ul>
+          </li>
+
           <li className="menu-item tag-carousel">
             <a
               href="#/"

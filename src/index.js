@@ -19,6 +19,11 @@ import ViewVideo from "./components/Videos/ViewVideo";
 import ViewParticularVideo from "./components/Videos/ViewParticularVideo";
 import ViewSingleVideo from "./components/Videos/ViewSingleVideo";
 import EditVideo from "./components/Videos/EditVideo";
+import AddTips from "./components/Tips/AddTips";
+import ViewTips from "./components/Tips/ViewTips";
+import ViewParticularTip from "./components/Tips/ViewParticularTip";
+import ViewSingleTip from "./components/Tips/ViewSingleTip";
+import EditTip from "./components/Tips/EditTip";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -132,6 +137,47 @@ root.render(
           element={
             <ProtectedRoute>
               <EditVideo />
+            </ProtectedRoute>
+          } />
+
+        <Route
+          path="/Add-Tip"
+          element={
+            <ProtectedRoute>
+              <AddTips />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/Tips"
+          element={
+            <ProtectedRoute>
+              <ViewTips />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/tip/category/sub/:cat"
+          element={
+            <ProtectedRoute>
+              <ViewParticularTip />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/tip/category/:cat"
+          element={
+            <ProtectedRoute>
+              <ViewSingleTip />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/Edit-Tip/:id"
+          element={
+            <ProtectedRoute>
+              <EditTip />
             </ProtectedRoute>
           } />
       </Routes>
