@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { db } from "../../FirebaseConfig";
 import Header from "../Header";
 import Nav from "../Nav";
 import $ from "jquery";
 import toast, { Toaster } from "react-hot-toast";
 import { Rings } from "react-loader-spinner";
+import VideoCard from "../VideoCard";
 
 const ViewParticularVideo = () => {
   const [videos, setVideos] = useState([]);
@@ -55,6 +56,7 @@ const ViewParticularVideo = () => {
       });
   };
 
+
   return (
     <>
       <div className="layout-wrapper layout-content-navbar">
@@ -95,16 +97,13 @@ const ViewParticularVideo = () => {
                           <>
                             <div className="col" id={tem.id}>
                               <div className="card">
-                                <img
-                                  className="card-img-top"
-                                  src={tem.thumb_img}
-                                  alt={tem.thumb_img}
-                                />
+                                <VideoCard
+                                  video={tem} />
                                 <div className="card-body">
                                   <h5 className="card-title">
                                     {tem.sub_category}
                                   </h5>
-                                  <h6 className="card-title">{tem.category}</h6>
+                                  <h6 className="card-title">{tem.week} , {tem.day}</h6>
                                   <button
                                     className="btn btn-danger"
                                     onClick={() => {
@@ -113,6 +112,16 @@ const ViewParticularVideo = () => {
                                   >
                                     Delete
                                   </button>
+                                  <span className="p-2">
+
+                                    <Link to={`/Edit-Video/${tem.id}`}>
+                                      <button
+                                        className="btn btn-primary"
+                                      >
+                                        Edit
+                                      </button>
+                                    </Link>
+                                  </span>
                                 </div>
                               </div>
                             </div>

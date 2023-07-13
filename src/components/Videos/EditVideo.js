@@ -5,7 +5,7 @@ import { db } from "../../FirebaseConfig";
 import Header from "../Header";
 import firebase from "firebase/compat/app";
 import Nav from "../Nav";
-import { v4 as uuidv4 } from "uuid";
+import { useParams } from "react-router-dom";
 
 const Weeks = [
   "Week 1",
@@ -24,14 +24,14 @@ const Days = [
   "Day 7"
 ];
 
-const AddVideos = () => {
+const EditVideo = () => {
   const [loading, setLoading] = useState(true);
 
   const [imgloading, setImgLoading] = useState(false);
 
   const [load, setLoad] = useState(true);
 
-  const uid = uuidv4();
+  const { id } = useParams();
 
   const [progress, setProgress] = useState(0);
 
@@ -55,14 +55,14 @@ const AddVideos = () => {
     day: "",
   });
 
-  let yt_thumb = "https://brent-mccardle.org/img/placeholder-image.png";
+  useEffect(() => {
+    db.collection('videos').doc(id).get().then((data) => {
+      setVideo(data.data());
+      setVideoImage(data.data().thumb_img)
+    })
+  }, [id])
 
-  const getYoutbeThumbnail = (url) => {
-    const video_id = url.split("v=")[1].substring(0, 11);
-    const yt_thumb = `https://img.youtube.com/vi/${video_id}/0.jpg`;
-    console.log(yt_thumb);
-    return yt_thumb;
-  }
+
 
   const get_categories = async () => {
     await db
@@ -130,13 +130,12 @@ const AddVideos = () => {
    */
   const onSubmit = (e) => {
     e.preventDefault();
-    yt_thumb = getYoutbeThumbnail(video.link);
     video.created = firebase.firestore.FieldValue.serverTimestamp();
     video.img = videoImage;
     db.collection("videos")
-      .doc(uid)
-      .set({
-        id: uid,
+      .doc(id)
+      .update({
+        id: video.id,
         category: video.category,
         sub_category: video.sub_category,
         thumb_img: videoImage,
@@ -145,11 +144,11 @@ const AddVideos = () => {
         link: video.link,
         week: video.week,
         day: video.day,
-        yt_thumb: yt_thumb,
-        created: firebase.firestore.FieldValue.serverTimestamp(),
+        yt_thumb: video.yt_thumb,
+        updated: firebase.firestore.FieldValue.serverTimestamp(),
       })
       .then((res) => {
-        toast.success("Video Added Successfully");
+        toast.success("Video Updated Successfully");
         setTimeout(() => {
           window.location.reload();
         }, 1000);
@@ -185,7 +184,7 @@ const AddVideos = () => {
               {/* Content */}
               <div className="container-xxl flex-grow-1 container-p-y">
                 <h4 className="fw-bold py-3 mb-4">
-                  <span className="text-muted fw-light">{process.env.REACT_APP_NAME} /</span> Add
+                  <span className="text-muted fw-light">{process.env.REACT_APP_NAME} /</span> Edit
                   Video
                 </h4>
                 {/* Basic Layout & Basic with Icons */}
@@ -207,6 +206,7 @@ const AddVideos = () => {
                               name="state"
                               onChange={handleSelectChange}
                               required
+                              value={video.category}
                             >
                               <option selected>----------------</option>
                               {loading === true ? (
@@ -237,6 +237,7 @@ const AddVideos = () => {
                               className="form-select"
                               name="sub_category"
                               required
+                              value={video.sub_category}
                               onChange={handleChange}
                             >
                               <option selected>----------------</option>
@@ -278,6 +279,7 @@ const AddVideos = () => {
                               name="week"
                               onChange={handleChange}
                               required
+                              value={video.week}
                             >
                               <option selected>----------------</option>
                               {Weeks.map((week, i) => (
@@ -299,6 +301,7 @@ const AddVideos = () => {
                               className="form-select"
                               name="day"
                               required
+                              value={video.day}
                               onChange={handleChange}
                             >
                               <option selected>----------------</option>
@@ -328,6 +331,7 @@ const AddVideos = () => {
                                 id="basic-default-name"
                                 placeholder="John Doe"
                                 name="title"
+                                value={video.title}
                                 onChange={handleChange}
                               />
                             </div>
@@ -345,6 +349,7 @@ const AddVideos = () => {
                                 type="text"
                                 className="form-control"
                                 id="basic-default-name"
+                                value={video.link}
                                 placeholder="https://youtube.com/"
                                 name="link"
                                 onChange={handleChange}
@@ -367,6 +372,7 @@ const AddVideos = () => {
                               className="form-control"
                               id="basic-default-name"
                               placeholder="John Doe"
+                              value={video.description}
                               name="description"
                               onChange={handleChange}
                             />
@@ -410,7 +416,7 @@ const AddVideos = () => {
                               className="btn btn-primary"
                               onClick={onSubmit}
                             >
-                              ADD
+                              Update
                             </button>
                           </div>
                         </div>
@@ -429,4 +435,4 @@ const AddVideos = () => {
   );
 };
 
-export default AddVideos;
+export default EditVideo;

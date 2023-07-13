@@ -18,6 +18,7 @@ import AddVideos from "./components/Videos/AddVideos";
 import ViewVideo from "./components/Videos/ViewVideo";
 import ViewParticularVideo from "./components/Videos/ViewParticularVideo";
 import ViewSingleVideo from "./components/Videos/ViewSingleVideo";
+import EditVideo from "./components/Videos/EditVideo";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -126,6 +127,13 @@ root.render(
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/Edit-Video/:id"
+          element={
+            <ProtectedRoute>
+              <EditVideo />
+            </ProtectedRoute>
+          } />
       </Routes>
     </AuthContextProvider>
   </BrowserRouter>
