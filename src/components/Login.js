@@ -80,7 +80,7 @@ const Login = () => {
                           fill="none"
                           fillRule="evenodd"
                         >
-                          <g
+                          {/* <g
                             id="Brand-Logo"
                             transform="translate(-27.000000, -15.000000)"
                           >
@@ -125,17 +125,24 @@ const Login = () => {
                                 />
                               </g>
                             </g>
-                          </g>
+                          </g> */}
                         </g>
+                       
                       </svg>
                     </span>
-                    <span className="app-brand-text demo text-body fw-bolder">
-                      App name
+                    <img
+                src="/assets/logo.png"
+                width="70" height="70"
+                alt="Header"
+              />
+                    <span className="app-brand-text demo text-body fw-bolder" style={{textTransform:'uppercase'}}>
+                      Good Bowls
                     </span>
                   </a>
                 </div>
                 {/* /Logo */}
-                <h4 className="mb-2">Welcome to App name! 👋</h4>
+                <center><h4 className="mb-2">Welcome to Good Bowls </h4>
+                <h6 className="mb-2">Do Good While Eating Well </h6></center>
                 <p className="mb-4">
                   Please sign-in to your account and start the adventure
                 </p>
