@@ -5,13 +5,8 @@ import Header from "../Header";
 import firebase from "firebase/compat/app";
 import Nav from "../Nav";
 import { v4 as uuidv4 } from "uuid";
+import getAllDocumentNames from "../../helpers/name";
 
-const Weeks = [
-  "Week 1",
-  "Week 2",
-  "Week 3",
-  "Week 4"
-];
 
 const Days = [
   "Day 1",
@@ -30,6 +25,7 @@ const AddTips = () => {
 
   const uid = uuidv4();
 
+  const [weeks, setWeeks] = useState([]);
 
   const [categories, setCategory] = useState([]);
 
@@ -58,6 +54,13 @@ const AddTips = () => {
   };
 
   useEffect(() => {
+    const fetchDocumentNames = async () => {
+      const collectionName = 'weeks'; 
+      const names = await getAllDocumentNames(collectionName);
+      setWeeks(names);
+    };
+
+    fetchDocumentNames();
     get_categories();
   }, []);
 
@@ -224,7 +227,7 @@ const AddTips = () => {
                               required
                             >
                               <option selected>----------------</option>
-                              {Weeks.map((week, i) => (
+                              {weeks.map((week, i) => (
                                 <>
                                   <option value={week} key={i}>
                                     {week}

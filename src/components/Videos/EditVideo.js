@@ -6,13 +6,7 @@ import Header from "../Header";
 import firebase from "firebase/compat/app";
 import Nav from "../Nav";
 import { useParams } from "react-router-dom";
-
-const Weeks = [
-  "Week 1",
-  "Week 2",
-  "Week 3",
-  "Week 4"
-];
+import getAllDocumentNames from "../../helpers/name";
 
 const Days = [
   "Day 1",
@@ -55,7 +49,16 @@ const EditVideo = () => {
     day: "",
   });
 
+  const [weeks, setWeeks] = useState([]);
+
   useEffect(() => {
+    const fetchDocumentNames = async () => {
+      const collectionName = 'weeks'; 
+      const names = await getAllDocumentNames(collectionName);
+      setWeeks(names);
+    };
+
+    fetchDocumentNames();
     db.collection('videos').doc(id).get().then((data) => {
       setVideo(data.data());
       setVideoImage(data.data().thumb_img)
@@ -282,7 +285,7 @@ const EditVideo = () => {
                               value={video.week}
                             >
                               <option selected>----------------</option>
-                              {Weeks.map((week, i) => (
+                              {weeks.map((week, i) => (
                                 <>
                                   <option value={week} key={i}>
                                     {week}

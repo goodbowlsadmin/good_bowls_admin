@@ -197,6 +197,13 @@ const Header = () => {
             </a>
           </li>
 
+          <li className="menu-item tag-homescreen-category">
+            <a href="/Weeks" className="menu-link">
+              <House size={22} className="menu-icon" />
+              <div data-i18n="Analytics">Week Mangement</div>
+            </a>
+          </li>
+
         </ul>
       </aside>
     </>

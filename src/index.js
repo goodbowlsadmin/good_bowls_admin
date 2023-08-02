@@ -24,6 +24,7 @@ import ViewTips from "./components/Tips/ViewTips";
 import ViewParticularTip from "./components/Tips/ViewParticularTip";
 import ViewSingleTip from "./components/Tips/ViewSingleTip";
 import EditTip from "./components/Tips/EditTip";
+import AddWeeks from "./components/Weeks/AddWeeks";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -178,6 +179,14 @@ root.render(
           element={
             <ProtectedRoute>
               <EditTip />
+            </ProtectedRoute>
+          } />
+
+        <Route
+          path="/Weeks"
+          element={
+            <ProtectedRoute>
+              <AddWeeks />
             </ProtectedRoute>
           } />
       </Routes>

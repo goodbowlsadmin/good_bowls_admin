@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
@@ -6,13 +7,8 @@ import Header from "../Header";
 import firebase from "firebase/compat/app";
 import Nav from "../Nav";
 import { v4 as uuidv4 } from "uuid";
+import getAllDocumentNames from "../../helpers/name";
 
-const Weeks = [
-  "Week 1",
-  "Week 2",
-  "Week 3",
-  "Week 4"
-];
 
 const Days = [
   "Day 1",
@@ -55,6 +51,8 @@ const AddVideos = () => {
     day: "",
   });
 
+  const [weeks, setWeeks] = useState([]);
+
   let yt_thumb = "https://brent-mccardle.org/img/placeholder-image.png";
 
   const getYoutbeThumbnail = (url) => {
@@ -78,6 +76,13 @@ const AddVideos = () => {
   };
 
   useEffect(() => {
+    const fetchDocumentNames = async () => {
+      const collectionName = 'weeks';
+      const names = await getAllDocumentNames(collectionName);
+      setWeeks(names);
+    };
+
+    fetchDocumentNames();
     get_categories();
   }, []);
 
@@ -280,7 +285,7 @@ const AddVideos = () => {
                               required
                             >
                               <option selected>----------------</option>
-                              {Weeks.map((week, i) => (
+                              {weeks.map((week, i) => (
                                 <>
                                   <option value={week} key={i}>
                                     {week}
