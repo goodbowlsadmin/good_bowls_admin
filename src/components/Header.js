@@ -190,6 +190,32 @@ const Header = () => {
             </ul>
           </li>
 
+          <li className="menu-item tag-recepie">
+            <a
+              href="#/"
+              className="menu-link menu-toggle"
+              onClick={() => {
+                menu("tag-recepie");
+              }}
+            >
+              <Users size={22} className="menu-icon" />
+              <div data-i18n="Authentications">Recepie</div>
+            </a>
+            <ul className="menu-sub">
+              <li className="menu-item">
+                <a href="/Add-Recepie" className="menu-link">
+                  <div data-i18n="Basic">Add Recepie</div>
+                </a>
+              </li>
+
+              <li className="menu-item">
+                <a href="/View-Recepies" className="menu-link">
+                  <div data-i18n="Basic">Update / View Recepie</div>
+                </a>
+              </li>
+            </ul>
+          </li>
+          
           <li className="menu-item tag-homescreen-category">
             <a href="/Home-screen-category" className="menu-link">
               <House size={22} className="menu-icon" />
