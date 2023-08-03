@@ -4,6 +4,7 @@ import Header from "../Header";
 import FloatingButton from './FloatingButton';
 import Card from './Card';
 import Nav from "../Nav";
+import { toast } from 'react-hot-toast';
 
 const AddWeeks = () => {
   const [weekList, setWeekList] = useState([]);
@@ -26,7 +27,8 @@ const AddWeeks = () => {
   const handleAddWeek = async () => {
     try {
       const newWeekNumber = weekList.length + 1;
-      await db.collection('weeks').doc(`Week ${newWeekNumber}`).set({ id: `Week ${newWeekNumber}` , name : `Week ${newWeekNumber}` });
+      await db.collection('weeks').doc(`Week ${newWeekNumber}`).set({ id: `Week ${newWeekNumber}`, name: `Week ${newWeekNumber}` });
+      toast.success("Week added Successfully");
       setWeekList([...weekList, { name: `Week ${newWeekNumber}` }]);
     } catch (error) {
       console.error('Error adding week: ', error);
@@ -37,6 +39,7 @@ const AddWeeks = () => {
     try {
       await db.collection('weeks').doc(id).delete();
       setWeekList(weekList.filter((week) => week.id !== id));
+      toast.error("Week Deleted Successfully");
     } catch (error) {
       console.error('Error deleting week: ', error);
     }
