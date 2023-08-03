@@ -30,6 +30,7 @@ const AddWeeks = () => {
       await db.collection('weeks').doc(`Week ${newWeekNumber}`).set({ id: `Week ${newWeekNumber}`, name: `Week ${newWeekNumber}` });
       toast.success("Week added Successfully");
       setWeekList([...weekList, { name: `Week ${newWeekNumber}` }]);
+      window.location.reload();
     } catch (error) {
       console.error('Error adding week: ', error);
     }
@@ -40,6 +41,7 @@ const AddWeeks = () => {
       await db.collection('weeks').doc(id).delete();
       setWeekList(weekList.filter((week) => week.id !== id));
       toast.error("Week Deleted Successfully");
+      window.location.reload();
     } catch (error) {
       console.error('Error deleting week: ', error);
     }
