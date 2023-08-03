@@ -4,7 +4,6 @@ import Header from "../Header";
 import Nav from "../Nav";
 import "../../App.css";
 import toast, { Toaster } from "react-hot-toast";
-import $ from "jquery";
 import { Rings } from "react-loader-spinner";
 import { Link } from "react-router-dom";
 
@@ -38,7 +37,6 @@ const ViewRecepies = () => {
             .delete()
             .then(() => {
                 toast.success("Recepie Removed");
-                $("#").fadeOut();
                 setDelete(false);
             });
     };
