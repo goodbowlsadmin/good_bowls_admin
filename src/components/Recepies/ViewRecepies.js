@@ -115,7 +115,7 @@ const ViewRecepies = () => {
                                                 )}
                                                 {recepies.map((data, i) => (
                                                     <>
-                                                        <div className="col" id={data.title}>
+                                                        <div className="col" id={data.id}>
                                                             <div className="card">
                                                                 <img
                                                                     className="card-img-top image"
@@ -123,7 +123,7 @@ const ViewRecepies = () => {
                                                                     alt={data.thumb_img}
                                                                 />
                                                                 <div className="card-body">
-                                                                    <h5 className="card-title">{data.name}</h5>
+                                                                    <h5 className="card-title">{data.title}</h5>
                                                                     <button
                                                                         className="btn btn-danger"
                                                                         onClick={() => {

@@ -209,6 +209,7 @@ const EditRecepie = () => {
                                                                 id="basic-default-name"
                                                                 placeholder="John Doe"
                                                                 name="title"
+                                                                value={recepie.title}
                                                                 onChange={handleChange}
                                                             />
                                                         </div>
