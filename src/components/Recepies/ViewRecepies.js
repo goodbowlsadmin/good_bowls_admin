@@ -38,6 +38,7 @@ const ViewRecepies = () => {
             .then(() => {
                 toast.success("Recepie Removed");
                 setDelete(false);
+                window.location.reload();
             });
     };
 
