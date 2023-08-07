@@ -10,12 +10,7 @@ import { v4 as uuidv4 } from "uuid";
 import MarkdownEditor from "@uiw/react-markdown-editor";
 
 const Types = [
-    "BreakFast",
-    "Lunch",
-    "Dinner",
-    "Snacks",
-    "Dessert",
-    "Beverages",
+    "Breakfast", "Lunch", "Dinner", "Snack", "Sides", "Desserts"
 ];
 
 const AddRecepie = () => {
@@ -24,6 +19,8 @@ const AddRecepie = () => {
     const [progress, setProgress] = useState(0);
     const [description, setDescription] = useState("");
     const [ingredients, setIngredients] = useState("");
+    const [servings, setServings] = useState("");
+    const [facts, setFacts] = useState("");
     const [recepieImage, setRecepieImg] = useState(
         "https://brent-mccardle.org/img/placeholder-image.png"
     );
@@ -37,6 +34,9 @@ const AddRecepie = () => {
         thumb_img: "",
         recepie_img: "",
         ingredients: "",
+        servings: "",
+        facts: "",
+        source: ""
     });
 
     const handleRecepieImg = async (e) => {
@@ -62,7 +62,7 @@ const AddRecepie = () => {
             .then((r) => {
                 setImgLoading(false);
                 setRecepieImg(r.data.secure_url);
-                toast.success("Recepie Image Uploaded Successfully");
+                toast.success("Recipe Image Uploaded Successfully");
             })
             .catch((err) => {
                 console.log(err);
@@ -128,10 +128,13 @@ const AddRecepie = () => {
                 type: recepie.type,
                 description: description,
                 ingredients: ingredients,
+                servings: servings,
+                facts: facts,
+                source: recepie.source,
                 created: firebase.firestore.FieldValue.serverTimestamp(),
             })
             .then((res) => {
-                toast.success("Recepie Added Successfully");
+                toast.success("Recipe Added Successfully");
                 setTimeout(() => {
                     window.location.reload();
                 }, 1000);
@@ -150,7 +153,7 @@ const AddRecepie = () => {
                             <div className="container-xxl flex-grow-1 container-p-y">
                                 <h4 className="fw-bold py-3 mb-4">
                                     <span className="text-muted fw-light">{process.env.REACT_APP_NAME} /</span> Add
-                                    Recepie
+                                    Recipe
                                 </h4>
                                 {/* Basic Layout & Basic with Icons */}
                                 <div className="row">
@@ -165,7 +168,7 @@ const AddRecepie = () => {
                                                             className="form-label"
                                                             htmlFor="basic-default-fullname"
                                                         >
-                                                            Select Type
+                                                            Select Meal Type
                                                         </label>
                                                         <select
                                                             className="form-select"
@@ -210,7 +213,40 @@ const AddRecepie = () => {
                                                         className="form-label"
                                                         htmlFor="basic-default-fullname"
                                                     >
-                                                        Add Description
+                                                        Add Servings
+                                                    </label>
+                                                    <div>
+                                                        <MarkdownEditor
+                                                            name="servings"
+                                                            value={servings}
+                                                            onChange={(value) => setServings(value)}
+                                                            height={300}
+                                                            preview="edit"
+                                                            toolbar={{
+                                                                h1: true,
+                                                                h2: true,
+                                                                h3: true,
+                                                                h4: true,
+                                                                img: true,
+                                                                link: true,
+                                                                code: true,
+                                                                preview: true,
+                                                                expand: true,
+                                                                undo: true,
+                                                                redo: true,
+                                                                save: true,
+                                                                subfield: true,
+                                                            }}
+                                                        />
+                                                    </div>
+                                                </div>
+
+                                                <div className="row mb-3">
+                                                    <label
+                                                        className="form-label"
+                                                        htmlFor="basic-default-fullname"
+                                                    >
+                                                        Add Instructions
                                                     </label>
                                                     <div>
                                                         <MarkdownEditor
@@ -250,6 +286,39 @@ const AddRecepie = () => {
                                                             name="ingredients"
                                                             value={ingredients}
                                                             onChange={(value) => setIngredients(value)}
+                                                            height={300}
+                                                            preview="edit"
+                                                            toolbar={{
+                                                                h1: true,
+                                                                h2: true,
+                                                                h3: true,
+                                                                h4: true,
+                                                                img: true,
+                                                                link: true,
+                                                                code: true,
+                                                                preview: true,
+                                                                expand: true,
+                                                                undo: true,
+                                                                redo: true,
+                                                                save: true,
+                                                                subfield: true,
+                                                            }}
+                                                        />
+                                                    </div>
+                                                </div>
+
+                                                <div className="row mb-3">
+                                                    <label
+                                                        className="form-label"
+                                                        htmlFor="basic-default-fullname"
+                                                    >
+                                                        Add Nutrition Facts
+                                                    </label>
+                                                    <div>
+                                                        <MarkdownEditor
+                                                            name="facts"
+                                                            value={facts}
+                                                            onChange={(value) => setFacts(value)}
                                                             height={300}
                                                             preview="edit"
                                                             toolbar={{
@@ -336,6 +405,24 @@ const AddRecepie = () => {
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div className="mb-3 col-md-6">
+                                                    <label
+                                                        className="form-label"
+                                                        htmlFor="basic-default-fullname"
+                                                    >
+                                                        Add Source
+                                                    </label>
+                                                    <div>
+                                                        <input
+                                                            type="text"
+                                                            className="form-control"
+                                                            id="basic-default-name"
+                                                            placeholder="https://www.google.com/"
+                                                            name="source"
+                                                            onChange={handleChange}
+                                                        />
+                                                    </div>
+                                                </div>
 
                                                 <div className="row justify-content-end">
                                                     <div className="col-sm-10">
@@ -344,7 +431,7 @@ const AddRecepie = () => {
                                                             className="btn btn-primary"
                                                             onClick={onSubmit}
                                                         >
-                                                            ADD RECEPIE
+                                                            ADD RECIPE
                                                         </button>
                                                     </div>
                                                 </div>

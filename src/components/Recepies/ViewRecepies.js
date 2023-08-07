@@ -36,7 +36,7 @@ const ViewRecepies = () => {
             .doc(id)
             .delete()
             .then(() => {
-                toast.success("Recepie Removed");
+                toast.success("Recipe Removed");
                 setDelete(false);
                 window.location.reload();
             });
@@ -64,7 +64,7 @@ const ViewRecepies = () => {
                         <div className="container-xxl flex-grow-1 container-p-y">
                             <h4 className="fw-bold py-3 mb-4">
                                 <span className="text-muted fw-light">{process.env.REACT_APP_NAME} /</span> View
-                                Recepies
+                                Recipes
                             </h4>
                             <div className="navbar-nav align-items-center">
                                 <div className="nav-item d-flex align-items-center w-100">
@@ -99,14 +99,14 @@ const ViewRecepies = () => {
                                     <>
                                         {recepies.length === 0 ? (
                                             <>
-                                                <h2>No Recepies Found</h2>
+                                                <h2>No Recipes Found</h2>
                                             </>
                                         ) : (
                                             <>
                                                 {Delete === true ? (
                                                     <>
                                                         <div className="col-lg-12">
-                                                            <h4>Deleting Recepie...</h4>
+                                                            <h4>Deleting Recipe...</h4>
                                                         </div>
                                                     </>
                                                 ) : (
