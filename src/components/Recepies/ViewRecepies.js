@@ -132,7 +132,7 @@ const ViewRecepies = () => {
                                                                         Delete
                                                                     </button>
                                                                     <span style={{ marginLeft: "10px" }}></span>
-                                                                    <Link to={`/Edit-Recepie/${data.id}`}>
+                                                                    <Link to={`/Edit-Recipe/${data.id}`}>
                                                                         <button className="btn btn-primary">
                                                                             Edit
                                                                         </button>

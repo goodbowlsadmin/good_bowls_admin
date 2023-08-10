@@ -173,44 +173,44 @@ const Header = () => {
               }}
             >
               <Users size={22} className="menu-icon" />
-              <div data-i18n="Authentications">Carousel</div>
+              <div data-i18n="Authentications">Polls</div>
             </a>
             <ul className="menu-sub">
               <li className="menu-item">
-                <a href="/Add-Carousel" className="menu-link">
-                  <div data-i18n="Basic">Add Carousel</div>
+                <a href="/Add-Polls" className="menu-link">
+                  <div data-i18n="Basic">Add Polls</div>
                 </a>
               </li>
 
-              <li className="menu-item">
-                <a href="/Carousels" className="menu-link">
-                  <div data-i18n="Basic">Update / View Carousels</div>
+              {/* <li className="menu-item">
+                <a href="/Polls" className="menu-link">
+                  <div data-i18n="Basic">Update / View Polls</div>
                 </a>
-              </li>
+              </li> */}
             </ul>
           </li>
 
-          <li className="menu-item tag-recepie">
+          <li className="menu-item tag-Recipe">
             <a
               href="#/"
               className="menu-link menu-toggle"
               onClick={() => {
-                menu("tag-recepie");
+                menu("tag-Recipe");
               }}
             >
               <Users size={22} className="menu-icon" />
-              <div data-i18n="Authentications">Recepie</div>
+              <div data-i18n="Authentications">Recipe</div>
             </a>
             <ul className="menu-sub">
               <li className="menu-item">
-                <a href="/Add-Recepie" className="menu-link">
-                  <div data-i18n="Basic">Add Recepie</div>
+                <a href="/Add-Recipe" className="menu-link">
+                  <div data-i18n="Basic">Add Recipe</div>
                 </a>
               </li>
 
               <li className="menu-item">
-                <a href="/View-Recepies" className="menu-link">
-                  <div data-i18n="Basic">Update / View Recepie</div>
+                <a href="/View-Recipes" className="menu-link">
+                  <div data-i18n="Basic">Update / View Recipe</div>
                 </a>
               </li>
             </ul>

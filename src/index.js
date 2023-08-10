@@ -28,6 +28,7 @@ import AddWeeks from "./components/Weeks/AddWeeks";
 import AddRecepie from "./components/Recepies/AddRecepie";
 import ViewRecepies from "./components/Recepies/ViewRecepies";
 import EditRecepie from "./components/Recepies/EditRecepie";
+import AddPolls from "./components/Polls/AddPolls";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -194,7 +195,7 @@ root.render(
           } />
 
         <Route
-          path="/Add-Recepie"
+          path="/Add-Recipe"
           element={
             <ProtectedRoute>
               <AddRecepie />
@@ -202,7 +203,7 @@ root.render(
           } />
 
         <Route
-          path="/View-Recepies"
+          path="/View-Recipes"
           element={
             <ProtectedRoute>
               <ViewRecepies />
@@ -210,12 +211,20 @@ root.render(
           } />
 
         <Route
-          path="/Edit-Recepie/:id"
+          path="/Edit-Recipe/:id"
           element={
             <ProtectedRoute>
               <EditRecepie />
             </ProtectedRoute>
           } />
+        <Route
+          path="/Add-Polls"
+          element={
+            <ProtectedRoute>
+              <AddPolls />
+            </ProtectedRoute>
+          } />
+
       </Routes>
     </AuthContextProvider>
   </BrowserRouter>
