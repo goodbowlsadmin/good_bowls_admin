@@ -1,12 +1,20 @@
-import { List } from "phosphor-react";
 import { useEffect, useState } from "react";
 import "./App.css";
 import Header from "./components/Header";
 import Nav from "./components/Nav";
 import { db } from "./FirebaseConfig";
+import DashboardCard from "./components/DashboardCard";
 
 function App() {
   const [categories, setCategories] = useState(0);
+  const [videos, setVideos] = useState(0);
+  const [users, setUsers] = useState(0);
+  const [tips, setTips] = useState(0);
+  const [posts, setPosts] = useState(0);
+  const [recepies, setRecepies] = useState(0);
+  const [videoPosts, setVideoPosts] = useState(0);
+  const [polls, setPolls] = useState(0);
+  const [weeks, setWeeks] = useState(0);
 
   useEffect(() => {
     db.collection("categories")
@@ -14,6 +22,54 @@ function App() {
       .then((query) => {
         const data = query.size;
         setCategories(data);
+      });
+    db.collection("videos")
+      .get()
+      .then((query) => {
+        const data = query.size;
+        setVideos(data);
+      });
+    db.collection("Users")
+      .get()
+      .then((query) => {
+        const data = query.size;
+        setUsers(data);
+      });
+    db.collection("tips")
+      .get()
+      .then((query) => {
+        const data = query.size;
+        setTips(data);
+      });
+    db.collection("posts")
+      .get()
+      .then((query) => {
+        const data = query.size;
+        setPosts(data);
+      });
+    db.collection("recepies")
+      .get()
+      .then((query) => {
+        const data = query.size;
+        setRecepies(data);
+      });
+    db.collection("video-posts")
+      .get()
+      .then((query) => {
+        const data = query.size;
+        setVideoPosts(data);
+      });
+    db.collection("polls")
+      .get()
+      .then((query) => {
+        const data = query.size;
+        setPolls(data);
+      });
+    db.collection("weeks")
+      .get()
+      .then((query) => {
+        const data = query.size;
+        setWeeks(data);
       });
   }, []);
 
@@ -28,47 +84,42 @@ function App() {
               <div className="row">
                 <div className="col-lg-12 col-md-4 order-1">
                   <div className="row">
-
-
-                    <div className="col-lg-4 col-md-12 col-6 mb-4">
-                      <div className="card">
-                        <div className="card-body">
-                          <div className="card-title d-flex align-items-start justify-content-between">
-                            <div className="avatar flex-shrink-0">
-                              <img
-                                src="../assets/img/icons/unicons/wallet-info.png"
-                                alt="Credit Card"
-                                className="rounded"
-                              />
-                            </div>
-                            <div className="dropdown">
-                              <button
-                                className="btn p-0"
-                                type="button"
-                                id="cardOpt6"
-                                data-bs-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                              >
-                                <List size={24} />
-                              </button>
-                              <div
-                                className="dropdown-menu dropdown-menu-end"
-                                aria-labelledby="cardOpt6"
-                              >
-                                <a className="dropdown-item" href="/Categories">
-                                  View More
-                                </a>
-                              </div>
-                            </div>
-                          </div>
-                          <span>Categories</span>
-                          <h3 className="card-title text-nowrap mb-1">
-                            {categories}
-                          </h3>
-                        </div>
-                      </div>
-                    </div>
+                    <DashboardCard
+                      name="Categories"
+                      route='/Categories'
+                      data={categories} />
+                    <DashboardCard
+                      name="Videos"
+                      route='/Videos'
+                      data={videos} />
+                    <DashboardCard
+                      name="Tips"
+                      route='/Tips'
+                      data={tips} />
+                    <DashboardCard
+                      name="Recipes"
+                      route='/View-Recipes'
+                      data={recepies} />
+                    <DashboardCard
+                      name="Users"
+                      route='/Users'
+                      data={users} />
+                    <DashboardCard
+                      name="Video Posts"
+                      route='/Posts'
+                      data={videoPosts} />
+                    <DashboardCard
+                      name="Posts"
+                      route='/Posts'
+                      data={posts} />
+                    <DashboardCard
+                      name="Polls"
+                      route='/Polls'
+                      data={polls} />
+                    <DashboardCard
+                      name="Weeks"
+                      route='/Weeks'
+                      data={weeks} />
                   </div>
                 </div>
               </div>
