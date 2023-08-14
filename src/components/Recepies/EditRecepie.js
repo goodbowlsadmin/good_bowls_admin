@@ -10,12 +10,7 @@ import MarkdownEditor from "@uiw/react-markdown-editor";
 import { useParams } from "react-router-dom";
 
 const Types = [
-    "BreakFast",
-    "Lunch",
-    "Dinner",
-    "Snacks",
-    "Dessert",
-    "Beverages",
+    "Breakfast", "Lunch", "Dinner", "Snack", "Sides", "Desserts", "Vegan", "Vegeterian", "Gluten Free", "Nut Free"
 ];
 
 const EditRecepie = () => {
@@ -24,7 +19,6 @@ const EditRecepie = () => {
     const [description, setDescription] = useState("");
     const [ingredients, setIngredients] = useState("");
     const [servings, setServings] = useState("");
-    const [facts, setFacts] = useState("");
     const [recepieImage, setRecepieImg] = useState(
         "https://brent-mccardle.org/img/placeholder-image.png"
     );
@@ -39,8 +33,10 @@ const EditRecepie = () => {
         recepie_img: "",
         ingredients: "",
         servings: "",
-        facts: "",
-        source: ""
+        source: "",
+        protein: "",
+        fat: "",
+        carbs: "",
     });
     const { id } = useParams();
 
@@ -51,7 +47,6 @@ const EditRecepie = () => {
             setRecepieImg(data.data().recepie_img);
             setDescription(data.data().description);
             setIngredients(data.data().ingredients);
-            setFacts(data.data().facts);
             setServings(data.data().servings);
         })
     }, [id])
@@ -145,7 +140,9 @@ const EditRecepie = () => {
                 description: description,
                 ingredients: ingredients,
                 servings: servings,
-                facts: facts,
+                protein: recepie.protein,
+                fat: recepie.fat,
+                carbs: recepie.carbs,
                 source: recepie.source,
                 updated: firebase.firestore.FieldValue.serverTimestamp(),
             })
@@ -225,6 +222,69 @@ const EditRecepie = () => {
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                <div className="row">
+                                                    <div className="mb-3 col-md-6">
+                                                        <label
+                                                            className="form-label"
+                                                            htmlFor="basic-default-fullname"
+                                                        >
+                                                            Add Carbs
+                                                        </label>
+                                                        <div>
+                                                            <input
+                                                                type="text"
+                                                                className="form-control"
+                                                                id="basic-default-name"
+                                                                placeholder="120"
+                                                                value={recepie.carbs}
+                                                                name="carbs"
+                                                                onChange={handleChange}
+                                                            />
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="mb-3 col-md-6">
+                                                        <label
+                                                            className="form-label"
+                                                            htmlFor="basic-default-fullname"
+                                                        >
+                                                            Add Protiens
+                                                        </label>
+                                                        <div>
+                                                            <input
+                                                                type="text"
+                                                                className="form-control"
+                                                                id="basic-default-name"
+                                                                placeholder="50"
+                                                                name="protein"
+                                                                value={recepie.protein}
+                                                                onChange={handleChange}
+                                                            />
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="mb-3 col-md-6">
+                                                        <label
+                                                            className="form-label"
+                                                            htmlFor="basic-default-fullname"
+                                                        >
+                                                            Add Fat
+                                                        </label>
+                                                        <div>
+                                                            <input
+                                                                type="text"
+                                                                className="form-control"
+                                                                id="basic-default-name"
+                                                                placeholder="50"
+                                                                name="fat"
+                                                                value={recepie.fat}
+                                                                onChange={handleChange}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
 
                                                 <div className="row mb-3">
                                                     <label
@@ -325,38 +385,7 @@ const EditRecepie = () => {
                                                     </div>
                                                 </div>
 
-                                                <div className="row mb-3">
-                                                    <label
-                                                        className="form-label"
-                                                        htmlFor="basic-default-fullname"
-                                                    >
-                                                        Add Nutrition Facts
-                                                    </label>
-                                                    <div>
-                                                        <MarkdownEditor
-                                                            name="facts"
-                                                            value={facts}
-                                                            onChange={(value) => setFacts(value)}
-                                                            height={300}
-                                                            preview="edit"
-                                                            toolbar={{
-                                                                h1: true,
-                                                                h2: true,
-                                                                h3: true,
-                                                                h4: true,
-                                                                img: true,
-                                                                link: true,
-                                                                code: true,
-                                                                preview: true,
-                                                                expand: true,
-                                                                undo: true,
-                                                                redo: true,
-                                                                save: true,
-                                                                subfield: true,
-                                                            }}
-                                                        />
-                                                    </div>
-                                                </div>
+
 
                                                 <div className="row">
                                                     <div className="mb-3 col-md-6">

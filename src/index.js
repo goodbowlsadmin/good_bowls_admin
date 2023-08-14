@@ -29,6 +29,8 @@ import AddRecepie from "./components/Recepies/AddRecepie";
 import ViewRecepies from "./components/Recepies/ViewRecepies";
 import EditRecepie from "./components/Recepies/EditRecepie";
 import AddPolls from "./components/Polls/AddPolls";
+import { Course } from "./components/Course/Course";
+import SingleDayView from "./components/Course/SingleDayView";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -224,7 +226,20 @@ root.render(
               <AddPolls />
             </ProtectedRoute>
           } />
-
+        <Route
+          path="/Course"
+          element={
+            <ProtectedRoute>
+              <Course />
+            </ProtectedRoute>
+          } />
+        <Route
+          path="/Course/:week/:day"
+          element={
+            <ProtectedRoute>
+              <SingleDayView />
+            </ProtectedRoute>
+          } />
       </Routes>
     </AuthContextProvider>
   </BrowserRouter>

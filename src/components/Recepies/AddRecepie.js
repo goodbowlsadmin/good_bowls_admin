@@ -10,7 +10,7 @@ import { v4 as uuidv4 } from "uuid";
 import MarkdownEditor from "@uiw/react-markdown-editor";
 
 const Types = [
-    "Breakfast", "Lunch", "Dinner", "Snack", "Sides", "Desserts"
+    "Breakfast", "Lunch", "Dinner", "Snack", "Sides", "Desserts", "Vegan", "Vegeterian", "Gluten Free", "Nut Free"
 ];
 
 const AddRecepie = () => {
@@ -20,7 +20,6 @@ const AddRecepie = () => {
     const [description, setDescription] = useState("");
     const [ingredients, setIngredients] = useState("");
     const [servings, setServings] = useState("");
-    const [facts, setFacts] = useState("");
     const [recepieImage, setRecepieImg] = useState(
         "https://brent-mccardle.org/img/placeholder-image.png"
     );
@@ -35,8 +34,10 @@ const AddRecepie = () => {
         recepie_img: "",
         ingredients: "",
         servings: "",
-        facts: "",
-        source: ""
+        source: "",
+        carbs: "",
+        protein: "",
+        fat: ""
     });
 
     const handleRecepieImg = async (e) => {
@@ -129,8 +130,10 @@ const AddRecepie = () => {
                 description: description,
                 ingredients: ingredients,
                 servings: servings,
-                facts: facts,
                 source: recepie.source,
+                "carbs": recepie.carbs,
+                "protein": recepie.protein,
+                "fat": recepie.fat,
                 created: firebase.firestore.FieldValue.serverTimestamp(),
             })
             .then((res) => {
@@ -202,6 +205,65 @@ const AddRecepie = () => {
                                                                 id="basic-default-name"
                                                                 placeholder="John Doe"
                                                                 name="title"
+                                                                onChange={handleChange}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div className="row">
+                                                    <div className="mb-3 col-md-6">
+                                                        <label
+                                                            className="form-label"
+                                                            htmlFor="basic-default-fullname"
+                                                        >
+                                                            Add Carbs
+                                                        </label>
+                                                        <div>
+                                                            <input
+                                                                type="text"
+                                                                className="form-control"
+                                                                id="basic-default-name"
+                                                                placeholder="120"
+                                                                name="carbs"
+                                                                onChange={handleChange}
+                                                            />
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="mb-3 col-md-6">
+                                                        <label
+                                                            className="form-label"
+                                                            htmlFor="basic-default-fullname"
+                                                        >
+                                                            Add Protiens
+                                                        </label>
+                                                        <div>
+                                                            <input
+                                                                type="text"
+                                                                className="form-control"
+                                                                id="basic-default-name"
+                                                                placeholder="50"
+                                                                name="protein"
+                                                                onChange={handleChange}
+                                                            />
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="mb-3 col-md-6">
+                                                        <label
+                                                            className="form-label"
+                                                            htmlFor="basic-default-fullname"
+                                                        >
+                                                            Add Fat
+                                                        </label>
+                                                        <div>
+                                                            <input
+                                                                type="text"
+                                                                className="form-control"
+                                                                id="basic-default-name"
+                                                                placeholder="50"
+                                                                name="fat"
                                                                 onChange={handleChange}
                                                             />
                                                         </div>
@@ -286,39 +348,6 @@ const AddRecepie = () => {
                                                             name="ingredients"
                                                             value={ingredients}
                                                             onChange={(value) => setIngredients(value)}
-                                                            height={300}
-                                                            preview="edit"
-                                                            toolbar={{
-                                                                h1: true,
-                                                                h2: true,
-                                                                h3: true,
-                                                                h4: true,
-                                                                img: true,
-                                                                link: true,
-                                                                code: true,
-                                                                preview: true,
-                                                                expand: true,
-                                                                undo: true,
-                                                                redo: true,
-                                                                save: true,
-                                                                subfield: true,
-                                                            }}
-                                                        />
-                                                    </div>
-                                                </div>
-
-                                                <div className="row mb-3">
-                                                    <label
-                                                        className="form-label"
-                                                        htmlFor="basic-default-fullname"
-                                                    >
-                                                        Add Nutrition Facts
-                                                    </label>
-                                                    <div>
-                                                        <MarkdownEditor
-                                                            name="facts"
-                                                            value={facts}
-                                                            onChange={(value) => setFacts(value)}
                                                             height={300}
                                                             preview="edit"
                                                             toolbar={{
