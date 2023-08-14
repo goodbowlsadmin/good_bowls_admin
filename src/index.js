@@ -1,12 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { AuthContextProvider } from "./components/AuthContext";
 import "./index.css";
 import App from "./App";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./components/Login";
-import { AuthContextProvider } from "./components/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
-
 import AddCategory from "./components/Categories/AddCategory";
 import ViewCategories from "./components/Categories/ViewCategories";
 import AddSubCategory from "./components/SubCategory/AddSubCategory";
@@ -31,6 +30,9 @@ import EditRecepie from "./components/Recepies/EditRecepie";
 import AddPolls from "./components/Polls/AddPolls";
 import { Course } from "./components/Course/Course";
 import SingleDayView from "./components/Course/SingleDayView";
+import Users from "./components/Users/Users";
+import UserPosts from "./components/Users/UserPosts";
+import UserVideoPosts from "./components/Users/UserVideoPosts";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -238,6 +240,27 @@ root.render(
           element={
             <ProtectedRoute>
               <SingleDayView />
+            </ProtectedRoute>
+          } />
+        <Route
+          path="/Users"
+          element={
+            <ProtectedRoute>
+              <Users />
+            </ProtectedRoute>
+          } />
+        <Route
+          path="/User-Posts/:id"
+          element={
+            <ProtectedRoute>
+              <UserPosts />
+            </ProtectedRoute>
+          } />
+        <Route
+          path="/User-Video-Posts/:id"
+          element={
+            <ProtectedRoute>
+              <UserVideoPosts />
             </ProtectedRoute>
           } />
       </Routes>

@@ -67,6 +67,7 @@ const Header = () => {
           <li className="menu-header small text-uppercase">
             <span className="menu-header-text">Content</span>
           </li>
+
           <li className="menu-item">
             <a href="/" className="menu-link">
               <House size={22} className="menu-icon" />
@@ -234,6 +235,13 @@ const Header = () => {
             <a href="/Weeks" className="menu-link">
               <House size={22} className="menu-icon" />
               <div data-i18n="Analytics">Week Mangement</div>
+            </a>
+          </li>
+
+          <li className="menu-item">
+            <a href="/Users" className="menu-link">
+              <Users size={22} className="menu-icon" />
+              <div data-i18n="Analytics">Users</div>
             </a>
           </li>
 
