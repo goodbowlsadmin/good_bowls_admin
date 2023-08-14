@@ -33,6 +33,9 @@ import SingleDayView from "./components/Course/SingleDayView";
 import Users from "./components/Users/Users";
 import UserPosts from "./components/Users/UserPosts";
 import UserVideoPosts from "./components/Users/UserVideoPosts";
+import AddGoals from "./components/Goals/AddGoals";
+import ViewGoals from "./components/Goals/ViewGoals";
+import EditGoals from "./components/Goals/EditGoals";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -261,6 +264,27 @@ root.render(
           element={
             <ProtectedRoute>
               <UserVideoPosts />
+            </ProtectedRoute>
+          } />
+        <Route
+          path="/Add-Goals"
+          element={
+            <ProtectedRoute>
+              <AddGoals />
+            </ProtectedRoute>
+          } />
+        <Route
+          path="/Goals"
+          element={
+            <ProtectedRoute>
+              <ViewGoals />
+            </ProtectedRoute>
+          } />
+        <Route
+          path="/Edit-Goals/:id"
+          element={
+            <ProtectedRoute>
+              <EditGoals />
             </ProtectedRoute>
           } />
       </Routes>
