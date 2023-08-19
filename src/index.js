@@ -39,6 +39,10 @@ import EditGoals from "./components/Goals/EditGoals";
 import ViewPolls from "./components/Polls/ViewPolls";
 import AddPost from "./components/Posts/AddPost";
 import AddVideoPost from "./components/Video-Posts/AddVideoPosts";
+import ViewAdminPosts from "./components/Posts/ViewAdminPosts";
+import ViewAllPosts from "./components/Posts/ViewAllPosts";
+import EditPost from "./components/Posts/EditPost";
+import Comments from "./components/Posts/Comments";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -302,6 +306,34 @@ root.render(
           element={
             <ProtectedRoute>
               <AddPost />
+            </ProtectedRoute>
+          } />
+        <Route
+          path="/Edit-Post/:id"
+          element={
+            <ProtectedRoute>
+              <EditPost />
+            </ProtectedRoute>
+          } />
+        <Route
+          path="/Admin-Posts"
+          element={
+            <ProtectedRoute>
+              <ViewAdminPosts />
+            </ProtectedRoute>
+          } />
+        <Route
+          path="/Posts"
+          element={
+            <ProtectedRoute>
+              <ViewAllPosts />
+            </ProtectedRoute>
+          } />
+        <Route
+          path="/Comments/:name/:id"
+          element={
+            <ProtectedRoute>
+              <Comments />
             </ProtectedRoute>
           } />
         <Route
