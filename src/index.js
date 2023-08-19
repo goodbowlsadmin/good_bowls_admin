@@ -36,6 +36,7 @@ import UserVideoPosts from "./components/Users/UserVideoPosts";
 import AddGoals from "./components/Goals/AddGoals";
 import ViewGoals from "./components/Goals/ViewGoals";
 import EditGoals from "./components/Goals/EditGoals";
+import ViewPolls from "./components/Polls/ViewPolls";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -229,6 +230,13 @@ root.render(
           element={
             <ProtectedRoute>
               <AddPolls />
+            </ProtectedRoute>
+          } />
+                  <Route
+          path="/Polls"
+          element={
+            <ProtectedRoute>
+              <ViewPolls />
             </ProtectedRoute>
           } />
         <Route

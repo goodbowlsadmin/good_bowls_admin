@@ -190,11 +190,11 @@ const Header = () => {
                 </a>
               </li>
 
-              {/* <li className="menu-item">
+              <li className="menu-item">
                 <a href="/Polls" className="menu-link">
-                  <div data-i18n="Basic">Update / View Polls</div>
+                  <div data-i18n="Basic">View Polls</div>
                 </a>
-              </li> */}
+              </li>
             </ul>
           </li>
 
