@@ -43,6 +43,9 @@ import ViewAdminPosts from "./components/Posts/ViewAdminPosts";
 import ViewAllPosts from "./components/Posts/ViewAllPosts";
 import EditPost from "./components/Posts/EditPost";
 import Comments from "./components/Posts/Comments";
+import ViewAdminVideoPosts from "./components/Video-Posts/ViewAdminVideoPosts";
+import ViewAllVideoPosts from "./components/Video-Posts/VideoAllVideoPosts";
+import EditVideoPost from "./components/Video-Posts/EditVideoPosts";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -341,6 +344,27 @@ root.render(
           element={
             <ProtectedRoute>
               <AddVideoPost />
+            </ProtectedRoute>
+          } />
+        <Route
+          path="/Admin-Video-Posts"
+          element={
+            <ProtectedRoute>
+              <ViewAdminVideoPosts />
+            </ProtectedRoute>
+          } />
+        <Route
+          path="/Video-Posts"
+          element={
+            <ProtectedRoute>
+              <ViewAllVideoPosts />
+            </ProtectedRoute>
+          } />
+        <Route
+          path="/Edit-Video-Post/:id"
+          element={
+            <ProtectedRoute>
+              <EditVideoPost />
             </ProtectedRoute>
           } />
       </Routes>

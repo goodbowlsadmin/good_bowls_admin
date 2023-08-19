@@ -222,11 +222,17 @@ const Header = () => {
                 </a>
               </li>
 
-              {/* <li className="menu-item">
-                <a href="/Polls" className="menu-link">
-                  <div data-i18n="Basic">View Polls</div>
+              <li className="menu-item">
+                <a href="/Video-Posts" className="menu-link">
+                  <div data-i18n="Basic">View Video Posts</div>
                 </a>
-              </li> */}
+              </li>
+
+              <li className="menu-item">
+                <a href="/Admin-Video-Posts" className="menu-link">
+                  <div data-i18n="Basic">View Admin Video Posts</div>
+                </a>
+              </li>
             </ul>
           </li>
 

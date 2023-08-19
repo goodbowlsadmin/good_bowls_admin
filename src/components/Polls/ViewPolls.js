@@ -5,6 +5,7 @@ import Nav from "../Nav";
 import "../../App.css";
 import toast, { Toaster } from "react-hot-toast";
 import { Rings } from "react-loader-spinner";
+import { Link } from "react-router-dom";
 
 const ViewPolls = () => {
     const [loading, setLoading] = useState(true);
@@ -114,7 +115,7 @@ const ViewPolls = () => {
                                                 )}
                                                 {polls.map((cat, i) => (
                                                     <>
-                                                    <div className="col" id={cat.poll.question}>
+                                                        <div className="col" id={cat.poll.question}>
                                                             <div className="card">
                                                                 <div className="card-body">
                                                                     <h5 className="card-title">Question: {cat.poll.question}</h5>
@@ -130,7 +131,15 @@ const ViewPolls = () => {
                                                                     >
                                                                         Delete
                                                                     </button>
-                                                                    <span className="p-2"></span>
+                                                                    <span className="p-2" >
+                                                                        <Link to={`/Comments/polls/${cat.id}`}>
+                                                                            <button
+                                                                                className="btn btn-primary"
+                                                                            >
+                                                                                Comments
+                                                                            </button>
+                                                                        </Link>
+                                                                    </span>
                                                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target={`#basicModal-${i}`}>
                                                                         Voters
                                                                     </button>
