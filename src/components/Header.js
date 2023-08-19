@@ -172,6 +172,58 @@ const Header = () => {
             </ul>
           </li>
 
+          <li className="menu-item tag-post">
+            <a
+              href="#/"
+              className="menu-link menu-toggle"
+              onClick={() => {
+                menu("tag-post");
+              }}
+            >
+              <Users size={22} className="menu-icon" />
+              <div data-i18n="Authentications">Posts</div>
+            </a>
+            <ul className="menu-sub">
+              <li className="menu-item">
+                <a href="/Add-Post" className="menu-link">
+                  <div data-i18n="Basic">Add Post</div>
+                </a>
+              </li>
+
+              {/* <li className="menu-item">
+                <a href="/Polls" className="menu-link">
+                  <div data-i18n="Basic">View Polls</div>
+                </a>
+              </li> */}
+            </ul>
+          </li>
+
+          <li className="menu-item tag-post-video">
+            <a
+              href="#/"
+              className="menu-link menu-toggle"
+              onClick={() => {
+                menu("tag-post-video");
+              }}
+            >
+              <Users size={22} className="menu-icon" />
+              <div data-i18n="Authentications">Video Post</div>
+            </a>
+            <ul className="menu-sub">
+              <li className="menu-item">
+                <a href="/Add-Video-Post" className="menu-link">
+                  <div data-i18n="Basic">Add Video Posts</div>
+                </a>
+              </li>
+
+              {/* <li className="menu-item">
+                <a href="/Polls" className="menu-link">
+                  <div data-i18n="Basic">View Polls</div>
+                </a>
+              </li> */}
+            </ul>
+          </li>
+
           <li className="menu-item tag-carousel">
             <a
               href="#/"
