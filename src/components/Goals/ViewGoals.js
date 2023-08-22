@@ -7,6 +7,7 @@ import toast, { Toaster } from "react-hot-toast";
 import $ from "jquery";
 import { Rings } from "react-loader-spinner";
 import { Link } from "react-router-dom";
+import FirestoreTimestampToDate from "../../helpers/date";
 
 const ViewGoals = () => {
     const [loading, setLoading] = useState(true);
@@ -17,6 +18,7 @@ const ViewGoals = () => {
     /* Fetching data from firebase and setting it to the state. */
     useEffect(() => {
         db.collection("goals")
+            .orderBy("updated", "desc")
             .get()
             .then((querySnapshot) => {
                 querySnapshot.forEach((element) => {
@@ -125,7 +127,9 @@ const ViewGoals = () => {
                                                             <div className="card">
                                                                 <div className="card-body">
                                                                     <h5 className="card-title">{cat.name}</h5>
-                                                                    <h6 className="card-title">{cat.target}</h6>
+                                                                    <h6 className="card-title">Target : {cat.target}</h6>
+                                                                    <h6 className="card-title">Unit : {cat.unit + cat.type}</h6>
+                                                                    <FirestoreTimestampToDate {...cat.updated}/>
                                                                     <button
                                                                         className="btn btn-danger"
                                                                         onClick={() => {

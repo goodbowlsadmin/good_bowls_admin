@@ -10,7 +10,7 @@ import MarkdownEditor from "@uiw/react-markdown-editor";
 import { useParams } from "react-router-dom";
 
 const Types = [
-    "Beverages","Breakfast", "Lunch", "Dinner", "Snacks",
+    "Beverages", "Breakfast", "Lunch", "Dinner", "Snacks",
 ];
 
 const MealTypes = ["Desserts", "Vegan", "Vegeterian", "Gluten Free", "Nut Free Ingredients", "Nutrient Type"];
@@ -30,7 +30,7 @@ const EditRecepie = () => {
     const [recepie, setRecepie] = useState({
         title: "",
         type: "",
-        meal_type:"",
+        meal_type: "",
         description: "",
         thumb_img: "",
         recepie_img: "",

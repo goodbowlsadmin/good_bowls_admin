@@ -6,11 +6,15 @@ import firebase from "firebase/compat/app";
 import Nav from "../Nav";
 import { useParams } from "react-router-dom";
 
+const Units = ["ml", "g", "min"];
+
 const EditGoals = () => {
     const { id } = useParams();
     const [goal, setGoal] = useState({
         name: "",
-        target: ""
+        target: "",
+        unit: "",
+        type: ""
     });
 
     useEffect(() => {
@@ -43,6 +47,8 @@ const EditGoals = () => {
             .update({
                 name: goal.name,
                 target: goal.target,
+                unit: goal.unit,
+                type: goal.type,
                 updated: firebase.firestore.FieldValue.serverTimestamp(),
             })
             .then((res) => {
@@ -75,14 +81,14 @@ const EditGoals = () => {
                                         <div className="card mb-4">
                                             <div className="card-body">
                                                 <form>
-                                                    <div className="row mb-3">
-                                                        <label
-                                                            className="col-sm-2 col-form-label"
-                                                            htmlFor="basic-default-name"
-                                                        >
-                                                            Goal
-                                                        </label>
-                                                        <div className="col-sm-10">
+                                                    <div className="row">
+                                                        <div className="mb-3 col-md-6">
+                                                            <label
+                                                                className="form-label"
+                                                                htmlFor="basic-default-name"
+                                                            >
+                                                                Goal
+                                                            </label>
                                                             <input
                                                                 type="text"
                                                                 className="form-control"
@@ -93,16 +99,14 @@ const EditGoals = () => {
                                                                 onChange={handleChange}
                                                             />
                                                         </div>
-                                                    </div>
 
-                                                    <div className="row mb-3">
-                                                        <label
-                                                            className="col-sm-2 col-form-label"
-                                                            htmlFor="basic-default-name"
-                                                        >
-                                                            Target
-                                                        </label>
-                                                        <div className="col-sm-10">
+                                                        <div className="mb-3 col-md-6">
+                                                            <label
+                                                                className="form-label"
+                                                                htmlFor="basic-default-name"
+                                                            >
+                                                                Target
+                                                            </label>
                                                             <input
                                                                 type="text"
                                                                 className="form-control"
@@ -112,6 +116,54 @@ const EditGoals = () => {
                                                                 value={goal.target}
                                                                 onChange={handleChange}
                                                             />
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="row">
+                                                        <div className="mb-3 col-md-6">
+                                                            <label
+                                                                className="form-label"
+                                                                htmlFor="basic-default-name"
+                                                            >
+                                                                Unit
+                                                            </label>
+                                                            {/* <div className="col-sm-10"> */}
+                                                            <input
+                                                                type="text"
+                                                                className="form-control"
+                                                                id="basic-default-name"
+                                                                placeholder="10"
+                                                                name="unit"
+                                                                value={goal.unit}
+                                                                onChange={handleChange}
+                                                            />
+                                                            {/* </div> */}
+                                                        </div>
+
+                                                        <div className="mb-3 col-md-6">
+                                                            <label
+                                                                className="form-label"
+                                                                htmlFor="basic-default-fullname"
+                                                            >
+                                                                Select Unit Type
+                                                            </label>
+                                                            <select
+                                                                className="form-select"
+                                                                name="type"
+                                                                required
+                                                                value={goal.type}
+                                                                onChange={handleChange}
+                                                            >
+                                                                <option selected>----------------</option>
+
+                                                                {Units.map((sub, i) => (
+                                                                    <>
+                                                                        <option value={sub} key={i}>
+                                                                            {sub}
+                                                                        </option>
+                                                                    </>
+                                                                ))}
+                                                            </select>
                                                         </div>
                                                     </div>
 
