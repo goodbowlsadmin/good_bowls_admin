@@ -42,6 +42,10 @@ const ViewGoals = () => {
                 toast.success("Goal Removed");
                 $("#" + name).fadeOut();
                 setDelete(false);
+                setTimeout(
+                    () => {
+                        window.location.reload();
+                    }, 1000);
             });
     };
 
@@ -121,7 +125,7 @@ const ViewGoals = () => {
                                                             <div className="card">
                                                                 <div className="card-body">
                                                                     <h5 className="card-title">{cat.name}</h5>
-                                                                    <h6 className="card-title">{cat.type}</h6>
+                                                                    <h6 className="card-title">{cat.target}</h6>
                                                                     <button
                                                                         className="btn btn-danger"
                                                                         onClick={() => {

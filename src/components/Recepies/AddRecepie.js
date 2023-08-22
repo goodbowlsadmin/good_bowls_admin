@@ -11,8 +11,10 @@ import MarkdownEditor from "@uiw/react-markdown-editor";
 
 
 const Types = [
-    "Breakfast", "Lunch", "Dinner", "Snacks", "Sides", "Desserts", "Vegan", "Vegeterian", "Gluten Free", "Nut Free"
+    "Beverages","Breakfast", "Lunch", "Dinner", "Snacks",
 ];
+
+const MealTypes = ["Desserts", "Vegan", "Vegeterian", "Gluten Free", "Nut Free Ingredients", "Nutrient Type"];
 
 const AddRecepie = () => {
     const [imgloading, setImgLoading] = useState(false);
@@ -36,6 +38,7 @@ const AddRecepie = () => {
         ingredients: "",
         servings: "",
         source: "",
+        meal_type:"",
         carbs: "",
         protein: "",
         fat: ""
@@ -129,6 +132,7 @@ const AddRecepie = () => {
                 thumb_img: thumbImage,
                 title: recepie.title,
                 type: recepie.type,
+                meal_type: recepie.meal_type,
                 description: description,
                 ingredients: ingredients,
                 servings: servings,
@@ -181,7 +185,7 @@ const AddRecepie = () => {
                                                             className="form-label"
                                                             htmlFor="basic-default-fullname"
                                                         >
-                                                            Select Meal Type
+                                                            Select Type
                                                         </label>
                                                         <select
                                                             className="form-select"
@@ -192,6 +196,31 @@ const AddRecepie = () => {
                                                             <option selected>----------------</option>
 
                                                             {Types.map((sub, i) => (
+                                                                <>
+                                                                    <option value={sub} key={i}>
+                                                                        {sub}
+                                                                    </option>
+                                                                </>
+                                                            ))}
+                                                        </select>
+                                                    </div>
+
+                                                    <div className="mb-3 col-md-6">
+                                                        <label
+                                                            className="form-label"
+                                                            htmlFor="basic-default-fullname"
+                                                        >
+                                                            Select Meal Type
+                                                        </label>
+                                                        <select
+                                                            className="form-select"
+                                                            name="type"
+                                                            required
+                                                            onChange={handleChange}
+                                                        >
+                                                            <option selected>----------------</option>
+
+                                                            {MealTypes.map((sub, i) => (
                                                                 <>
                                                                     <option value={sub} key={i}>
                                                                         {sub}

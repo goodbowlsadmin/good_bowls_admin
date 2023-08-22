@@ -10,8 +10,10 @@ import MarkdownEditor from "@uiw/react-markdown-editor";
 import { useParams } from "react-router-dom";
 
 const Types = [
-    "Breakfast", "Lunch", "Dinner", "Snack", "Sides", "Desserts", "Vegan", "Vegeterian", "Gluten Free", "Nut Free"
+    "Beverages","Breakfast", "Lunch", "Dinner", "Snacks",
 ];
+
+const MealTypes = ["Desserts", "Vegan", "Vegeterian", "Gluten Free", "Nut Free Ingredients", "Nutrient Type"];
 
 const EditRecepie = () => {
     const [imgloading, setImgLoading] = useState(false);
@@ -28,6 +30,7 @@ const EditRecepie = () => {
     const [recepie, setRecepie] = useState({
         title: "",
         type: "",
+        meal_type:"",
         description: "",
         thumb_img: "",
         recepie_img: "",
@@ -137,6 +140,7 @@ const EditRecepie = () => {
                 thumb_img: thumbImage,
                 title: recepie.title,
                 type: recepie.type,
+                meal_type: recepie.meal_type,
                 description: description,
                 ingredients: ingredients,
                 servings: servings,
@@ -193,6 +197,32 @@ const EditRecepie = () => {
                                                             <option selected>----------------</option>
 
                                                             {Types.map((sub, i) => (
+                                                                <>
+                                                                    <option value={sub} key={i}>
+                                                                        {sub}
+                                                                    </option>
+                                                                </>
+                                                            ))}
+                                                        </select>
+                                                    </div>
+
+                                                    <div className="mb-3 col-md-6">
+                                                        <label
+                                                            className="form-label"
+                                                            htmlFor="basic-default-fullname"
+                                                        >
+                                                            Select Meal Type
+                                                        </label>
+                                                        <select
+                                                            className="form-select"
+                                                            name="type"
+                                                            value={recepie.meal_type}
+                                                            required
+                                                            onChange={handleChange}
+                                                        >
+                                                            <option selected>----------------</option>
+
+                                                            {MealTypes.map((sub, i) => (
                                                                 <>
                                                                     <option value={sub} key={i}>
                                                                         {sub}

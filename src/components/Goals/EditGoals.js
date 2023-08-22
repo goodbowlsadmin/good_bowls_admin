@@ -6,20 +6,11 @@ import firebase from "firebase/compat/app";
 import Nav from "../Nav";
 import { useParams } from "react-router-dom";
 
-const Types = [
-    "Fruits",
-    "Vegetables",
-    "Exercise",
-    "Water",
-    "Cooked",
-];
-
-
 const EditGoals = () => {
     const { id } = useParams();
     const [goal, setGoal] = useState({
         name: "",
-        type: ""
+        target: ""
     });
 
     useEffect(() => {
@@ -51,7 +42,7 @@ const EditGoals = () => {
             .doc(id)
             .update({
                 name: goal.name,
-                type: goal.type,
+                target: goal.target,
                 updated: firebase.firestore.FieldValue.serverTimestamp(),
             })
             .then((res) => {
@@ -104,31 +95,25 @@ const EditGoals = () => {
                                                         </div>
                                                     </div>
 
-                                                    <div className="mb-3 col-md-6">
+                                                    <div className="row mb-3">
                                                         <label
-                                                            className="form-label"
-                                                            htmlFor="basic-default-fullname"
+                                                            className="col-sm-2 col-form-label"
+                                                            htmlFor="basic-default-name"
                                                         >
-                                                            Select Goal Type
+                                                            Target
                                                         </label>
-                                                        <select
-                                                            className="form-select"
-                                                            name="type"
-                                                            required
-                                                            onChange={handleChange}
-                                                            value={goal.type}
-                                                        >
-                                                            <option selected>----------------</option>
-                                                            {Types.map((type, i) => (
-                                                                <>
-                                                                    <option value={type} key={i}>
-                                                                        {type}
-                                                                    </option>
-                                                                </>
-                                                            ))}
-                                                        </select>
+                                                        <div className="col-sm-10">
+                                                            <input
+                                                                type="text"
+                                                                className="form-control"
+                                                                id="basic-default-name"
+                                                                placeholder="5"
+                                                                name="target"
+                                                                value={goal.target}
+                                                                onChange={handleChange}
+                                                            />
+                                                        </div>
                                                     </div>
-
 
                                                     <div className="row justify-content-end">
                                                         <div className="col-sm-12">

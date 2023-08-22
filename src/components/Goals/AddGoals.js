@@ -6,18 +6,11 @@ import "../../App.css";
 import { db } from "../../FirebaseConfig";
 import firebase from "firebase/compat/app";
 
-const Types = [
-    "Fruits",
-    "Vegetables",
-    "Exercise",
-    "Water",
-    "Cooked",
-];
 
 const AddGoals = () => {
     const [goal, setGoal] = useState({
         name: "",
-        type: ""
+        target: ""
     });
 
     const handleChange = (e) => {
@@ -37,7 +30,7 @@ const AddGoals = () => {
             .doc(goal.name)
             .set({
                 name: goal.name,
-                type: goal.type,
+                target: goal.target,
                 created: firebase.firestore.FieldValue.serverTimestamp(),
             })
             .then((res) => {
@@ -89,31 +82,26 @@ const AddGoals = () => {
                                                         </div>
                                                     </div>
 
-                                                    <div className="mb-3 col-md-6">
+                                                    <div className="row mb-3">
                                                         <label
-                                                            className="form-label"
-                                                            htmlFor="basic-default-fullname"
+                                                            className="col-sm-2 col-form-label"
+                                                            htmlFor="basic-default-name"
                                                         >
-                                                            Select Goal Type
+                                                            Target
                                                         </label>
-                                                        <select
-                                                            className="form-select"
-                                                            name="type"
-                                                            required
-                                                            onChange={handleChange}
-                                                        >
-                                                            <option selected>----------------</option>
-                                                            {Types.map((type, i) => (
-                                                                <>
-                                                                    <option value={type} key={i}>
-                                                                        {type}
-                                                                    </option>
-                                                                </>
-                                                            ))}
-                                                        </select>
+                                                        <div className="col-sm-10">
+                                                            <input
+                                                                type="text"
+                                                                className="form-control"
+                                                                id="basic-default-name"
+                                                                placeholder="5"
+                                                                name="target"
+                                                                onChange={handleChange}
+                                                            />
+                                                        </div>
                                                     </div>
 
-
+                                        
                                                     <div className="row justify-content-end">
                                                         <div className="col-sm-12">
                                                             <button
