@@ -1,6 +1,6 @@
 import React from "react";
 import $ from "jquery";
-import { Users, User, House, X } from "phosphor-react";
+import { Users, User, House, X, VideoCamera, Info, Image, FilmScript, FilmStrip, ChartBar, Target, Calendar, MonitorPlay, Note } from "phosphor-react";
 import { UserAuth } from "./AuthContext";
 import "../App.css";
 
@@ -77,7 +77,7 @@ const Header = () => {
 
           <li className="menu-item">
             <a href="/Course" className="menu-link">
-              <House size={22} className="menu-icon" />
+              <MonitorPlay size={22} className="menu-icon" />
               <div data-i18n="Analytics">Course Management</div>
             </a>
           </li>
@@ -90,7 +90,7 @@ const Header = () => {
                 menu("tag");
               }}
             >
-              <Users size={22} className="menu-icon" />
+              <Note size={22} className="menu-icon" />
               <div data-i18n="Authentications">Category</div>
             </a>
             <ul className="menu-sub">
@@ -128,7 +128,7 @@ const Header = () => {
                 menu("tag-video");
               }}
             >
-              <Users size={22} className="menu-icon" />
+              <VideoCamera size={22} className="menu-icon" />
               <div data-i18n="Authentications">Videos</div>
             </a>
             <ul className="menu-sub">
@@ -154,7 +154,7 @@ const Header = () => {
                 menu("tag-tip");
               }}
             >
-              <Users size={22} className="menu-icon" />
+              <Info size={22} className="menu-icon" />
               <div data-i18n="Authentications">Tips</div>
             </a>
             <ul className="menu-sub">
@@ -180,7 +180,7 @@ const Header = () => {
                 menu("tag-post");
               }}
             >
-              <Users size={22} className="menu-icon" />
+              <Image size={22} className="menu-icon" />
               <div data-i18n="Authentications">Posts</div>
             </a>
             <ul className="menu-sub">
@@ -212,7 +212,7 @@ const Header = () => {
                 menu("tag-post-video");
               }}
             >
-              <Users size={22} className="menu-icon" />
+              <FilmStrip size={22} className="menu-icon" />
               <div data-i18n="Authentications">Video Post</div>
             </a>
             <ul className="menu-sub">
@@ -244,7 +244,7 @@ const Header = () => {
                 menu("tag-carousel");
               }}
             >
-              <Users size={22} className="menu-icon" />
+              <ChartBar size={22} className="menu-icon" />
               <div data-i18n="Authentications">Polls</div>
             </a>
             <ul className="menu-sub">
@@ -270,7 +270,7 @@ const Header = () => {
                 menu("tag-Recipe");
               }}
             >
-              <Users size={22} className="menu-icon" />
+              <FilmScript size={22} className="menu-icon" />
               <div data-i18n="Authentications">Recipe</div>
             </a>
             <ul className="menu-sub">
@@ -296,7 +296,7 @@ const Header = () => {
                 menu("tag-Goal");
               }}
             >
-              <Users size={22} className="menu-icon" />
+              <Target size={22} className="menu-icon" />
               <div data-i18n="Authentications">Goals</div>
             </a>
             <ul className="menu-sub">
@@ -314,16 +314,16 @@ const Header = () => {
             </ul>
           </li>
 
-          <li className="menu-item tag-homescreen-category">
+          {/* <li className="menu-item tag-homescreen-category">
             <a href="/Home-screen-category" className="menu-link">
               <House size={22} className="menu-icon" />
               <div data-i18n="Analytics">Homescreen Category</div>
             </a>
-          </li>
+          </li> */}
 
           <li className="menu-item tag-homescreen-category">
             <a href="/Weeks" className="menu-link">
-              <House size={22} className="menu-icon" />
+              <Calendar size={22} className="menu-icon" />
               <div data-i18n="Analytics">Week Mangement</div>
             </a>
           </li>
