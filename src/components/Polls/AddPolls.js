@@ -4,9 +4,11 @@ import Header from "../Header";
 import Nav from "../Nav";
 import "../../App.css";
 import { db } from "../../FirebaseConfig";
+import { v4 as uuidv4 } from "uuid";
 
 const AddPolls = () => {
     const [status, setStatus] = useState(false);
+    const id = uuidv4();
 
     const addPoll = async ({ question, options }) => {
         setStatus(true);
@@ -17,6 +19,7 @@ const AddPolls = () => {
                 percent: 0,
             }));
             const data = {
+                id: id,
                 dateCreated: new Date(),
                 poll: {
                     total_votes: 0,
@@ -26,8 +29,11 @@ const AddPolls = () => {
                 },
             };
 
-            await pollCollection.add(data);
+            await pollCollection.doc(id).set(data);
             toast.success('Poll Created');
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
         } catch (error) {
             toast.error(error.message || 'Please try again...');
         } finally {

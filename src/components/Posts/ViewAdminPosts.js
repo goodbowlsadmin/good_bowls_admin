@@ -6,6 +6,7 @@ import { db } from "../../FirebaseConfig";
 import toast, { Toaster } from "react-hot-toast";
 import { Rings } from "react-loader-spinner";
 import { Link } from "react-router-dom";
+import FirestoreTimestampToDate from "../../helpers/date";
 
 const ViewAdminPosts = () => {
     const [posts, setPosts] = useState([]);
@@ -18,6 +19,7 @@ const ViewAdminPosts = () => {
             await db
                 .collection("posts")
                 .where("uid", "==", "Admin")
+                .orderBy("datePublished", "desc")
                 .get()
                 .then((querySnapshot) => {
                     const posts = querySnapshot.docs.map((d) => ({
@@ -108,7 +110,7 @@ const ViewAdminPosts = () => {
                                                                     </h5>
 
                                                                     <h6 className="card-title">{tem.likes.length} likes</h6>
-
+                                                                    <FirestoreTimestampToDate {...tem.datePublished} />
                                                                     <button
                                                                         className="btn btn-danger"
                                                                         onClick={() => {

@@ -7,6 +7,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { Rings } from "react-loader-spinner";
 import { Link } from "react-router-dom";
 import VideoCard from "../Users/VideoCard";
+import FirestoreTimestampToDate from "../../helpers/date";
 
 const ViewAllVideoPosts = () => {
     const [posts, setPosts] = useState([]);
@@ -18,6 +19,7 @@ const ViewAllVideoPosts = () => {
         const get_data = async () => {
             await db
                 .collection("video-posts")
+                .orderBy("datePublished", "desc")
                 .get()
                 .then((querySnapshot) => {
                     const posts = querySnapshot.docs.map((d) => ({
@@ -103,6 +105,7 @@ const ViewAllVideoPosts = () => {
 
                                                                     <h6 className="card-title">{tem.likes.length} likes</h6>
 
+                                                                    <FirestoreTimestampToDate {...tem.datePublished} />
                                                                     <button
                                                                         className="btn btn-danger"
                                                                         onClick={() => {

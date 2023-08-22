@@ -95,6 +95,14 @@ const SingleDayView = () => {
                                                     Add Video
                                                 </button>
                                             </Link>
+                                            <span className="p-2"></span>
+                                            <Link to={"/Add-Tip"}>
+                                                <button
+                                                    className="btn btn-primary"
+                                                >
+                                                    Add Tip
+                                                </button>
+                                            </Link>
                                         </>
                                     ) : (
                                         <div className="row row-cols-1 row-cols-md-3 g-4 mb-5">

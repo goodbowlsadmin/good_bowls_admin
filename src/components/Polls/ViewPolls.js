@@ -6,6 +6,7 @@ import "../../App.css";
 import toast, { Toaster } from "react-hot-toast";
 import { Rings } from "react-loader-spinner";
 import { Link } from "react-router-dom";
+import FirestoreTimestampToDate from "../../helpers/date";
 
 const ViewPolls = () => {
     const [loading, setLoading] = useState(true);
@@ -16,6 +17,7 @@ const ViewPolls = () => {
     /* Fetching data from firebase and setting it to the state. */
     useEffect(() => {
         db.collection("polls")
+            .orderBy("dateCreated", "desc")
             .get()
             .then((querySnapshot) => {
                 querySnapshot.forEach((element) => {
@@ -40,6 +42,9 @@ const ViewPolls = () => {
             .then(() => {
                 toast.success("Poll Removed");
                 setDelete(false);
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
             });
     };
 
@@ -120,9 +125,10 @@ const ViewPolls = () => {
                                                                 <div className="card-body">
                                                                     <h5 className="card-title">Question: {cat.poll.question}</h5>
                                                                     {cat.poll.options.map((opt, i) => (
-                                                                        <p>Option {i + 1}: {opt.answer} - {opt.percent}% votes</p>
+                                                                        <p key={i}>Option {i + 1}: {opt.answer} - {opt.percent}% votes</p>
                                                                     ))}
                                                                     <h6 className="card-title">Total Votes: {cat.poll.total_votes}</h6>
+                                                                    <FirestoreTimestampToDate {...cat.dateCreated }/>
                                                                     <button
                                                                         className="btn btn-danger"
                                                                         onClick={() => {
@@ -168,8 +174,8 @@ const ViewPolls = () => {
                                                                                 </>
                                                                             ) : (
                                                                                 <>
-                                                                                    {cat.poll.voters && cat.poll.voters.map((d) => (
-                                                                                        <tbody>
+                                                                                    {cat.poll.voters && cat.poll.voters.map((d, index) => (
+                                                                                        <tbody key={index}>
                                                                                             <tr>
                                                                                                 <td>{d.name}</td>
                                                                                                 <td>{d.selected_option}</td>
