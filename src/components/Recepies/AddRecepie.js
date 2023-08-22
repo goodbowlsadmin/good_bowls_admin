@@ -9,8 +9,9 @@ import Nav from "../Nav";
 import { v4 as uuidv4 } from "uuid";
 import MarkdownEditor from "@uiw/react-markdown-editor";
 
+
 const Types = [
-    "Breakfast", "Lunch", "Dinner", "Snack", "Sides", "Desserts", "Vegan", "Vegeterian", "Gluten Free", "Nut Free"
+    "Breakfast", "Lunch", "Dinner", "Snacks", "Sides", "Desserts", "Vegan", "Vegeterian", "Gluten Free", "Nut Free"
 ];
 
 const AddRecepie = () => {
@@ -39,6 +40,7 @@ const AddRecepie = () => {
         protein: "",
         fat: ""
     });
+    const batch = firebase.firestore().batch();
 
     const handleRecepieImg = async (e) => {
         setImgLoading(true);
@@ -119,9 +121,9 @@ const AddRecepie = () => {
         e.preventDefault();
         recepie.created = firebase.firestore.FieldValue.serverTimestamp();
         recepie.img = recepieImage;
-        db.collection("recepies")
-            .doc(uid)
-            .set({
+        batch.set(
+            db.collection("recepies").doc(uid),
+            {
                 id: uid,
                 recepie_img: recepieImage,
                 thumb_img: thumbImage,
@@ -135,7 +137,15 @@ const AddRecepie = () => {
                 "protein": recepie.protein,
                 "fat": recepie.fat,
                 created: firebase.firestore.FieldValue.serverTimestamp(),
-            })
+            }
+        );
+        batch.update(
+            db.collection("recepies_id").doc("recepies_id"),
+            {
+                [recepie.type]: firebase.firestore.FieldValue.arrayUnion(uid),
+            }
+        );
+        batch.commit()
             .then((res) => {
                 toast.success("Recipe Added Successfully");
                 setTimeout(() => {
