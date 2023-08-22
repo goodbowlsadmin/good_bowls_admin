@@ -10,6 +10,7 @@ import VideoCard from "../VideoCard";
 
 const SingleDayView = () => {
     const [videos, setVideos] = useState([]);
+    const [tips, setTips] = useState([]);
     const [loading, setLoading] = useState(true);
     const params = useParams();
 
@@ -40,7 +41,33 @@ const SingleDayView = () => {
                 });
         };
 
+        const getTipsdata = async () => {
+            await db
+                .collection("tips")
+                .where("week", "==", params.week)
+                .where("day", "==", params.day)
+                .get()
+                .then((querySnapshot) => {
+                    const posts = querySnapshot.docs.map((d) => ({
+                        id: d.id,
+                        ...d.data(),
+                    }));
+
+                    if (posts.length === 0) {
+                        setLoading(false);
+                    } else {
+                        setTips(posts);
+                        setLoading(false);
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                    setLoading(false);
+                });
+        };
+
         get_data();
+        getTipsdata();
     }, [params.week, params.day, params]);
 
     const deletevideos = (id) => {
@@ -50,6 +77,19 @@ const SingleDayView = () => {
             .then((res) => {
                 $("#" + id).fadeOut();
                 toast.success("Video Deleted Successfully");
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
+    const deleteTip = (id) => {
+        db.collection("tips")
+            .doc(id)
+            .delete()
+            .then((res) => {
+                $("#" + id).fadeOut();
+                toast.success("Tip Deleted Successfully");
             })
             .catch((err) => {
                 console.log(err);
@@ -85,9 +125,11 @@ const SingleDayView = () => {
                                 </>
                             ) : (
                                 <>
+                                <h2>Videos</h2>
+
                                     {videos.length === 0 ? (
                                         <>
-                                            <h2>No Data Found</h2>
+                                            <h2>No Video Data Found</h2>
                                             <Link to={"/Add-Video"}>
                                                 <button
                                                     className="btn btn-primary"
@@ -95,19 +137,11 @@ const SingleDayView = () => {
                                                     Add Video
                                                 </button>
                                             </Link>
-                                            <span className="p-2"></span>
-                                            <Link to={"/Add-Tip"}>
-                                                <button
-                                                    className="btn btn-primary"
-                                                >
-                                                    Add Tip
-                                                </button>
-                                            </Link>
                                         </>
                                     ) : (
                                         <div className="row row-cols-1 row-cols-md-3 g-4 mb-5">
                                             <>
-                                                {videos.map((tem, i) => (
+                                                {videos && videos.map((tem, i) => (
                                                     <>
                                                         <div className="col" id={tem.id}>
                                                             <div className="card">
@@ -129,6 +163,60 @@ const SingleDayView = () => {
                                                                     <span className="p-2">
 
                                                                         <Link to={`/Edit-Video/${tem.id}`}>
+                                                                            <button
+                                                                                className="btn btn-primary"
+                                                                            >
+                                                                                Edit
+                                                                            </button>
+                                                                        </Link>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </>
+                                                ))}
+                                            </>
+                                        </div>
+                                    )}
+
+                                                        <h2>Tips</h2>
+                                    {tips.length === 0 ? (
+                                        <>
+                                            <h2>No Tip Data Found</h2>
+                                            <Link to={"/Add-Tip"}>
+                                                <button
+                                                    className="btn btn-primary"
+                                                >
+                                                    Add Tip
+                                                </button>
+                                            </Link>
+                                        </>
+                                    ) : (
+                                        <div className="row row-cols-1 row-cols-md-3 g-4 mb-5">
+                                            <>
+                                                {tips && tips.map((tem, i) => (
+                                                    <>
+                                                        <div className="col" id={tem.id}>
+                                                            <div className="card">
+                                                                <div className="card-body">
+                                                                    <h3 className="card-title">
+                                                                        {tem.title}
+                                                                    </h3>
+                                                                    <h5 className="card-title">
+                                                                        {tem.description}
+                                                                    </h5>
+                                                                    <h6 className="card-title">{tem.week} , {tem.day}</h6>
+                                                                    <button
+                                                                        className="btn btn-danger"
+                                                                        onClick={() => {
+                                                                            deleteTip(tem.id);
+                                                                        }}
+                                                                    >
+                                                                        Delete
+                                                                    </button>
+                                                                    <span className="p-2">
+
+                                                                        <Link to={`/Edit-Tip/${tem.id}`}>
                                                                             <button
                                                                                 className="btn btn-primary"
                                                                             >
