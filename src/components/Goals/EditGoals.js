@@ -6,7 +6,7 @@ import firebase from "firebase/compat/app";
 import Nav from "../Nav";
 import { useParams } from "react-router-dom";
 
-const Units = ["ml", "g", "min"];
+const Units = ["ml", "g", "min", "servings", "oz", "days"];
 
 const EditGoals = () => {
     const { id } = useParams();

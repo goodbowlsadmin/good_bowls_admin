@@ -6,7 +6,7 @@ import "../../App.css";
 import { db } from "../../FirebaseConfig";
 import firebase from "firebase/compat/app";
 
-const Units = ["ml", "g", "min"];
+const Units = ["ml", "g", "min", "servings", "oz", "days"];
 
 const AddGoals = () => {
     const [goal, setGoal] = useState({
