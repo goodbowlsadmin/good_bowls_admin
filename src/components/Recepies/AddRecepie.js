@@ -23,9 +23,6 @@ const AddRecepie = () => {
     const [description, setDescription] = useState("");
     const [ingredients, setIngredients] = useState("");
     const [servings, setServings] = useState("");
-    const [recepieImage, setRecepieImg] = useState(
-        "https://brent-mccardle.org/img/placeholder-image.png"
-    );
     const [thumbImage, setThumbImg] = useState(
         "https://brent-mccardle.org/img/placeholder-image.png"
     );
@@ -34,46 +31,17 @@ const AddRecepie = () => {
         type: "",
         description: "",
         thumb_img: "",
-        recepie_img: "",
         ingredients: "",
         servings: "",
         source: "",
         meal_type: "",
         carbs: "",
         protein: "",
-        fat: ""
+        fat: "",
+        calories: ""
     });
     const batch = firebase.firestore().batch();
 
-    const handleRecepieImg = async (e) => {
-        setImgLoading(true);
-        const data = new FormData();
-        data.append("file", e.target.files[0]);
-        data.append("upload_preset", "recepies");
-
-        const config = {
-            onUploadProgress: (e) => {
-                const { loaded, total } = e;
-                let percent = Math.floor((loaded * 100) / total);
-                setProgress(percent);
-            },
-        };
-
-        axios
-            .post(
-                "https://api.cloudinary.com/v1_1/dzrg2j6mv/image/upload",
-                data,
-                config
-            )
-            .then((r) => {
-                setImgLoading(false);
-                setRecepieImg(r.data.secure_url);
-                toast.success("Recipe Image Uploaded Successfully");
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    };
 
     const handleThumbImg = async (e) => {
         setImgLoading(true);
@@ -123,12 +91,10 @@ const AddRecepie = () => {
     const onSubmit = (e) => {
         e.preventDefault();
         recepie.created = firebase.firestore.FieldValue.serverTimestamp();
-        recepie.img = recepieImage;
         batch.set(
             db.collection("recepies").doc(uid),
             {
                 id: uid,
-                recepie_img: recepieImage,
                 thumb_img: thumbImage,
                 title: recepie.title,
                 type: recepie.type,
@@ -139,6 +105,7 @@ const AddRecepie = () => {
                 source: recepie.source,
                 carbs: recepie.carbs,
                 protein: recepie.protein,
+                calories: recepie.calories,
                 fat: recepie.fat,
                 created: firebase.firestore.FieldValue.serverTimestamp()
             }
@@ -307,6 +274,24 @@ const AddRecepie = () => {
                                                             />
                                                         </div>
                                                     </div>
+                                                    <div className="mb-3 col-md-6">
+                                                        <label
+                                                            className="form-label"
+                                                            htmlFor="basic-default-fullname"
+                                                        >
+                                                            Add Calories
+                                                        </label>
+                                                        <div>
+                                                            <input
+                                                                type="text"
+                                                                className="form-control"
+                                                                id="basic-default-name"
+                                                                placeholder="50"
+                                                                name="calories"
+                                                                onChange={handleChange}
+                                                            />
+                                                        </div>
+                                                    </div>
                                                 </div>
 
                                                 <div className="row mb-3">
@@ -409,44 +394,13 @@ const AddRecepie = () => {
                                                 </div>
 
                                                 <div className="row">
-                                                    <div className="mb-3 col-md-6">
-                                                        <label
-                                                            className="col-sm-2 col-form-label"
-                                                            htmlFor="basic-default-company"
-                                                        >
-                                                            Recepie Image / Icon
-                                                        </label>
-
-                                                        <div className="col-sm-10">
-                                                            <input
-                                                                type="file"
-                                                                className="form-control"
-                                                                id="inputGroupFile02"
-                                                                accept=".jpg, .jpeg, .png"
-                                                                onChange={handleRecepieImg}
-                                                            />
-                                                            <br />
-                                                            {imgloading === true ? (
-                                                                <>
-                                                                    <h4>Uploading Image {progress} %</h4>
-                                                                </>
-                                                            ) : (
-                                                                <></>
-                                                            )}
-                                                            <img
-                                                                src={recepieImage}
-                                                                className="image"
-                                                                alt="uploading_image"
-                                                            />
-                                                        </div>
-                                                    </div>
 
                                                     <div className="mb-3 col-md-6">
                                                         <label
                                                             className="col-sm-2 col-form-label"
                                                             htmlFor="basic-default-company"
                                                         >
-                                                            Thumbnail Image / Icon
+                                                            Recipe Image / Icon
                                                         </label>
 
                                                         <div className="col-sm-10">
