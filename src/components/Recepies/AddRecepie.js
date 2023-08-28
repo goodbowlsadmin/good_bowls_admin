@@ -11,7 +11,7 @@ import MarkdownEditor from "@uiw/react-markdown-editor";
 
 
 const Types = [
-    "Beverages","Breakfast", "Lunch", "Dinner", "Snacks",
+    "Beverages", "Breakfast", "Lunch", "Dinner", "Snacks",
 ];
 
 const MealTypes = ["Desserts", "Vegan", "Vegeterian", "Gluten Free", "Nut Free Ingredients", "Nutrient Type"];
@@ -38,7 +38,7 @@ const AddRecepie = () => {
         ingredients: "",
         servings: "",
         source: "",
-        meal_type:"",
+        meal_type: "",
         carbs: "",
         protein: "",
         fat: ""
@@ -137,10 +137,10 @@ const AddRecepie = () => {
                 ingredients: ingredients,
                 servings: servings,
                 source: recepie.source,
-                "carbs": recepie.carbs,
-                "protein": recepie.protein,
-                "fat": recepie.fat,
-                created: firebase.firestore.FieldValue.serverTimestamp(),
+                carbs: recepie.carbs,
+                protein: recepie.protein,
+                fat: recepie.fat,
+                created: firebase.firestore.FieldValue.serverTimestamp()
             }
         );
         batch.update(
@@ -214,7 +214,7 @@ const AddRecepie = () => {
                                                         </label>
                                                         <select
                                                             className="form-select"
-                                                            name="type"
+                                                            name="meal_type"
                                                             required
                                                             onChange={handleChange}
                                                         >

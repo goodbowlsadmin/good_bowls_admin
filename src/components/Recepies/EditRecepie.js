@@ -215,7 +215,7 @@ const EditRecepie = () => {
                                                         </label>
                                                         <select
                                                             className="form-select"
-                                                            name="type"
+                                                            name="meal_type"
                                                             value={recepie.meal_type}
                                                             required
                                                             onChange={handleChange}

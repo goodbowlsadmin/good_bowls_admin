@@ -6,6 +6,7 @@ import "../../App.css";
 import toast, { Toaster } from "react-hot-toast";
 import { Rings } from "react-loader-spinner";
 import { Link } from "react-router-dom";
+import FirestoreTimestampToDate from "../../helpers/date";
 
 const ViewRecepies = () => {
     const [loading, setLoading] = useState(true);
@@ -16,6 +17,7 @@ const ViewRecepies = () => {
     /* Fetching data from firebase and setting it to the state. */
     useEffect(() => {
         db.collection("recepies")
+            .orderBy("created", "desc")
             .get()
             .then((querySnapshot) => {
                 querySnapshot.forEach((element) => {
@@ -123,6 +125,7 @@ const ViewRecepies = () => {
                                                                 />
                                                                 <div className="card-body">
                                                                     <h5 className="card-title">{data.title}</h5>
+                                                                    <FirestoreTimestampToDate {...data.created} />
                                                                     <button
                                                                         className="btn btn-danger"
                                                                         onClick={() => {

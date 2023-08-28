@@ -18,7 +18,7 @@ const ViewGoals = () => {
     /* Fetching data from firebase and setting it to the state. */
     useEffect(() => {
         db.collection("goals")
-            .orderBy("updated", "desc")
+            .orderBy("created", "desc")
             .get()
             .then((querySnapshot) => {
                 querySnapshot.forEach((element) => {
