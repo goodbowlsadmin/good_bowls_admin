@@ -9,14 +9,16 @@ import { db } from '../../FirebaseConfig'
 const Comments = () => {
     let [data, setData] = useState([]);
     let [input, setInput] = useState("");
-    const { id , name } = useParams();
+    const { id, name } = useParams();
 
     useEffect(() => {
         loadData();
     }, []);
 
     const loadData = async () => {
-        await db.collection(name).doc(id).collection('comments').get()
+        await db.collection(name).doc(id).collection('comments')
+            .orderBy("datePublished", "desc")
+            .get()
             .then((querySnapshot) => {
                 querySnapshot.forEach((element) => {
                     let tdata = element.data();
@@ -74,8 +76,8 @@ const Comments = () => {
                                     </>
                                 ) : (
                                     <>
-                                        {data && data.map((d) => (
-                                            <tbody>
+                                        {data && data.map((d,i) => (
+                                            <tbody key={i}>
                                                 <tr>
                                                     <td><img src={d.profilePic} alt="" width="50px" /></td>
                                                     <td>{d.name}</td>
