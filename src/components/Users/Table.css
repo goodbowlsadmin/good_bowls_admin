@@ -1,0 +1,9 @@
+.custom-table-responsive {
+    overflow-x: auto;
+    max-width: 100%;
+    margin-bottom: 15px;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

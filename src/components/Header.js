@@ -314,18 +314,36 @@ const Header = () => {
             </ul>
           </li>
 
-          {/* <li className="menu-item tag-homescreen-category">
-            <a href="/Home-screen-category" className="menu-link">
-              <House size={22} className="menu-icon" />
-              <div data-i18n="Analytics">Homescreen Category</div>
-            </a>
-          </li> */}
-
-          <li className="menu-item tag-homescreen-category">
-            <a href="/Weeks" className="menu-link">
+          <li className="menu-item tag-week">
+            <a
+              href="#/"
+              className="menu-link menu-toggle"
+              onClick={() => {
+                menu("tag-week");
+              }}
+            >
               <Calendar size={22} className="menu-icon" />
-              <div data-i18n="Analytics">Week Mangement</div>
+              <div data-i18n="Authentications">Week Mangement</div>
             </a>
+            <ul className="menu-sub">
+              <li className="menu-item">
+                <a href="/Weeks" className="menu-link">
+                  <div data-i18n="Basic">Add Week</div>
+                </a>
+              </li>
+
+              <li className="menu-item">
+                <a href="/Add-Week-Title" className="menu-link">
+                  <div data-i18n="Basic">Add Week Title</div>
+                </a>
+              </li>
+
+              <li className="menu-item">
+                <a href="/Week-Titles" className="menu-link">
+                  <div data-i18n="Basic">Update/ View Week Title</div>
+                </a>
+              </li>
+            </ul>
           </li>
 
           <li className="menu-item">

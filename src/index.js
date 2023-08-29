@@ -46,6 +46,10 @@ import Comments from "./components/Posts/Comments";
 import ViewAdminVideoPosts from "./components/Video-Posts/ViewAdminVideoPosts";
 import ViewAllVideoPosts from "./components/Video-Posts/VideoAllVideoPosts";
 import EditVideoPost from "./components/Video-Posts/EditVideoPosts";
+import AddWeekTitle from "./components/Weeks/AddWeekTitle";
+import ViewWeekTitles from "./components/Weeks/ViewWeekTitles";
+import EditWeekTitle from "./components/Weeks/EditWeekTitle";
+import EditUser from "./components/Users/EditUser";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -284,6 +288,13 @@ root.render(
             </ProtectedRoute>
           } />
         <Route
+          path="/Edit-User/:id"
+          element={
+            <ProtectedRoute>
+              <EditUser />
+            </ProtectedRoute>
+          } />
+        <Route
           path="/Add-Goals"
           element={
             <ProtectedRoute>
@@ -365,6 +376,27 @@ root.render(
           element={
             <ProtectedRoute>
               <EditVideoPost />
+            </ProtectedRoute>
+          } />
+        <Route
+          path="/Add-Week-Title"
+          element={
+            <ProtectedRoute>
+              <AddWeekTitle />
+            </ProtectedRoute>
+          } />
+        <Route
+          path="/Week-Titles"
+          element={
+            <ProtectedRoute>
+              <ViewWeekTitles />
+            </ProtectedRoute>
+          } />
+        <Route
+          path="/Edit-Week-Title/:id"
+          element={
+            <ProtectedRoute>
+              <EditWeekTitle />
             </ProtectedRoute>
           } />
       </Routes>

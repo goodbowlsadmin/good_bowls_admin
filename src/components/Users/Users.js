@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import Header from '../Header'
 import Nav from '../Nav'
 import { db } from '../../FirebaseConfig'
+import './Table.css';
 
 const Users = () => {
     let [data, setData] = useState([]);
@@ -57,42 +58,51 @@ const Users = () => {
                                 />
                             </div>
                             <br />
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Avatar</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Email</th>
-                                        <th scope="col">Enrolled</th>
-                                        <th scope="col">Progress</th>
-                                        <th scope="col">User Posts</th>
-                                        <th scope="col">Video Posts</th>
-                                    </tr>
-                                </thead>
-                                {data.length === 0 ? (
-                                    <>
-                                        <h4 className='pt-2'>No Users Found</h4>
-                                    </>
-                                ) : (
-                                    <>
-                                        {data && data.map((d) => (
-                                            <tbody>
-                                                <tr>
-                                                    <td><img src={d.photoUrl} alt="" width="50px" /></td>
-                                                    <td>{d.name}</td>
-                                                    <td>{d.email}</td>
-                                                    <td>{d.course ? 'Enrolled' : 'Not Enrolled'}</td>
-                                                    {d.currentWeek ? (
-                                                        <td>{d.currentWeek}, Day {d.currentDay}</td>
-                                                    ) : <td>No Progress</td>}
-                                                    <td><button type="button" class="btn btn-secondary"> <Link to={`/User-Posts/${d.uid}`} className='text-white'> View </Link></button></td>
-                                                    <td><button type="button" class="btn btn-secondary"> <Link to={`/User-Video-Posts/${d.uid}`} className='text-white'> View </Link></button></td>
-                                                </tr>
-                                            </tbody>
-                                        ))}
-                                    </>
-                                )}
-                            </table>
+                            <div className="custom-table-responsive">
+
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Avatar</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Email</th>
+                                            <th scope="col">Participation ID</th>
+                                            <th scope="col">Worksite</th>
+                                            <th scope="col">Enrolled</th>
+                                            <th scope="col">Progress</th>
+                                            <th scope="col">User Posts</th>
+                                            <th scope="col">Video Posts</th>
+                                            <th scope="col">Update</th>
+                                        </tr>
+                                    </thead>
+                                    {data.length === 0 ? (
+                                        <>
+                                            <h4 className='pt-2'>No Users Found</h4>
+                                        </>
+                                    ) : (
+                                        <>
+                                            {data && data.map((d, i) => (
+                                                <tbody key={i}>
+                                                    <tr>
+                                                        <td><img src={d.photoUrl} alt="" width="50px" /></td>
+                                                        <td>{d.name}</td>
+                                                        <td>{d.email}</td>
+                                                        <td>{d.pid ? d.pid : 'Not yet Updated'}</td>
+                                                        <td>{d.worksite ? d.worksite : 'Not yet Updated'}</td>
+                                                        <td>{d.course ? 'Enrolled' : 'Not Enrolled'}</td>
+                                                        {d.currentWeek ? (
+                                                            <td>{d.currentWeek}, Day {d.currentDay}</td>
+                                                        ) : <td>No Progress</td>}
+                                                        <td><button type="button" class="btn btn-secondary"> <Link to={`/User-Posts/${d.uid}`} className='text-white'> View </Link></button></td>
+                                                        <td><button type="button" class="btn btn-secondary"> <Link to={`/User-Video-Posts/${d.uid}`} className='text-white'> View </Link></button></td>
+                                                        <td><button type="button" class="btn btn-primary"> <Link to={`/Edit-User/${d.email}`} className='text-white'> Update </Link></button></td>
+                                                    </tr>
+                                                </tbody>
+                                            ))}
+                                        </>
+                                    )}
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
