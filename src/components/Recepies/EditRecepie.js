@@ -10,7 +10,7 @@ import MarkdownEditor from "@uiw/react-markdown-editor";
 import { useParams } from "react-router-dom";
 
 const Types = [
-    "Beverages", "Breakfast", "Lunch", "Dinner", "Snacks",
+    "Breakfast", "Lunch", "Dinner", "Snacks", "Sides", "Desserts"
 ];
 
 const MealTypes = ["Desserts", "Vegan", "Vegeterian", "Gluten Free", "Nut Free Ingredients", "Nutrient Type"];

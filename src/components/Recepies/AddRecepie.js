@@ -11,7 +11,7 @@ import MarkdownEditor from "@uiw/react-markdown-editor";
 
 
 const Types = [
-    "Beverages", "Breakfast", "Lunch", "Dinner", "Snacks",
+    "Breakfast", "Lunch", "Dinner", "Snacks", "Sides", "Desserts"
 ];
 
 const MealTypes = ["Desserts", "Vegan", "Vegeterian", "Gluten Free", "Nut Free Ingredients", "Nutrient Type"];
