@@ -29,7 +29,11 @@ const Login = () => {
 
   const handleSubmit = async () => {
     try {
-      await signIn(admin.webemail, admin.password);
+      if (admin.webemail === "admin@good.com") {
+        await signIn(admin.webemail, admin.password);
+      } else {
+        toast.error("Invalid email");
+      }
       window.location.href = "/";
     } catch (error) {
       toast.error(error.code);
@@ -127,22 +131,22 @@ const Login = () => {
                             </g>
                           </g> */}
                         </g>
-                       
+
                       </svg>
                     </span>
                     <img
-                src="/assets/logo.png"
-                width="70" height="70"
-                alt="Header"
-              />
-                    <span className="app-brand-text demo text-body fw-bolder" style={{textTransform:'uppercase'}}>
+                      src="/assets/logo.png"
+                      width="70" height="70"
+                      alt="Header"
+                    />
+                    <span className="app-brand-text demo text-body fw-bolder" style={{ textTransform: 'uppercase' }}>
                       Good Bowls
                     </span>
                   </a>
                 </div>
                 {/* /Logo */}
                 <center><h4 className="mb-2">Welcome to Good Bowls </h4>
-                <h6 className="mb-2">Do Good While Eating Well </h6></center>
+                  <h6 className="mb-2">Do Good While Eating Well </h6></center>
                 <p className="mb-4">
                   Please sign-in to your account and start the adventure
                 </p>
