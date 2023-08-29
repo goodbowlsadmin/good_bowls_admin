@@ -14,7 +14,7 @@ const Types = [
     "Breakfast", "Lunch", "Dinner", "Snacks", "Sides", "Desserts"
 ];
 
-const MealTypes = ["Desserts", "Vegan", "Vegeterian", "Gluten Free", "Nut Free Ingredients", "Nutrient Type"];
+const MealTypes = ["Vegan", "Vegeterian", "Gluten Free", "Nut Free Ingredients", "Nutrient Type"];
 
 const AddRecepie = () => {
     const [imgloading, setImgLoading] = useState(false);
