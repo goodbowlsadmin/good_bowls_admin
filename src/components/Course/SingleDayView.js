@@ -125,7 +125,7 @@ const SingleDayView = () => {
                                 </>
                             ) : (
                                 <>
-                                <h2>Videos</h2>
+                                    <h2>Videos</h2>
 
                                     {videos.length === 0 ? (
                                         <>
@@ -179,7 +179,7 @@ const SingleDayView = () => {
                                         </div>
                                     )}
 
-                                                        <h2>Tips</h2>
+                                    <h2 className="pt-4">Tips</h2>
                                     {tips.length === 0 ? (
                                         <>
                                             <h2>No Tip Data Found</h2>

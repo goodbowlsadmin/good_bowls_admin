@@ -6,6 +6,7 @@ import "../../App.css";
 import toast, { Toaster } from "react-hot-toast";
 import $ from "jquery";
 import { Rings } from "react-loader-spinner";
+import { Link } from "react-router-dom";
 
 const ViewCategories = () => {
   const [loading, setLoading] = useState(true);
@@ -27,7 +28,7 @@ const ViewCategories = () => {
           setLoading(false);
         });
       })
-      .catch((err) => {});
+      .catch((err) => { });
   }, []);
 
   /**
@@ -119,6 +120,13 @@ const ViewCategories = () => {
                     {categories.length === 0 ? (
                       <>
                         <h2>No Category Found</h2>
+                        <Link to={"/Add-Category"}>
+                          <button
+                            className="btn btn-primary"
+                          >
+                            Add Category
+                          </button>
+                        </Link>
                       </>
                     ) : (
                       <>

@@ -109,6 +109,13 @@ const ViewWeekTitles = () => {
                                         {weekTitles.length === 0 ? (
                                             <>
                                                 <h2>No Week Titles Found</h2>
+                                                <Link to={"/Add-Week-Title"}>
+                                                <button
+                                                    className="btn btn-primary"
+                                                >
+                                                    Add Week Title
+                                                </button>
+                                            </Link>
                                             </>
                                         ) : (
                                             <>

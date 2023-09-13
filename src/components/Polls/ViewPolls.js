@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { db } from "../../FirebaseConfig";
 import Header from "../Header";
@@ -9,7 +10,7 @@ import { Link } from "react-router-dom";
 import FirestoreTimestampToDate from "../../helpers/date";
 
 const ViewPolls = () => {
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     let [polls, setPolls] = useState([]);
     const [Delete, setDelete] = useState(false);
     let [input, setInput] = useState("");
@@ -22,11 +23,20 @@ const ViewPolls = () => {
             .then((querySnapshot) => {
                 querySnapshot.forEach((element) => {
                     var data = element.data();
+                    console.log(data);
+                    console.log(polls);
                     setPolls((arr) => [...arr, data]);
-                    setLoading(false);
+                    if (data.length === 0 || data === null) {
+                        setLoading(false);
+                    } else {
+                        setLoading(false);
+                    }
                 });
             })
-            .catch((err) => { });
+            .catch((err) => {
+                setLoading(false)
+                console.log(err.toString())
+             });
     }, []);
 
     /**
@@ -106,6 +116,13 @@ const ViewPolls = () => {
                                         {polls.length === 0 ? (
                                             <>
                                                 <h2>No polls Found</h2>
+                                                <Link to={"/Add-Polls"}>
+                                                <button
+                                                    className="btn btn-primary"
+                                                >
+                                                    Add Polls
+                                                </button>
+                                            </Link>
                                             </>
                                         ) : (
                                             <>

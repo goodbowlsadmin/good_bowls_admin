@@ -134,7 +134,11 @@ const AddSubCategory = () => {
                             className="col-sm-2 col-form-label"
                             htmlFor="basic-default-company"
                           >
-                            Sub - Category
+                            Sub - Category <br />
+                            <small className="text-muted">
+                              (Add comma ',' after adding Input) <br />
+                              Ex. SUB1,
+                            </small>
                           </label>
                           <div className="col-sm-10">
                             <ReactTags

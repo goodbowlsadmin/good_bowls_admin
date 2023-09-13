@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
@@ -19,11 +20,8 @@ const Days = [
 ];
 
 const EditVideo = () => {
-  const [loading, setLoading] = useState(true);
 
   const [imgloading, setImgLoading] = useState(false);
-
-  const [load, setLoad] = useState(true);
 
   const { id } = useParams();
 
@@ -32,10 +30,6 @@ const EditVideo = () => {
   const [videoImage, setVideoImage] = useState(
     "https://brent-mccardle.org/img/placeholder-image.png"
   );
-
-  const [categories, setCategory] = useState([]);
-
-  const [sub_category, setSubCategory] = useState([]);
 
   const [video, setVideo] = useState({
     category: "",
@@ -53,7 +47,7 @@ const EditVideo = () => {
 
   useEffect(() => {
     const fetchDocumentNames = async () => {
-      const collectionName = 'weeks'; 
+      const collectionName = 'weeks';
       const names = await getAllDocumentNames(collectionName);
       setWeeks(names);
     };
@@ -66,23 +60,6 @@ const EditVideo = () => {
   }, [id])
 
 
-
-  const get_categories = async () => {
-    await db
-      .collection("categories")
-      .get()
-      .then((doc) => {
-        doc.forEach((element) => {
-          var data = element.data();
-          setCategory((arr) => [...arr, data]);
-          setLoading(false);
-        });
-      });
-  };
-
-  useEffect(() => {
-    get_categories();
-  }, []);
 
   const handlevideoImage = async (e) => {
     setImgLoading(true);
@@ -158,24 +135,6 @@ const EditVideo = () => {
       });
   };
 
-  const handleSelectChange = (e) => {
-    video.category = e.target.value;
-    db.collection("categories")
-      .doc(e.target.value)
-      .get()
-      .then((querySnapshot) => {
-        if (querySnapshot.data().sub_category === undefined) {
-          setLoad(false);
-        } else {
-          setSubCategory(querySnapshot.data().sub_category);
-          setLoad(false);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   return (
     <>
       <div className="layout-wrapper layout-content-navbar">
@@ -196,76 +155,45 @@ const EditVideo = () => {
                   <div className="col-xxl">
                     <div className="card mb-4">
                       <div className="card-body">
+
                         <div className="row">
                           <div className="mb-3 col-md-6">
                             <label
                               className="form-label"
                               htmlFor="basic-default-fullname"
                             >
-                              Select Category
+                              Category
                             </label>
-                            <select
-                              className="form-select"
-                              name="state"
-                              onChange={handleSelectChange}
-                              required
-                              value={video.category}
-                            >
-                              <option selected>----------------</option>
-                              {loading === true ? (
-                                <>
-                                  <option>Loading Categories.....</option>
-                                </>
-                              ) : (
-                                <>
-                                  {categories.map((cat, i) => (
-                                    <>
-                                      <option value={cat.name} key={i}>
-                                        {cat.name}
-                                      </option>
-                                    </>
-                                  ))}
-                                </>
-                              )}
-                            </select>
+                            <div>
+                              <input
+                                type="text"
+                                className="form-control"
+                                id="basic-default-name"
+                                placeholder="Category"
+                                value={video.category}
+                                disabled
+                              />
+                            </div>
+
                           </div>
                           <div className="mb-3 col-md-6">
                             <label
                               className="form-label"
                               htmlFor="basic-default-fullname"
                             >
-                              Select Sub-Category
+                              Sub Category
                             </label>
-                            <select
-                              className="form-select"
-                              name="sub_category"
-                              required
-                              value={video.sub_category}
-                              onChange={handleChange}
-                            >
-                              <option selected>----------------</option>
-                              {load === true ? (
-                                <>
-                                  <option>Loading Sub Categories</option>
-                                </>
-                              ) : (
-                                <>
-                                  {sub_category.length === 0 ? (
-                                    <></>
-                                  ) : (
-                                    <>
-                                      {sub_category.map((sub, i) => (
-                                        <>
-                                          <option value={sub.text} key={i}>
-                                            {sub.text}
-                                          </option>
-                                        </>
-                                      ))}
-                                    </>
-                                  )}
-                                </>
-                              )}
-                            </select>
+                            <div>
+                              <input
+                                type="text"
+                                className="form-control"
+                                id="basic-default-name"
+                                value={video.sub_category}
+                                placeholder="Sub Category"
+                                disabled
+                              />
+                            </div>
+
                           </div>
                         </div>
 

@@ -92,7 +92,7 @@ const AddPolls = () => {
                                                             className="col-sm-2 col-form-label"
                                                             htmlFor="basic-default-name"
                                                         >
-                                                            Options (option1;option2;option3;...):
+                                                            Options {" "}: <br />
                                                         </label>
                                                         <div className="col-sm-10">
                                                             <input
@@ -103,6 +103,11 @@ const AddPolls = () => {
                                                                 name="options"
                                                             />
                                                         </div>
+                                                        <br />
+                                                            <small>Note: Don't put semicolon for last option <br /> 
+                                                            Example: Option 1; Option 2; Option 3; Option 4 ✅ <br />
+                                                            Example: Option 1; Option 2; Option 3; Option 4; ❌
+                                                            </small>
                                                     </div>
 
                                                     <button type="submit" disabled={status} className="btn btn-primary">

@@ -6,6 +6,7 @@ import "../../App.css";
 import toast, { Toaster } from "react-hot-toast";
 import { Rings } from "react-loader-spinner";
 import { Link } from "react-router-dom";
+import firebase from "firebase/compat/app";
 import FirestoreTimestampToDate from "../../helpers/date";
 
 const ViewRecepies = () => {
@@ -32,17 +33,34 @@ const ViewRecepies = () => {
     }, []);
 
 
-    const deletedRecepie = (id) => {
+    const deletedRecipe = (id, type) => {
         setDelete(true);
-        db.collection("recepies")
-            .doc(id)
-            .delete()
+
+        const batch = db.batch();
+
+        // Delete the recipe document
+        const recipeRef = db.collection("recipes").doc(id);
+        batch.delete(recipeRef);
+
+        // Remove the ID from the recipes_id document
+        const recipesIdRef = db.collection("recepies_id").doc("recepies_id");
+        batch.update(recipesIdRef, {
+            [type]: firebase.firestore.FieldValue.arrayRemove(id),
+        });
+
+        // Commit the batched write
+        batch.commit()
             .then(() => {
                 toast.success("Recipe Removed");
                 setDelete(false);
                 window.location.reload();
+            })
+            .catch((error) => {
+                console.error("Error deleting recipe:", error);
+                setDelete(false);
             });
     };
+
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -102,6 +120,13 @@ const ViewRecepies = () => {
                                         {recepies.length === 0 ? (
                                             <>
                                                 <h2>No Recipes Found</h2>
+                                                <Link to={"/Add-Recipes"}>
+                                                <button
+                                                    className="btn btn-primary"
+                                                >
+                                                    Add Recipes
+                                                </button>
+                                            </Link>
                                             </>
                                         ) : (
                                             <>
@@ -129,7 +154,7 @@ const ViewRecepies = () => {
                                                                     <button
                                                                         className="btn btn-danger"
                                                                         onClick={() => {
-                                                                            deletedRecepie(data.id);
+                                                                            deletedRecipe(data.id, data.type);
                                                                         }}
                                                                     >
                                                                         Delete

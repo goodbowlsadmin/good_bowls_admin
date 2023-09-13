@@ -106,7 +106,7 @@ function App() {
                       data={users} />
                     <DashboardCard
                       name="Video Posts"
-                      route='/Posts'
+                      route='/Video-Posts'
                       data={videoPosts} />
                     <DashboardCard
                       name="Posts"

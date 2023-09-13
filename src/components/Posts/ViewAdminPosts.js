@@ -88,6 +88,13 @@ const ViewAdminPosts = () => {
                                     {posts.length === 0 ? (
                                         <>
                                             <h2>No Data Found</h2>
+                                            <Link to={"/Add-Post"}>
+                                                <button
+                                                    className="btn btn-primary"
+                                                >
+                                                    Add Post
+                                                </button>
+                                            </Link>
                                         </>
                                     ) : (
                                         <div className="row row-cols-1 row-cols-md-3 g-4 mb-5">

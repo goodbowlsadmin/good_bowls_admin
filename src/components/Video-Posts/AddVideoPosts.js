@@ -149,7 +149,7 @@ const AddVideoPost = () => {
                                                             className="col-sm-2 col-form-label"
                                                             htmlFor="basic-default-company"
                                                         >
-                                                            Post Video / Icon
+                                                            Post Video 
                                                         </label>
 
                                                         <div className="col-sm-10">

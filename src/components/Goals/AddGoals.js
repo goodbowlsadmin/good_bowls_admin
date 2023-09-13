@@ -29,7 +29,9 @@ const AddGoals = () => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        db.collection("goals")
+        try{
+
+            db.collection("goals")
             .doc(goal.name)
             .set({
                 name: goal.name,
@@ -46,6 +48,9 @@ const AddGoals = () => {
             .catch((err) => {
                 console.log(err);
             });
+        } catch(e){
+            toast.error('Please fill all fields');
+        }
     };
 
     return (
@@ -83,6 +88,7 @@ const AddGoals = () => {
                                                                 id="basic-default-name"
                                                                 placeholder="John Doe"
                                                                 name="name"
+                                                                required
                                                                 onChange={handleChange}
                                                             />
                                                         </div>

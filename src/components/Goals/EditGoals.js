@@ -95,6 +95,7 @@ const EditGoals = () => {
                                                                 id="basic-default-name"
                                                                 placeholder="John Doe"
                                                                 name="name"
+                                                                required
                                                                 value={goal.name}
                                                                 onChange={handleChange}
                                                             />

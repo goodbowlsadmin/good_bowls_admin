@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import $ from "jquery";
 import Header from "../Header";
 import Nav from "../Nav";
@@ -87,6 +87,13 @@ const ViewSingleTip = () => {
                   {tips.length === 0 ? (
                     <>
                       <h2>No Data Found</h2>
+                      <Link to={"/Add-Tip"}>
+                        <button
+                          className="btn btn-primary"
+                        >
+                          Add Tip
+                        </button>
+                      </Link>
                     </>
                   ) : (
                     <div className="row row-cols-1 row-cols-md-3 g-4 mb-5">

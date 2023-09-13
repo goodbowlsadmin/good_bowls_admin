@@ -109,6 +109,13 @@ const ViewGoals = () => {
                                         {goals.length === 0 ? (
                                             <>
                                                 <h2>No Goals Found</h2>
+                                                <Link to={"/Add-Goals"}>
+                                                <button
+                                                    className="btn btn-primary"
+                                                >
+                                                    Add Goals
+                                                </button>
+                                            </Link>
                                             </>
                                         ) : (
                                             <>

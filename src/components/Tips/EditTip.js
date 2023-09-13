@@ -18,17 +18,11 @@ const Days = [
 ];
 
 const EditTip = () => {
-  const [loading, setLoading] = useState(true);
-
-  const [load, setLoad] = useState(true);
 
   const { id } = useParams();
 
   const [weeks, setWeeks] = useState([]);
 
-  const [categories, setCategory] = useState([]);
-
-  const [sub_category, setSubCategory] = useState([]);
 
   const [tip, setTip] = useState({
     category: "",
@@ -46,20 +40,6 @@ const EditTip = () => {
   }, [id])
 
 
-
-  const get_categories = async () => {
-    await db
-      .collection("categories")
-      .get()
-      .then((doc) => {
-        doc.forEach((element) => {
-          var data = element.data();
-          setCategory((arr) => [...arr, data]);
-          setLoading(false);
-        });
-      });
-  };
-
   useEffect(() => {
     const fetchDocumentNames = async () => {
       const collectionName = 'weeks';
@@ -68,7 +48,6 @@ const EditTip = () => {
     };
 
     fetchDocumentNames();
-    get_categories();
   }, []);
 
   const handleChange = (e) => {
@@ -109,24 +88,6 @@ const EditTip = () => {
       });
   };
 
-  const handleSelectChange = (e) => {
-    tip.category = e.target.value;
-    db.collection("categories")
-      .doc(e.target.value)
-      .get()
-      .then((querySnapshot) => {
-        if (querySnapshot.data().sub_category === undefined) {
-          setLoad(false);
-        } else {
-          setSubCategory(querySnapshot.data().sub_category);
-          setLoad(false);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   return (
     <>
       <div className="layout-wrapper layout-content-navbar">
@@ -153,70 +114,38 @@ const EditTip = () => {
                               className="form-label"
                               htmlFor="basic-default-fullname"
                             >
-                              Select Category
+                              Category
                             </label>
-                            <select
-                              className="form-select"
-                              name="state"
-                              onChange={handleSelectChange}
-                              required
-                              value={tip.category}
-                            >
-                              <option selected>----------------</option>
-                              {loading === true ? (
-                                <>
-                                  <option>Loading Categories.....</option>
-                                </>
-                              ) : (
-                                <>
-                                  {categories.map((cat, i) => (
-                                    <>
-                                      <option value={cat.name} key={i}>
-                                        {cat.name}
-                                      </option>
-                                    </>
-                                  ))}
-                                </>
-                              )}
-                            </select>
+                            <div>
+                              <input
+                                type="text"
+                                className="form-control"
+                                id="basic-default-name"
+                                placeholder="Category"
+                                value={tip.category}
+                                disabled
+                              />
+                            </div>
+
                           </div>
                           <div className="mb-3 col-md-6">
                             <label
                               className="form-label"
                               htmlFor="basic-default-fullname"
                             >
-                              Select Sub-Category
+                              Sub Category
                             </label>
-                            <select
-                              className="form-select"
-                              name="sub_category"
-                              required
-                              value={tip.sub_category}
-                              onChange={handleChange}
-                            >
-                              <option selected>----------------</option>
-                              {load === true ? (
-                                <>
-                                  <option>Loading Sub Categories</option>
-                                </>
-                              ) : (
-                                <>
-                                  {sub_category.length === 0 ? (
-                                    <></>
-                                  ) : (
-                                    <>
-                                      {sub_category.map((sub, i) => (
-                                        <>
-                                          <option value={sub.text} key={i}>
-                                            {sub.text}
-                                          </option>
-                                        </>
-                                      ))}
-                                    </>
-                                  )}
-                                </>
-                              )}
-                            </select>
+                            <div>
+                              <input
+                                type="text"
+                                className="form-control"
+                                id="basic-default-name"
+                                value={tip.sub_category}
+                                placeholder="Sub Category"
+                                disabled
+                              />
+                            </div>
+
                           </div>
                         </div>
 
