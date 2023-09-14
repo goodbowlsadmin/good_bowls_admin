@@ -39,7 +39,7 @@ const ViewRecepies = () => {
         const batch = db.batch();
 
         // Delete the recipe document
-        const recipeRef = db.collection("recipes").doc(id);
+        const recipeRef = db.collection("recepies").doc(id);
         batch.delete(recipeRef);
 
         // Remove the ID from the recipes_id document

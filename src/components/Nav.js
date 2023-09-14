@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import { List } from "phosphor-react";
 import React from "react";
 import $ from "jquery";
@@ -33,7 +34,6 @@ const Nav = () => {
             <li className="nav-item lh-1 me-3">
               <a
                 className="github-button"
-                href="#."
                 data-icon="octicon-star"
                 data-size="large"
                 data-show-count="true"
@@ -44,11 +44,7 @@ const Nav = () => {
             </li>
             {/* User */}
             <li className="nav-item navbar-dropdown dropdown-user dropdown">
-              <a
-                className="nav-link dropdown-toggle hide-arrow"
-                href="#/;"
-                data-bs-toggle="dropdown"
-              >
+              <p>
                 <div className="avatar avatar-online">
                   <img
                     src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
@@ -56,7 +52,7 @@ const Nav = () => {
                     className="w-px-40 h-auto rounded-circle"
                   />
                 </div>
-              </a>
+              </p>
             </li>
             {/*/ User */}
           </ul>

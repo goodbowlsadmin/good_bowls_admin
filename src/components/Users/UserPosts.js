@@ -4,11 +4,9 @@ import Header from "../Header";
 import Nav from "../Nav";
 import "../../App.css";
 import toast, { Toaster } from "react-hot-toast";
-import { Rings } from "react-loader-spinner";
 import { useParams } from "react-router-dom";
 
 const UserPosts = () => {
-    const [loading, setLoading] = useState(true);
     let [posts, setPosts] = useState([]);
     const [Delete, setDelete] = useState(false);
     let [input, setInput] = useState("");
@@ -23,7 +21,6 @@ const UserPosts = () => {
                 querySnapshot.forEach((element) => {
                     var data = element.data();
                     setPosts((arr) => [...arr, data]);
-                    setLoading(false);
                 });
             })
             .catch((err) => { });
@@ -79,66 +76,51 @@ const UserPosts = () => {
                             </div>
                             <br />
                             <div className="row row-cols-1 row-cols-md-3 g-4 mb-5">
-                                {loading === true ? (
-                                    <>
-                                        <h2>
-                                            {" "}
-                                            <Rings
-                                                height="80"
-                                                width="80"
-                                                color="#456CCF"
-                                                radius="6"
-                                                visible={true}
-                                                ariaLabel="rings-loading"
-                                            />
-                                            Loading Data....
-                                        </h2>
-                                    </>
-                                ) : (
-                                    <>
-                                        {posts.length === 0 ? (
-                                            <>
-                                                <h2>No Posts Found</h2>
-                                            </>
-                                        ) : (
-                                            <>
-                                                {Delete === true ? (
-                                                    <>
-                                                        <div className="col-lg-12">
-                                                            <h4>Deleting Data...</h4>
-                                                        </div>
-                                                    </>
-                                                ) : (
-                                                    <></>
-                                                )}
-                                                {posts.map((cat, i) => (
-                                                    <>
-                                                        <div className="col" id={cat.name}>
-                                                            <div className="card">
-                                                                <img
-                                                                    className="card-img-top image"
-                                                                    src={cat.postUrl}
-                                                                    alt={cat.postUrl}
-                                                                />
-                                                                <div className="card-body">
-                                                                    <h5 className="card-title">{cat.description}</h5>
-                                                                    <button
-                                                                        className="btn btn-danger"
-                                                                        onClick={() => {
-                                                                            deleteCategory(cat.postId);
-                                                                        }}
-                                                                    >
-                                                                        Delete
-                                                                    </button>
-                                                                </div>
+
+                                <>
+                                    {posts.length === 0 ? (
+                                        <>
+                                            <h2>No Posts Found</h2>
+                                        </>
+                                    ) : (
+                                        <>
+                                            {Delete === true ? (
+                                                <>
+                                                    <div className="col-lg-12">
+                                                        <h4>Deleting Data...</h4>
+                                                    </div>
+                                                </>
+                                            ) : (
+                                                <></>
+                                            )}
+                                            {posts.map((cat, i) => (
+                                                <>
+                                                    <div className="col" id={cat.name}>
+                                                        <div className="card">
+                                                            <img
+                                                                className="card-img-top image"
+                                                                src={cat.postUrl}
+                                                                alt={cat.postUrl}
+                                                            />
+                                                            <div className="card-body">
+                                                                <h5 className="card-title">{cat.description}</h5>
+                                                                <button
+                                                                    className="btn btn-danger"
+                                                                    onClick={() => {
+                                                                        deleteCategory(cat.postId);
+                                                                    }}
+                                                                >
+                                                                    Delete
+                                                                </button>
                                                             </div>
                                                         </div>
-                                                    </>
-                                                ))}
-                                            </>
-                                        )}
-                                    </>
-                                )}
+                                                    </div>
+                                                </>
+                                            ))}
+                                        </>
+                                    )}
+                                </>
+
                             </div>
                         </div>
                     </div>

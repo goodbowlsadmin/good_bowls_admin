@@ -91,6 +91,9 @@ const AddGoals = () => {
                                                                 required
                                                                 onChange={handleChange}
                                                             />
+                                                             <p className="text-muted">
+                                                                Note: You cannot update Goal name once added
+                                                            </p>
                                                         </div>
 
                                                         <div className="mb-3 col-md-6">

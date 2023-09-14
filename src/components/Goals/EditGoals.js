@@ -95,10 +95,13 @@ const EditGoals = () => {
                                                                 id="basic-default-name"
                                                                 placeholder="John Doe"
                                                                 name="name"
-                                                                required
+                                                                disabled
                                                                 value={goal.name}
                                                                 onChange={handleChange}
                                                             />
+                                                            <p className="text-muted">
+                                                                Note: You cannot update Goal Name
+                                                            </p>
                                                         </div>
 
                                                         <div className="mb-3 col-md-6">
