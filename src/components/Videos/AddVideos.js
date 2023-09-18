@@ -8,6 +8,7 @@ import firebase from "firebase/compat/app";
 import Nav from "../Nav";
 import { v4 as uuidv4 } from "uuid";
 import getAllDocumentNames from "../../helpers/name";
+import { sendFCMNotification } from "../../helpers/notification";
 
 
 const Days = [
@@ -135,6 +136,10 @@ const AddVideos = () => {
    */
   const onSubmit = (e) => {
     e.preventDefault();
+    sendFCMNotification(
+      'New Course Content',
+      'A new course content has been added. Please check it out.'
+    );
     yt_thumb = getYoutbeThumbnail(video.link);
     video.created = firebase.firestore.FieldValue.serverTimestamp();
     video.img = videoImage;

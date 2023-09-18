@@ -5,6 +5,7 @@ import Nav from "../Nav";
 import "../../App.css";
 import { db } from "../../FirebaseConfig";
 import { v4 as uuidv4 } from "uuid";
+import { sendFCMNotification } from "../../helpers/notification";
 
 const AddPolls = () => {
     const [status, setStatus] = useState(false);
@@ -13,6 +14,10 @@ const AddPolls = () => {
     const addPoll = async ({ question, options }) => {
         setStatus(true);
         try {
+            sendFCMNotification(
+                'New Poll',
+                'A new poll has been added. Please check it out.'
+            );   
             const pollCollection = db.collection('polls');
             const formattedOptions = options.map((option) => ({
                 answer: option,

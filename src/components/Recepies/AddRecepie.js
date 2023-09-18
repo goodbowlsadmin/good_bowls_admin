@@ -8,6 +8,7 @@ import firebase from "firebase/compat/app";
 import Nav from "../Nav";
 import { v4 as uuidv4 } from "uuid";
 import MarkdownEditor from "@uiw/react-markdown-editor";
+import { sendFCMNotification } from "../../helpers/notification";
 
 
 const Types = [
@@ -90,6 +91,10 @@ const AddRecepie = () => {
      */
     const onSubmit = (e) => {
         e.preventDefault();
+        sendFCMNotification(
+            'New Recepie',
+            'A new recepie has been added. Please check it out.'
+        );
         recepie.created = firebase.firestore.FieldValue.serverTimestamp();
         batch.set(
             db.collection("recepies").doc(uid),

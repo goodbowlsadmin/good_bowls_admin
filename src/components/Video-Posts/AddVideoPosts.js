@@ -8,6 +8,7 @@ import "firebase/compat/storage";
 import Nav from "../Nav";
 import { v4 as uuidv4 } from "uuid";
 import VideoCard from "../Users/VideoCard";
+import { sendFCMNotification } from "../../helpers/notification";
 
 const AddVideoPost = () => {
     const [imgloading, setImgLoading] = useState(false);
@@ -32,6 +33,10 @@ const AddVideoPost = () => {
 
     const handlePostVideo = async (e) => {
         setImgLoading(true);
+        sendFCMNotification(
+            'New Video Post',
+            'A new video post has been added. Please check it out.'
+        );
         const file = e.target.files[0];
 
         // Reference to your Firebase Storage bucket

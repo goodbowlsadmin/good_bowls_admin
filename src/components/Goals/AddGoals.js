@@ -5,6 +5,7 @@ import Nav from "../Nav";
 import "../../App.css";
 import { db } from "../../FirebaseConfig";
 import firebase from "firebase/compat/app";
+import { sendFCMNotification } from "../../helpers/notification";
 
 const Units = ["ml", "g", "min", "servings", "oz", "days"];
 
@@ -29,26 +30,29 @@ const AddGoals = () => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        try{
-
+        try {
+            sendFCMNotification(
+                'New Goal Added',
+                `Goal: ${goal.name}`
+            );
             db.collection("goals")
-            .doc(goal.name)
-            .set({
-                name: goal.name,
-                target: goal.target,
-                unit: goal.unit,
-                type: goal.type,
-                created: firebase.firestore.FieldValue.serverTimestamp(),
-                updated: firebase.firestore.FieldValue.serverTimestamp(),
-            })
-            .then((res) => {
-                toast.success("Goal Added Successfully");
-                window.location.href = "/Goals";
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-        } catch(e){
+                .doc(goal.name)
+                .set({
+                    name: goal.name,
+                    target: goal.target,
+                    unit: goal.unit,
+                    type: goal.type,
+                    created: firebase.firestore.FieldValue.serverTimestamp(),
+                    updated: firebase.firestore.FieldValue.serverTimestamp(),
+                })
+                .then((res) => {
+                    toast.success("Goal Added Successfully");
+                    window.location.href = "/Goals";
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        } catch (e) {
             toast.error('Please fill all fields');
         }
     };
@@ -91,7 +95,7 @@ const AddGoals = () => {
                                                                 required
                                                                 onChange={handleChange}
                                                             />
-                                                             <p className="text-muted">
+                                                            <p className="text-muted">
                                                                 Note: You cannot update Goal name once added
                                                             </p>
                                                         </div>

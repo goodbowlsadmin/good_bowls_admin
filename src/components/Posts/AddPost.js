@@ -7,6 +7,7 @@ import Header from "../Header";
 import firebase from "firebase/compat/app";
 import Nav from "../Nav";
 import { v4 as uuidv4 } from "uuid";
+import { sendFCMNotification } from "../../helpers/notification";
 
 const AddPost = () => {
     const [imgloading, setImgLoading] = useState(false);
@@ -78,6 +79,10 @@ const AddPost = () => {
      */
     const onSubmit = (e) => {
         e.preventDefault();
+        sendFCMNotification(
+            'New Post',
+            'A new post has been added. Please check it out.'
+        );
         post.created = firebase.firestore.FieldValue.serverTimestamp();
         post.img = postImage;
         db.collection("posts")

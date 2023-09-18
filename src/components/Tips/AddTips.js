@@ -6,6 +6,7 @@ import firebase from "firebase/compat/app";
 import Nav from "../Nav";
 import { v4 as uuidv4 } from "uuid";
 import getAllDocumentNames from "../../helpers/name";
+import { sendFCMNotification } from "../../helpers/notification";
 
 
 const Days = [
@@ -82,6 +83,10 @@ const AddTips = () => {
    */
   const onSubmit = (e) => {
     e.preventDefault();
+    sendFCMNotification(
+      "New Tip",
+      "A new tip has been added. Please check it out."
+    );
     tip.created = firebase.firestore.FieldValue.serverTimestamp();
     db.collection("tips")
       .doc(uid)
