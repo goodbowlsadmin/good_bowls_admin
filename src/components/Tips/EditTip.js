@@ -6,6 +6,7 @@ import firebase from "firebase/compat/app";
 import Nav from "../Nav";
 import { useParams } from "react-router-dom";
 import getAllDocumentNames from "../../helpers/name";
+import axios from "axios";
 
 const Days = [
   "Day 1",
@@ -23,6 +24,11 @@ const EditTip = () => {
 
   const [weeks, setWeeks] = useState([]);
 
+  const [progress, setProgress] = useState(0);
+
+  const [imageLoading, setImageLoading] = useState(false);
+
+  const [imageURL, setImageURL] = useState("https://brent-mccardle.org/img/placeholder-image.png");
 
   const [tip, setTip] = useState({
     category: "",
@@ -30,12 +36,14 @@ const EditTip = () => {
     title: "",
     description: "",
     week: "",
+    imageURL: "",
     day: "",
   });
 
   useEffect(() => {
     db.collection('tips').doc(id).get().then((data) => {
       setTip(data.data());
+      setImageURL(data.data().imageURL ?? "https://brent-mccardle.org/img/placeholder-image.png");
     })
   }, [id])
 
@@ -60,6 +68,37 @@ const EditTip = () => {
     });
   };
 
+  const handleTipImage = async (e) => {
+    setImageLoading(true);
+    const data = new FormData();
+    data.append("file", e.target.files[0]);
+    data.append("upload_preset", "postss");
+
+    const config = {
+      onUploadProgress: (e) => {
+        const { loaded, total } = e;
+        let percent = Math.floor((loaded * 100) / total);
+        setProgress(percent);
+      },
+    };
+
+    axios
+      .post(
+        "https://api.cloudinary.com/v1_1/dzrg2j6mv/image/upload",
+        data,
+        config
+      )
+      .then((r) => {
+        setImageLoading(false);
+        setImageURL(r.data.secure_url);
+        toast.success("Post Image Uploaded Successfully");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+
   /**
    * When the form is submitted, the tip image is set to the tipImage variable, and then the
    * tip is added to the database.
@@ -76,6 +115,7 @@ const EditTip = () => {
         sub_category: tip.sub_category,
         title: tip.title,
         description: tip.description,
+        imageURL: tip.imageURL,
         week: tip.week,
         day: tip.day,
         updated: firebase.firestore.FieldValue.serverTimestamp(),
@@ -238,6 +278,37 @@ const EditTip = () => {
                               value={tip.description}
                               name="description"
                               onChange={handleChange}
+                            />
+                          </div>
+                        </div>
+                        <div className="row mb-3">
+                          <label
+                            className="col-sm-2 col-form-label"
+                            htmlFor="basic-default-company"
+                          >
+                            Tip Image / Icon
+                          </label>
+
+                          <div className="col-sm-10">
+                            <input
+                              type="file"
+                              className="form-control"
+                              id="inputGroupFile02"
+                              accept=".jpg, .jpeg, .png"
+                              onChange={handleTipImage}
+                            />
+                            <br />
+                            {imageLoading === true ? (
+                              <>
+                                <h4>Uploading Image {progress} %</h4>
+                              </>
+                            ) : (
+                              <></>
+                            )}
+                            <img
+                              src={imageURL}
+                              className="image"
+                              alt="uploading_image"
                             />
                           </div>
                         </div>

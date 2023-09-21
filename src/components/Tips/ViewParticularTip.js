@@ -98,6 +98,11 @@ const ViewParticularTip = () => {
                               <div className="card">
                                 <div className='px-4 pt-3'>
                                   <h5 className="card-title">{tem.title}</h5>
+                                  <img
+                                    src={tem.imageURL ?? "https://brent-mccardle.org/img/placeholder-image.png"}
+                                    className="card-img-top"
+                                    alt="..."
+                                  />
                                   <p className="card-text">{tem.description.substring(0, 50) + '...'}</p>
                                 </div>
                                 <div className="card-body">

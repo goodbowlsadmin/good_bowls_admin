@@ -103,6 +103,11 @@ const ViewSingleTip = () => {
                             <div className="col" id={tem.id}>
                               <div className="card">
                                 <div className='px-4 pt-3'>
+                                  <img
+                                    src={tem.imageURL ?? "https://brent-mccardle.org/img/placeholder-image.png"}
+                                    className="card-img-top"
+                                    alt="..."
+                                  />
                                   <h5 className="card-title">{tem.title}</h5>
                                   <p className="card-text">{tem.description.substring(0, 50) + '...'}</p>
                                 </div>

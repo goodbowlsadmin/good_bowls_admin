@@ -7,6 +7,7 @@ import Nav from "../Nav";
 import { v4 as uuidv4 } from "uuid";
 import getAllDocumentNames from "../../helpers/name";
 import { sendFCMNotification } from "../../helpers/notification";
+import axios from "axios";
 
 
 const Days = [
@@ -32,6 +33,12 @@ const AddTips = () => {
 
   const [sub_category, setSubCategory] = useState([]);
 
+  const [tipImage, setTipImage] = useState("https://brent-mccardle.org/img/placeholder-image.png");
+
+  const [imgloading, setImgLoading] = useState(false);
+
+  const [progress, setProgress] = useState(0);
+
   const [tip, setTip] = useState({
     category: "",
     sub_category: "",
@@ -40,6 +47,36 @@ const AddTips = () => {
     week: "",
     day: "",
   });
+
+  const handleTipImage = async (e) => {
+    setImgLoading(true);
+    const data = new FormData();
+    data.append("file", e.target.files[0]);
+    data.append("upload_preset", "postss");
+
+    const config = {
+      onUploadProgress: (e) => {
+        const { loaded, total } = e;
+        let percent = Math.floor((loaded * 100) / total);
+        setProgress(percent);
+      },
+    };
+
+    axios
+      .post(
+        "https://api.cloudinary.com/v1_1/dzrg2j6mv/image/upload",
+        data,
+        config
+      )
+      .then((r) => {
+        setImgLoading(false);
+        setTipImage(r.data.secure_url);
+        toast.success("Tip Image Uploaded Successfully");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const get_categories = async () => {
     await db
@@ -56,7 +93,7 @@ const AddTips = () => {
 
   useEffect(() => {
     const fetchDocumentNames = async () => {
-      const collectionName = 'weeks'; 
+      const collectionName = 'weeks';
       const names = await getAllDocumentNames(collectionName);
       setWeeks(names);
     };
@@ -97,6 +134,7 @@ const AddTips = () => {
         title: tip.title,
         description: tip.description,
         week: tip.week,
+        imageURL: tipImage,
         day: tip.day,
         created: firebase.firestore.FieldValue.serverTimestamp(),
       })
@@ -302,6 +340,37 @@ const AddTips = () => {
                               placeholder="John Doe"
                               name="description"
                               onChange={handleChange}
+                            />
+                          </div>
+                        </div>
+                        <div className="row mb-3">
+                          <label
+                            className="col-sm-2 col-form-label"
+                            htmlFor="basic-default-company"
+                          >
+                            Tip Image / Icon
+                          </label>
+
+                          <div className="col-sm-10">
+                            <input
+                              type="file"
+                              className="form-control"
+                              id="inputGroupFile02"
+                              accept=".jpg, .jpeg, .png"
+                              onChange={handleTipImage}
+                            />
+                            <br />
+                            {imgloading === true ? (
+                              <>
+                                <h4>Uploading Image {progress} %</h4>
+                              </>
+                            ) : (
+                              <></>
+                            )}
+                            <img
+                              src={tipImage}
+                              className="image"
+                              alt="uploading_image"
                             />
                           </div>
                         </div>
