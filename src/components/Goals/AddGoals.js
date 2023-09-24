@@ -6,6 +6,7 @@ import "../../App.css";
 import { db } from "../../FirebaseConfig";
 import firebase from "firebase/compat/app";
 import { sendFCMNotification } from "../../helpers/notification";
+import { v4 as uuidv4 } from "uuid";
 
 const Units = ["ml", "g", "min", "servings", "oz", "days"];
 
@@ -16,6 +17,8 @@ const AddGoals = () => {
         unit: "",
         type: ""
     });
+
+    const uid = uuidv4();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -36,8 +39,9 @@ const AddGoals = () => {
                 `Goal: ${goal.name}`
             );
             db.collection("goals")
-                .doc(goal.name)
+                .doc(uid)
                 .set({
+                    goalId: uid,
                     name: goal.name,
                     target: goal.target,
                     unit: goal.unit,
@@ -95,9 +99,6 @@ const AddGoals = () => {
                                                                 required
                                                                 onChange={handleChange}
                                                             />
-                                                            <p className="text-muted">
-                                                                Note: You cannot update Goal name once added
-                                                            </p>
                                                         </div>
 
                                                         <div className="mb-3 col-md-6">
@@ -126,7 +127,6 @@ const AddGoals = () => {
                                                             >
                                                                 Unit
                                                             </label>
-                                                            {/* <div className="col-sm-10"> */}
                                                             <input
                                                                 type="text"
                                                                 className="form-control"
@@ -135,7 +135,10 @@ const AddGoals = () => {
                                                                 name="unit"
                                                                 onChange={handleChange}
                                                             />
-                                                            {/* </div> */}
+                                                                                                                        <p className="text-muted">
+                                                                Note: How unit and target works ? <br />
+                                                                If you want to set target for 10 ml, then set unit as 10 and target as 1 or vice versa. <br />
+                                                            </p>
                                                         </div>
 
                                                         <div className="mb-3 col-md-6">

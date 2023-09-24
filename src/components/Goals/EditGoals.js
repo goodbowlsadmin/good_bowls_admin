@@ -95,13 +95,10 @@ const EditGoals = () => {
                                                                 id="basic-default-name"
                                                                 placeholder="John Doe"
                                                                 name="name"
-                                                                disabled
                                                                 value={goal.name}
                                                                 onChange={handleChange}
                                                             />
-                                                            <p className="text-muted">
-                                                                Note: You cannot update Goal Name
-                                                            </p>
+
                                                         </div>
 
                                                         <div className="mb-3 col-md-6">
@@ -131,7 +128,6 @@ const EditGoals = () => {
                                                             >
                                                                 Unit
                                                             </label>
-                                                            {/* <div className="col-sm-10"> */}
                                                             <input
                                                                 type="text"
                                                                 className="form-control"
@@ -141,7 +137,10 @@ const EditGoals = () => {
                                                                 value={goal.unit}
                                                                 onChange={handleChange}
                                                             />
-                                                            {/* </div> */}
+                                                            <p className="text-muted">
+                                                                Note: How unit and target works ? <br />
+                                                                If you want to set target for 10 ml, then set unit as 10 and target as 1 or vice versa. <br />
+                                                            </p>
                                                         </div>
 
                                                         <div className="mb-3 col-md-6">

@@ -140,13 +140,13 @@ const ViewGoals = () => {
                                                                     <button
                                                                         className="btn btn-danger"
                                                                         onClick={() => {
-                                                                            deleteCategory(cat.name);
+                                                                            deleteCategory(cat.goalId);
                                                                         }}
                                                                     >
                                                                         Delete
                                                                     </button>
                                                                     <span className="p-2"></span>
-                                                                    <Link to={`/Edit-Goals/${cat.name}`}>
+                                                                    <Link to={`/Edit-Goals/${cat.goalId}`}>
                                                                         <button
                                                                             className="btn btn-primary">
                                                                             Edit
