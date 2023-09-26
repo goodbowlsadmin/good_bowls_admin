@@ -135,7 +135,7 @@ const AddGoals = () => {
                                                                 name="unit"
                                                                 onChange={handleChange}
                                                             />
-                                                                                                                        <p className="text-muted">
+                                                            <p className="text-muted">
                                                                 Note: How unit and target works ? <br />
                                                                 If you want to set target for 10 ml, then set unit as 10 and target as 1 or vice versa. <br />
                                                             </p>

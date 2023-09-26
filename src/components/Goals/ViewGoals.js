@@ -110,12 +110,12 @@ const ViewGoals = () => {
                                             <>
                                                 <h2>No Goals Found</h2>
                                                 <Link to={"/Add-Goals"}>
-                                                <button
-                                                    className="btn btn-primary"
-                                                >
-                                                    Add Goals
-                                                </button>
-                                            </Link>
+                                                    <button
+                                                        className="btn btn-primary"
+                                                    >
+                                                        Add Goals
+                                                    </button>
+                                                </Link>
                                             </>
                                         ) : (
                                             <>
@@ -136,7 +136,7 @@ const ViewGoals = () => {
                                                                     <h5 className="card-title">{cat.name}</h5>
                                                                     <h6 className="card-title">Target : {cat.target}</h6>
                                                                     <h6 className="card-title">Unit : {cat.unit + cat.type}</h6>
-                                                                    <FirestoreTimestampToDate {...cat.updated}/>
+                                                                    <FirestoreTimestampToDate {...cat.updated} />
                                                                     <button
                                                                         className="btn btn-danger"
                                                                         onClick={() => {
