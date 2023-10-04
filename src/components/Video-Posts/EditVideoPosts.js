@@ -167,13 +167,13 @@ const EditVideoPost = () => {
                                                                 type="file"
                                                                 className="form-control"
                                                                 id="inputGroupFile02"
-                                                                accept=".jpg, .jpeg, .png"
+                                                                accept="video/mp4, video/x-m4v, video/quicktime, video/*"
                                                                 onChange={handlePostVideo}
                                                             />
                                                             <br />
                                                             {imgloading === true ? (
                                                                 <>
-                                                                    <h4>Uploading Video {progress} %</h4>
+                                                                    <h4>Uploading Video {progress.toFixed(2)} %</h4>
                                                                 </>
                                                             ) : (
                                                                 <></>

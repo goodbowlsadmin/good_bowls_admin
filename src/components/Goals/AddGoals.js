@@ -8,7 +8,7 @@ import firebase from "firebase/compat/app";
 import { sendFCMNotification } from "../../helpers/notification";
 import { v4 as uuidv4 } from "uuid";
 
-const Units = ["ml", "g", "min", "servings", "oz", "days"];
+const Units = ["ml", "g", "min", "servings", "oz", "days", "cups", "lbs", "kg"];
 
 const AddGoals = () => {
     const [goal, setGoal] = useState({

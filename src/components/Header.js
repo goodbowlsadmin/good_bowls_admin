@@ -1,6 +1,6 @@
 import React from "react";
 import $ from "jquery";
-import { Users, User, House, X, VideoCamera, Info, Image, FilmScript, FilmStrip, ChartBar, Target, Calendar, MonitorPlay, Note } from "phosphor-react";
+import { Users, User, House, X, VideoCamera, Info, Image, FilmScript, FilmStrip, ChartBar, Target, Calendar, MonitorPlay, Note, Bell } from "phosphor-react";
 import { UserAuth } from "./AuthContext";
 import "../App.css";
 
@@ -341,6 +341,32 @@ const Header = () => {
               <li className="menu-item">
                 <a href="/Week-Titles" className="menu-link">
                   <div data-i18n="Basic">Update/ View Week Title</div>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li className="menu-item tag-notifications">
+            <a
+              href="#/"
+              className="menu-link menu-toggle"
+              onClick={() => {
+                menu("tag-notifications");
+              }}
+            >
+              <Bell size={22} className="menu-icon" />
+              <div data-i18n="Authentications">Notifications</div>
+            </a>
+            <ul className="menu-sub">
+              <li className="menu-item">
+                <a href="/Add-Notifications" className="menu-link">
+                  <div data-i18n="Basic">Add Notifications</div>
+                </a>
+              </li>
+
+              <li className="menu-item">
+                <a href="/Notifications" className="menu-link">
+                  <div data-i18n="Basic">View Notifications</div>
                 </a>
               </li>
             </ul>

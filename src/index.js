@@ -50,6 +50,8 @@ import AddWeekTitle from "./components/Weeks/AddWeekTitle";
 import ViewWeekTitles from "./components/Weeks/ViewWeekTitles";
 import EditWeekTitle from "./components/Weeks/EditWeekTitle";
 import EditUser from "./components/Users/EditUser";
+import AddNotifications from "./components/Notifications/AddNotification";
+import Notifications from "./components/Notifications/ViewNotifications";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -399,6 +401,21 @@ root.render(
               <EditWeekTitle />
             </ProtectedRoute>
           } />
+        <Route
+          path="/Add-Notifications"
+          element={
+            <ProtectedRoute>
+              <AddNotifications />
+            </ProtectedRoute>
+          } />
+        <Route
+          path="/Notifications"
+          element={
+            <ProtectedRoute>
+              <Notifications />
+            </ProtectedRoute>
+          } />
+
       </Routes>
     </AuthContextProvider>
   </BrowserRouter>
