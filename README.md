@@ -22,5 +22,6 @@ yarn start / npm start
 
 
 Login Credentials
+
 admin@good.com
-Admin@123
+Good@123
