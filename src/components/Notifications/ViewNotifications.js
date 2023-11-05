@@ -91,20 +91,18 @@ const Notifications = () => {
                             <br />
                             <div className="row row-cols-1 row-cols-md-3 g-4 mb-5">
                                 {loading === true ? (
-                                    <>
-                                        <h2>
-                                            {" "}
-                                            <Rings
-                                                height="80"
-                                                width="80"
-                                                color="#456CCF"
-                                                radius="6"
-                                                visible={true}
-                                                ariaLabel="rings-loading"
-                                            />
-                                            Loading Data....
-                                        </h2>
-                                    </>
+                                    <h2>
+                                        {" "}
+                                        <Rings
+                                            height="80"
+                                            width="80"
+                                            color="#456CCF"
+                                            radius="6"
+                                            visible={true}
+                                            ariaLabel="rings-loading"
+                                        />
+                                        Loading Data....
+                                    </h2>
                                 ) : (
                                     <>
                                         {notifications.length === 0 ? (
@@ -114,53 +112,49 @@ const Notifications = () => {
                                                     <button
                                                         className="btn btn-primary"
                                                     >
-                                                        Add Week Title
+                                                        Add Notifications
                                                     </button>
                                                 </Link>
                                             </>
                                         ) : (
                                             <>
                                                 {Delete === true ? (
-                                                    <>
-                                                        <div className="col-lg-12">
-                                                            <h4>Deleting Data...</h4>
-                                                        </div>
-                                                    </>
+                                                    <div className="col-lg-12">
+                                                        <h4>Deleting Data...</h4>
+                                                    </div>
                                                 ) : (
                                                     <></>
                                                 )}
                                                 {notifications.map((cat, i) => (
-                                                    <>
-                                                        <div className="col" id={cat.id} key={i}>
-                                                            <div className="card">
-                                                                <div className="card-body">
-                                                                    <h5 className="card-title">Title : {cat.title}</h5>
-                                                                    <h6 className="card-title">Body : {cat.body}</h6>
-                                                                    <FirestoreTimestampToDate {...cat.created} />
-                                                                    <button
-                                                                        className="btn btn-danger"
-                                                                        onClick={() => {
-                                                                            deleteCategory(cat.id);
-                                                                        }}
-                                                                    >
-                                                                        Delete
-                                                                    </button>
-                                                                    <span className="p-2"></span>
-                                                                    <button
-                                                                        onClick={() => {
-                                                                            sendFCMNotification(
-                                                                                cat.title,
-                                                                                cat.body
-                                                                            );
-                                                                            toast.success("Notification Sent");
-                                                                        }}
-                                                                        className="btn btn-primary">
-                                                                        Repeat
-                                                                    </button>
-                                                                </div>
+                                                    <div className="col" id={cat.id} key={i}>
+                                                        <div className="card">
+                                                            <div className="card-body">
+                                                                <h5 className="card-title">Title : {cat.title}</h5>
+                                                                <h6 className="card-title">Body : {cat.body}</h6>
+                                                                <FirestoreTimestampToDate {...cat.created} />
+                                                                <button
+                                                                    className="btn btn-danger"
+                                                                    onClick={() => {
+                                                                        deleteCategory(cat.id);
+                                                                    }}
+                                                                >
+                                                                    Delete
+                                                                </button>
+                                                                <span className="p-2"></span>
+                                                                <button
+                                                                    onClick={() => {
+                                                                        sendFCMNotification(
+                                                                            cat.title,
+                                                                            cat.body
+                                                                        );
+                                                                        toast.success("Notification Sent");
+                                                                    }}
+                                                                    className="btn btn-primary">
+                                                                    Repeat
+                                                                </button>
                                                             </div>
                                                         </div>
-                                                    </>
+                                                    </div>
                                                 ))}
                                             </>
                                         )}

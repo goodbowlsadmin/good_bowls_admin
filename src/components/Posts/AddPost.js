@@ -10,9 +10,9 @@ import { v4 as uuidv4 } from "uuid";
 import { sendFCMNotification } from "../../helpers/notification";
 
 const AddPost = () => {
-    const [imgloading, setImgLoading] = useState(false);
+    const [imgloading, setImgloading] = useState(false);
 
-    const uid = uuidv4();
+    const uid = uuidv4(); 
 
     const [progress, setProgress] = useState(0);
 
@@ -31,7 +31,7 @@ const AddPost = () => {
     });
 
     const handlepostImage = async (e) => {
-        setImgLoading(true);
+        setImgloading(true);
         const data = new FormData();
         data.append("file", e.target.files[0]);
         data.append("upload_preset", "postss");
@@ -51,7 +51,7 @@ const AddPost = () => {
                 config
             )
             .then((r) => {
-                setImgLoading(false);
+                setImgloading(false);
                 setPostImage(r.data.secure_url);
                 toast.success("Post Image Uploaded Successfully");
             })
@@ -83,6 +83,14 @@ const AddPost = () => {
             'New Post',
             'A new post has been added. Please check it out.'
         );
+        db.collection("push-notifications")
+            .doc(uid)
+            .set({
+                id: uid,
+                title: 'New Post',
+                body: 'A new post has been added. Please check it out.',
+                created: firebase.firestore.FieldValue.serverTimestamp(),
+            });
         post.created = firebase.firestore.FieldValue.serverTimestamp();
         post.img = postImage;
         db.collection("posts")
@@ -171,9 +179,7 @@ const AddPost = () => {
                                                             />
                                                             <br />
                                                             {imgloading === true ? (
-                                                                <>
-                                                                    <h4>Uploading Image {progress} %</h4>
-                                                                </>
+                                                                <h4>Uploading Image {progress} %</h4>
                                                             ) : (
                                                                 <></>
                                                             )}

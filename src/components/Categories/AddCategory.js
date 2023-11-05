@@ -138,9 +138,7 @@ const AddCategory = () => {
                               />
                               <br />
                               {loading === true ? (
-                                <>
-                                  <h4>Uploading Image {progress} %</h4>
-                                </>
+                                <h4>Uploading Image {progress} %</h4>
                               ) : (
                                 <></>
                               )}

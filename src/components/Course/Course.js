@@ -19,44 +19,42 @@ export const Course = () => {
 
 
   return (
-    <>
-      <div className="layout-wrapper layout-content-navbar">
-        <div className="layout-container">
-          <Header />
-          <div className="layout-page">
-            <Nav />
-            <div className="container-xxl flex-grow-1 container-p-y">
-              <h4 className="fw-bold py-3 mb-4">
-                <span className="text-muted fw-light">{process.env.REACT_APP_NAME} /</span> View
-                Course
-              </h4>
-              <br />
-              <div className="row row-cols-1 row-cols-md-3 g-4 mb-5">
-                {weeks.map((cat, index) => (
-                  <>
-                    <h2 className="card-header w-100" key={index}>
-                      {cat}
-                    </h2>
-                    {days.map((data, index) => (
-                      <a href={`/Course/${cat}/${data}`} key={index}>
-                        <div className="col">
-                          <div className="card">
-                            <div className="card-body">
-                              <h5 className="card-title">
-                                {data}
-                              </h5>
-                            </div>
+    <div className="layout-wrapper layout-content-navbar">
+      <div className="layout-container">
+        <Header />
+        <div className="layout-page">
+          <Nav />
+          <div className="container-xxl flex-grow-1 container-p-y">
+            <h4 className="fw-bold py-3 mb-4">
+              <span className="text-muted fw-light">{process.env.REACT_APP_NAME} /</span> View
+              Course
+            </h4>
+            <br />
+            <div className="row row-cols-1 row-cols-md-3 g-4 mb-5">
+              {weeks.map((cat, index) => (
+                <>
+                  <h2 className="card-header w-100" key={index}>
+                    {cat}
+                  </h2>
+                  {days.map((data, index) => (
+                    <a href={`/Course/${cat}/${data}`} key={index}>
+                      <div className="col">
+                        <div className="card">
+                          <div className="card-body">
+                            <h5 className="card-title">
+                              {data}
+                            </h5>
                           </div>
                         </div>
-                      </a>
-                    ))}
-                  </>
-                ))}
-              </div>
+                      </div>
+                    </a>
+                  ))}
+                </>
+              ))}
             </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }

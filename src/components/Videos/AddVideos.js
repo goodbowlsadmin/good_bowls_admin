@@ -140,6 +140,14 @@ const AddVideos = () => {
       'New Course Content',
       'A new course content has been added. Please check it out.'
     );
+    db.collection("push-notifications")
+      .doc(uid)
+      .set({
+        id: uid,
+        title: 'New Course Content',
+        body: 'A new course content has been added. Please check it out.',
+        created: firebase.firestore.FieldValue.serverTimestamp(),
+      });
     yt_thumb = getYoutbeThumbnail(video.link);
     video.created = firebase.firestore.FieldValue.serverTimestamp();
     video.img = videoImage;
@@ -220,17 +228,13 @@ const AddVideos = () => {
                             >
                               <option selected>----------------</option>
                               {loading === true ? (
-                                <>
-                                  <option>Loading Categories.....</option>
-                                </>
+                                <option>Loading Categories.....</option>
                               ) : (
                                 <>
                                   {categories.map((cat, i) => (
-                                    <>
-                                      <option value={cat.name} key={i}>
-                                        {cat.name}
-                                      </option>
-                                    </>
+                                    <option value={cat.name} key={i}>
+                                      {cat.name}
+                                    </option>
                                   ))}
                                 </>
                               )}
@@ -251,9 +255,7 @@ const AddVideos = () => {
                             >
                               <option selected>----------------</option>
                               {load === true ? (
-                                <>
-                                  <option>Loading Sub Categories</option>
-                                </>
+                                <option>Loading Sub Categories</option>
                               ) : (
                                 <>
                                   {sub_category.length === 0 ? (
@@ -261,11 +263,9 @@ const AddVideos = () => {
                                   ) : (
                                     <>
                                       {sub_category.map((sub, i) => (
-                                        <>
-                                          <option value={sub.text} key={i}>
-                                            {sub.text}
-                                          </option>
-                                        </>
+                                        <option value={sub.text} key={i}>
+                                          {sub.text}
+                                        </option>
                                       ))}
                                     </>
                                   )}
@@ -291,11 +291,10 @@ const AddVideos = () => {
                             >
                               <option selected>----------------</option>
                               {weeks.map((week, i) => (
-                                <>
-                                  <option value={week} key={i}>
-                                    {week}
-                                  </option>
-                                </>))}
+                                <option value={week} key={i}>
+                                  {week}
+                                </option>
+                              ))}
                             </select>
                           </div>
                           <div className="mb-3 col-md-6">
@@ -313,11 +312,9 @@ const AddVideos = () => {
                             >
                               <option selected>----------------</option>
                               {Days.map((day, i) => (
-                                <>
-                                  <option value={day} key={i}>
-                                    {day}
-                                  </option>
-                                </>
+                                <option value={day} key={i}>
+                                  {day}
+                                </option>
                               ))}
                             </select>
                           </div>
@@ -400,9 +397,7 @@ const AddVideos = () => {
                             />
                             <br />
                             {imgloading === true ? (
-                              <>
-                                <h4>Uploading Image {progress} %</h4>
-                              </>
+                              <h4>Uploading Image {progress} %</h4>
                             ) : (
                               <></>
                             )}

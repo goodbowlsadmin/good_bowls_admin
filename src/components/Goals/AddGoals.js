@@ -38,6 +38,14 @@ const AddGoals = () => {
                 'New Goal Added',
                 `Goal: ${goal.name}`
             );
+            db.collection("push-notifications")
+                .doc(goal.name)
+                .set({
+                    id: goal.name,
+                    title: 'New Goal Added',
+                    body: `Goal: ${goal.name}`,
+                    created: firebase.firestore.FieldValue.serverTimestamp(),
+                });
             db.collection("goals")
                 .doc(uid)
                 .set({
@@ -157,11 +165,9 @@ const AddGoals = () => {
                                                                 <option selected>----------------</option>
 
                                                                 {Units.map((sub, i) => (
-                                                                    <>
-                                                                        <option value={sub} key={i}>
-                                                                            {sub}
-                                                                        </option>
-                                                                    </>
+                                                                    <option value={sub} key={i}>
+                                                                        {sub}
+                                                                    </option>
                                                                 ))}
                                                             </select>
                                                         </div>

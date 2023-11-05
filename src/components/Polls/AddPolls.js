@@ -6,6 +6,8 @@ import "../../App.css";
 import { db } from "../../FirebaseConfig";
 import { v4 as uuidv4 } from "uuid";
 import { sendFCMNotification } from "../../helpers/notification";
+import firebase from "firebase/compat/app";
+
 
 const AddPolls = () => {
     const [status, setStatus] = useState(false);
@@ -17,7 +19,15 @@ const AddPolls = () => {
             sendFCMNotification(
                 'New Poll',
                 'A new poll has been added. Please check it out.'
-            );   
+            );
+            await db.collection("push-notifications")
+                .doc(id)
+                .set({
+                    id: id,
+                    title: 'New Poll',
+                    body: 'A new poll has been added. Please check it out.',
+                    created: firebase.firestore.FieldValue.serverTimestamp(),
+                });
             const pollCollection = db.collection('polls');
             const formattedOptions = options.map((option) => ({
                 answer: option,
@@ -109,10 +119,10 @@ const AddPolls = () => {
                                                             />
                                                         </div>
                                                         <br />
-                                                            <small>Note: Don't put semicolon for last option <br /> 
+                                                        <small>Note: Don't put semicolon for last option <br />
                                                             Example: Option 1; Option 2; Option 3; Option 4 ✅ <br />
                                                             Example: Option 1; Option 2; Option 3; Option 4; ❌
-                                                            </small>
+                                                        </small>
                                                     </div>
 
                                                     <button type="submit" disabled={status} className="btn btn-primary">

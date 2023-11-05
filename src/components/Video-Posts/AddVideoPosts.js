@@ -37,6 +37,14 @@ const AddVideoPost = () => {
             'New Video Post',
             'A new video post has been added. Please check it out.'
         );
+        db.collection("push-notifications")
+            .doc(uid)
+            .set({
+                id: uid,
+                title: 'New Video Post',
+                body: 'A new video post has been added. Please check it out.',
+                created: firebase.firestore.FieldValue.serverTimestamp(),
+            });
         const file = e.target.files[0];
 
         // Reference to your Firebase Storage bucket
@@ -84,6 +92,7 @@ const AddVideoPost = () => {
         e.preventDefault();
         post.created = firebase.firestore.FieldValue.serverTimestamp();
         post.img = postVideo;
+
         db.collection("video-posts")
             .doc(uid)
             .set({
@@ -168,9 +177,7 @@ const AddVideoPost = () => {
 
                                                             <br />
                                                             {imgloading === true ? (
-                                                                <>
-                                                                    <h4>Uploading Video {progress.toFixed(2)} %</h4>
-                                                                </>
+                                                                <h4>Uploading Video {progress.toFixed(2)} %</h4>
                                                             ) : (
                                                                 <></>
                                                             )}

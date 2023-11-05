@@ -95,6 +95,14 @@ const AddRecepie = () => {
             'New Recepie',
             'A new recepie has been added. Please check it out.'
         );
+        db.collection("push-notifications")
+            .doc(uid)
+            .set({
+                id: uid,
+                title: 'New Recepie',
+                body: 'A new recepie has been added. Please check it out.',
+                created: firebase.firestore.FieldValue.serverTimestamp(),
+            });
         recepie.created = firebase.firestore.FieldValue.serverTimestamp();
         batch.set(
             db.collection("recepies").doc(uid),
@@ -168,12 +176,9 @@ const AddRecepie = () => {
                                                             <option selected>----------------</option>
 
                                                             {Types.map((sub, i) => (
-                                                                <>
-                                                                    <option value={sub} key={i}>
-                                                                        {sub}
-                                                                    </option>
-                                                                </>
-                                                            ))}
+                                                                <option value={sub} key={i}>
+                                                                    {sub}
+                                                                </option>))}
                                                         </select>
                                                     </div>
 
@@ -193,11 +198,9 @@ const AddRecepie = () => {
                                                             <option selected>----------------</option>
 
                                                             {MealTypes.map((sub, i) => (
-                                                                <>
-                                                                    <option value={sub} key={i}>
-                                                                        {sub}
-                                                                    </option>
-                                                                </>
+                                                                <option value={sub} key={i}>
+                                                                    {sub}
+                                                                </option>
                                                             ))}
                                                         </select>
                                                     </div>
@@ -418,9 +421,7 @@ const AddRecepie = () => {
                                                             />
                                                             <br />
                                                             {imgloading === true ? (
-                                                                <>
-                                                                    <h4>Uploading Image {progress} %</h4>
-                                                                </>
+                                                                <h4>Uploading Image {progress} %</h4>
                                                             ) : (
                                                                 <></>
                                                             )}
