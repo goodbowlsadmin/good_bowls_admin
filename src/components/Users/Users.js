@@ -24,6 +24,20 @@ const Users = () => {
             })
     }
 
+    const handleDelete = (e,d) => {
+        e.preventDefault();
+        // let confirm if they want to delete or not
+        if (!window.confirm(`Are you sure you want to delete ${d.name}?`)) return;
+        else{
+            const id = d.email;
+            db.collection('Users').doc(id).delete()
+            .then(() => {
+                alert('User Deleted');
+                window.location.reload();
+            })
+        }
+    }
+
     const handleSearch = (e) => {
         e.preventDefault();
         setInput(e.target.value);
@@ -37,8 +51,7 @@ const Users = () => {
     }
 
     return (
-        <>
-            <div className="layout-wrapper layout-content-navbar">
+        <div className="layout-wrapper layout-content-navbar">
                 <div className="layout-container">
                     <Header />
                     <div className="layout-page">
@@ -73,12 +86,11 @@ const Users = () => {
                                             <th scope="col">User Posts</th>
                                             <th scope="col">Video Posts</th>
                                             <th scope="col">Update</th>
+                                            <th scope="col">Delete</th>
                                         </tr>
                                     </thead>
                                     {data.length === 0 ? (
-                                        <>
-                                            <h4 className='pt-2'>No Users Found</h4>
-                                        </>
+                                        <h4 className='pt-2'>No Users Found</h4>
                                     ) : (
                                         <>
                                             {data && data.map((d, i) => (
@@ -96,6 +108,7 @@ const Users = () => {
                                                         <td><button type="button" class="btn btn-secondary"> <Link to={`/User-Posts/${d.uid}`} className='text-white'> View </Link></button></td>
                                                         <td><button type="button" class="btn btn-secondary"> <Link to={`/User-Video-Posts/${d.uid}`} className='text-white'> View </Link></button></td>
                                                         <td><button type="button" class="btn btn-primary"> <Link to={`/Edit-User/${d.email}`} className='text-white'> Update </Link></button></td>
+                                                        <td><button type="button" class="btn btn-danger" onClick={(e) => handleDelete(e, d)}>  Delete</button></td>
                                                     </tr>
                                                 </tbody>
                                             ))}
@@ -107,7 +120,6 @@ const Users = () => {
                     </div>
                 </div>
             </div>
-        </>
     )
 }
 
