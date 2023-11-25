@@ -137,15 +137,15 @@ const AddVideos = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     sendFCMNotification(
-      'New Course Content',
-      'A new course content has been added. Please check it out.'
+      'New Learning Module',
+      'A new learning module has been added. Please check it out.'
     );
     db.collection("push-notifications")
       .doc(uid)
       .set({
         id: uid,
-        title: 'New Course Content',
-        body: 'A new course content has been added. Please check it out.',
+        title: 'New Learning Module',
+        body: 'A new learning module has been added. Please check it out.',
         created: firebase.firestore.FieldValue.serverTimestamp(),
       });
     yt_thumb = getYoutbeThumbnail(video.link);

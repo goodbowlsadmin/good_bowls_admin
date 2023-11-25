@@ -92,15 +92,15 @@ const AddRecepie = () => {
     const onSubmit = (e) => {
         e.preventDefault();
         sendFCMNotification(
-            'New Recepie',
-            'A new recepie has been added. Please check it out.'
+            'New Recipe',
+            'A new recipe has been added. Please check it out.'
         );
         db.collection("push-notifications")
             .doc(uid)
             .set({
                 id: uid,
-                title: 'New Recepie',
-                body: 'A new recepie has been added. Please check it out.',
+                title: 'New Recipe',
+                body: 'A new recipe has been added. Please check it out.',
                 created: firebase.firestore.FieldValue.serverTimestamp(),
             });
         recepie.created = firebase.firestore.FieldValue.serverTimestamp();
