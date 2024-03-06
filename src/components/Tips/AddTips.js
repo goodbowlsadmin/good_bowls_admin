@@ -126,8 +126,8 @@ const AddTips = () => {
             day: tip.day,
             created: firebase.firestore.FieldValue.serverTimestamp(),
             // Add fields for translated text
-            translatedTitle: translatedTip.translatedTitle,
-            translatedDescription: translatedTip.translatedDescription,
+            translatedTitle: translate(tip.title),
+            translatedDescription: translate(tip.description),
           })
           .then((res) => {
             toast.success("Tip Added Successfully");
@@ -139,23 +139,20 @@ const AddTips = () => {
       .catch((err) => {
         console.log(err);
       });
-      const translateText = async (text) => {
-        try {
-          const response = await axios.post(
-            'https://us-central1-good-bowls-398419.cloudfunctions.net/translateText',
-            { text }
-          );
-          return response.data.translatedText;
-        } catch (error) {
-          console.error('Translation error:', error);
-          throw new Error('Translation failed');
-        }
-      };
-      
-      // Usage example
-      translateText({ text: 'Hello, world!' })
-        .then(translatedText => console.log('Translated text:', translatedText))
-        .catch(error => console.error('Translation error:', error));
+    
+
+
+const api_key = "AIzaSyCbYHye0Yhs7nclncfItXxzfYfr-A0sPf8";
+ async function translate(text) {
+    let res = await fetch(
+    `https://translation.googleapis.com/language/translate/v2?key=${api_key}`,
+    { q: text, target: "es" }
+    );
+    let translation = res.data.data.translations[0].translatedText;
+    return translation;
+  }
+
+
       
   };
 
