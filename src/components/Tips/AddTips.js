@@ -91,7 +91,8 @@ const AddTips = () => {
     });
   };
 
-  const onSubmit = (e) => {
+
+  const onSubmit = async (e) => {
     e.preventDefault();
     sendFCMNotification(
       "New Tip",
@@ -105,55 +106,61 @@ const AddTips = () => {
         body: "A new tip has been added. Please check it out.",
         created: firebase.firestore.FieldValue.serverTimestamp(),
       });
-
+  
     tip.created = firebase.firestore.FieldValue.serverTimestamp();
-
-    // Send the tip data to the backend for translation
-    axios.post("/api/translate", { text: tip })
-      .then((response) => {
-        const translatedTip = response.data;
-        // Store both English and Spanish versions in the database
-        db.collection("tips")
-          .doc(uid)
-          .set({
-            id: uid,
-            category: tip.category,
-            sub_category: tip.sub_category,
-            title: tip.title,
-            description: tip.description,
-            week: tip.week,
-            imageURL: tipImage,
-            day: tip.day,
-            created: firebase.firestore.FieldValue.serverTimestamp(),
-            // Add fields for translated text
-            translatedTitle: translate(tip.title),
-            translatedDescription: translate(tip.description),
-          })
-          .then((res) => {
-            toast.success("Tip Added Successfully");
-            setTimeout(() => {
-              window.location.reload();
-            }, 1000);
-          });
+  
+    // Translate each field before adding the tip
+    const translatedCategory = await translate(tip.category);
+    const translatedSubCategory = await translate(tip.sub_category);
+    const translatedWeek = await translate(tip.week);
+    const translatedDay = await translate(tip.day);
+    const translatedTitle = await translate(tip.title);
+    const translatedDescription = await translate(tip.description);
+  
+    // Store the tip with translated text in Firebase
+    db.collection("tips")
+      .doc(uid)
+      .set({
+        id: uid,
+        category: tip.category,
+        sub_category: tip.sub_category,
+        title: tip.title,
+        description: tip.description,
+        week: tip.week,
+        day: tip.day,
+        S_category: translatedCategory,
+        S_sub_category: translatedSubCategory,
+        S_title: translatedTitle,
+        S_description: translatedDescription,
+        S_week: translatedWeek,
+        imageURL: tipImage,
+        S_day: translatedDay,
+        created: firebase.firestore.FieldValue.serverTimestamp(),
+        // Store the translated text with prefix "S_"
+        
       })
-      .catch((err) => {
-        console.log(err);
+      .then((res) => {
+        toast.success("Tip Added Successfully");
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      })
+      .catch((error) => {
+        console.log(error);
       });
-    
+  
 
-
-const api_key = "AIzaSyCbYHye0Yhs7nclncfItXxzfYfr-A0sPf8";
- async function translate(text) {
-    let res = await fetch(
-    `https://translation.googleapis.com/language/translate/v2?key=${api_key}`,
-    { q: text, target: "es" }
+  async function translate(text) {
+    const apiKey = "AIzaSyCbYHye0Yhs7nclncfItXxzfYfr-A0sPf8";
+    const response = await axios.post(
+      `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`,
+      {
+        q: text,
+        target: "es", // Translate to Spanish
+      }
     );
-    let translation = res.data.data.translations[0].translatedText;
-    return translation;
-  }
-
-
-      
+    return response.data.data.translations[0].translatedText;
+  }   
   };
 
   const handleSelectChange = (e) => {
