@@ -7,7 +7,7 @@ import { db } from "../../FirebaseConfig";
 import { v4 as uuidv4 } from "uuid";
 import { sendFCMNotification } from "../../helpers/notification";
 import firebase from "firebase/compat/app";
-
+import axios from "axios";
 
 const AddPolls = () => {
     const [status, setStatus] = useState(false);
@@ -28,19 +28,22 @@ const AddPolls = () => {
                     body: 'A new poll has been added. Please check it out.',
                     created: firebase.firestore.FieldValue.serverTimestamp(),
                 });
+
+            // Translate question and options
+            const translatedQuestion = await translate(question);
+            const { translatedOptions, formattedOptions } = await translateOptions(options);
+            
             const pollCollection = db.collection('polls');
-            const formattedOptions = options.map((option) => ({
-                answer: option,
-                percent: 0,
-            }));
+            
             const data = {
                 id: id,
                 dateCreated: new Date(),
                 poll: {
                     total_votes: 0,
                     voters: [],
-                    question: question,
                     options: formattedOptions,
+                    question: question,
+                    S_question: translatedQuestion,
                 },
             };
 
@@ -54,6 +57,34 @@ const AddPolls = () => {
         } finally {
             setStatus(false);
         }
+    };
+
+    const translate = async (text) => {
+        const apiKey = "AIzaSyCbYHye0Yhs7nclncfItXxzfYfr-A0sPf8";
+        const response = await axios.post(
+            `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`,
+            {
+                q: text,
+                target: "es", // Translate to Spanish
+            }
+        );
+        return response.data.data.translations[0].translatedText;
+    };
+
+    const translateOptions = async (options) => {
+        // Split options and translate each option individually
+        const optionsArray = options.split(';');
+        const translatedOptions = [];
+        for (let option of optionsArray) {
+            const translatedOption = await translate(option);
+            translatedOptions.push(translatedOption);
+        }
+        const formattedOptions = optionsArray.map((option, index) => ({
+            answer: option,
+            S_answer: translatedOptions[index],
+            percent: 0,
+        }));
+        return { translatedOptions, formattedOptions };
     };
 
     return (
@@ -81,8 +112,7 @@ const AddPolls = () => {
                                                         e.preventDefault();
                                                         const question = e.target.question.value;
                                                         const optionsInput = e.target.options.value;
-                                                        const optionsArray = optionsInput.split(';');
-                                                        addPoll({ question, options: optionsArray });
+                                                        addPoll({ question, options: optionsInput });
                                                     }}
                                                 >
                                                     <div className="row mb-3">

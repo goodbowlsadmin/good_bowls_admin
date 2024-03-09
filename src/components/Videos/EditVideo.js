@@ -59,7 +59,69 @@ const EditVideo = () => {
     })
   }, [id])
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setVideo((event) => {
+      return {
+        ...event,
+        [name]: value,
+      };
+    });
+  };
 
+  const translate = async (text) => {
+    const apiKey = "AIzaSyCbYHye0Yhs7nclncfItXxzfYfr-A0sPf8"; // Replace with your Google Translate API key
+    const response = await axios.post(
+      `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`,
+      {
+        q: text,
+        target: "es", // Translate to Spanish, you can change it to any other language code
+      }
+    );
+    return response.data.data.translations[0].translatedText;
+  };
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    video.created = firebase.firestore.FieldValue.serverTimestamp();
+    video.img = videoImage;
+
+    // Translate fields before updating the video
+    const translatedCategory = await translate(video.category);
+    const translatedSubCategory = await translate(video.sub_category);
+    const translatedTitle = await translate(video.title);
+    const translatedDescription = await translate(video.description);
+    const translatedWeek = await translate(video.week);
+    const translatedDay = await translate(video.day);
+
+    db.collection("videos")
+      .doc(id)
+      .update({
+        id: video.id,
+        category: video.category,
+        sub_category: video.sub_category,
+        thumb_img: videoImage,
+        title: video.title,
+        description: video.description,
+        link: video.link,
+        week: video.week,
+        day: video.day,
+        yt_thumb: video.yt_thumb,
+        S_category: translatedCategory,
+        S_sub_category: translatedSubCategory,
+        S_title: translatedTitle,
+        S_description: translatedDescription,
+        S_week: translatedWeek,
+        S_day: translatedDay,
+        updated: firebase.firestore.FieldValue.serverTimestamp(),
+      })
+      .then((res) => {
+        toast.success("Video Updated Successfully");
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      });
+  };
 
   const handlevideoImage = async (e) => {
     setImgLoading(true);
@@ -88,50 +150,6 @@ const EditVideo = () => {
       })
       .catch((err) => {
         console.log(err);
-      });
-  };
-
-
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setVideo((event) => {
-      return {
-        ...event,
-        [name]: value,
-      };
-    });
-  };
-
-  /**
-   * When the form is submitted, the video image is set to the videoImage variable, and then the
-   * video is added to the database.
-   * @param e - event
-   */
-  const onSubmit = (e) => {
-    e.preventDefault();
-    video.created = firebase.firestore.FieldValue.serverTimestamp();
-    video.img = videoImage;
-    db.collection("videos")
-      .doc(id)
-      .update({
-        id: video.id,
-        category: video.category,
-        sub_category: video.sub_category,
-        thumb_img: videoImage,
-        title: video.title,
-        description: video.description,
-        link: video.link,
-        week: video.week,
-        day: video.day,
-        yt_thumb: video.yt_thumb,
-        updated: firebase.firestore.FieldValue.serverTimestamp(),
-      })
-      .then((res) => {
-        toast.success("Video Updated Successfully");
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
       });
   };
 
