@@ -7,6 +7,7 @@ import { db } from "../../FirebaseConfig";
 import firebase from "firebase/compat/app";
 import { sendFCMNotification } from "../../helpers/notification";
 import { v4 as uuidv4 } from "uuid";
+import axios from "axios";
 
 const Units = ["ml", "g", "min", "servings", "oz", "days", "cups", "lbs", "kg"];
 
@@ -31,7 +32,7 @@ const AddGoals = () => {
     };
 
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
         try {
             sendFCMNotification(
@@ -46,6 +47,8 @@ const AddGoals = () => {
                     body: `Goal: ${goal.name}`,
                     created: firebase.firestore.FieldValue.serverTimestamp(),
                 });
+
+            const translatedName = await translate(goal.name);
             db.collection("goals")
                 .doc(uid)
                 .set({
@@ -54,6 +57,7 @@ const AddGoals = () => {
                     target: goal.target,
                     unit: goal.unit,
                     type: goal.type,
+                    S_name: translatedName,
                     created: firebase.firestore.FieldValue.serverTimestamp(),
                     updated: firebase.firestore.FieldValue.serverTimestamp(),
                 })
@@ -67,6 +71,18 @@ const AddGoals = () => {
         } catch (e) {
             toast.error('Please fill all fields');
         }
+    };
+
+    const translate = async (text) => {
+        const apiKey = "AIzaSyCbYHye0Yhs7nclncfItXxzfYfr-A0sPf8";
+        const response = await axios.post(
+            `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`,
+            {
+                q: text,
+                target: "es", // Translate to Spanish
+            }
+        );
+        return response.data.data.translations[0].translatedText;
     };
 
     return (

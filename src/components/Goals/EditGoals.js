@@ -5,6 +5,7 @@ import Header from "../Header";
 import firebase from "firebase/compat/app";
 import Nav from "../Nav";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 
 const Units = ["ml", "g", "min", "servings", "oz", "days", "cups", "lbs", "kg"];
 
@@ -39,26 +40,43 @@ const EditGoals = () => {
      * goal is added to the database.
      * @param e - event
      */
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
         goal.created = firebase.firestore.FieldValue.serverTimestamp();
-        db.collection("goals")
-            .doc(id)
-            .update({
+        try {
+            const translatedName = await translate(goal.name);
+            const updatedGoal = {
                 name: goal.name,
                 target: goal.target,
                 unit: goal.unit,
                 type: goal.type,
+                S_name: translatedName,
                 updated: firebase.firestore.FieldValue.serverTimestamp(),
-            })
-            .then((res) => {
-                toast.success("Goal Updated Successfully");
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1000);
-            });
+            };
+            await db.collection("goals").doc(id).update(updatedGoal);
+            toast.success("Goal Updated Successfully");
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
+        } catch (error) {
+            console.error("Error translating goal name:", error);
+            toast.error("Failed to update goal. Please try again.");
+        }
     };
+    
+    
 
+    const translate = async (text) => {
+        const apiKey = "AIzaSyCbYHye0Yhs7nclncfItXxzfYfr-A0sPf8";
+        const response = await axios.post(
+            `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`,
+            {
+                q: text,
+                target: "es", // Translate to Spanish
+            }
+        );
+        return response.data.data.translations[0].translatedText;
+    };
 
     return (
         <>

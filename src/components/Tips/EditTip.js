@@ -99,14 +99,36 @@ const EditTip = () => {
   };
 
 
-  /**
-   * When the form is submitted, the tip image is set to the tipImage variable, and then the
-   * tip is added to the database.
-   * @param e - event
-   */
-  const onSubmit = (e) => {
+  // const translateText = async (text) => {
+  //   const apiKey = "AIzaSyCbYHye0Yhs7nclncfItXxzfYfr-A0sPf8";
+  //   try {
+  //     const response = await axios.post(
+  //       `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`,
+  //       {
+  //         q: text,
+  //         target: "es", // Translate to Spanish
+  //       }
+  //     );
+  //     return response.data.data.translations[0].translatedText;
+  //   } catch (error) {
+  //     console.error("Translation Error:", error);
+  //     return text; // Return the original text in case of error
+  //   }
+  // };
+
+  const onSubmit = async (e) => {
     e.preventDefault();
     tip.created = firebase.firestore.FieldValue.serverTimestamp();
+
+    // Translate each field before updating the tip
+    const translatedCategory = await translate(tip.category);
+    const translatedSubCategory = await translate(tip.sub_category);
+    const translatedTitle = await translate(tip.title);
+    const translatedDescription = await translate(tip.description);
+    const translatedWeek = await translate(tip.week);
+    const translatedDay = await translate(tip.day);
+
+    // Update the tip with translated text in Firebase
     db.collection("tips")
       .doc(id)
       .update({
@@ -118,6 +140,12 @@ const EditTip = () => {
         imageURL: tip.imageURL,
         week: tip.week,
         day: tip.day,
+        S_category: translatedCategory,
+        S_sub_category: translatedSubCategory,
+        S_title: translatedTitle,
+        S_description: translatedDescription,
+        S_week: translatedWeek,
+        S_day: translatedDay,
         updated: firebase.firestore.FieldValue.serverTimestamp(),
       })
       .then((res) => {
@@ -125,9 +153,23 @@ const EditTip = () => {
         setTimeout(() => {
           window.location.reload();
         }, 1000);
+      })
+      .catch((error) => {
+        console.log(error);
       });
-  };
 
+      async function translate(text) {
+        const apiKey = "AIzaSyCbYHye0Yhs7nclncfItXxzfYfr-A0sPf8";
+        const response = await axios.post(
+          `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`,
+          {
+            q: text,
+            target: "es", // Translate to Spanish
+          }
+        );
+        return response.data.data.translations[0].translatedText;
+      }   
+  };
   return (
     <>
       <div className="layout-wrapper layout-content-navbar">

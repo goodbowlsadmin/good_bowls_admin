@@ -5,6 +5,7 @@ import Header from "../Header";
 import firebase from "firebase/compat/app";
 import Nav from "../Nav";
 import { useParams } from "react-router-dom";
+import axios from "axios"; // Import axios for translation
 
 const EditWeekTitle = () => {
     const { id } = useParams();
@@ -19,28 +20,24 @@ const EditWeekTitle = () => {
         })
     }, [id])
 
-
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setWeekTitle((event) => {
-            return {
-                ...event,
-                [name]: value,
-            };
-        });
+        setWeekTitle((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
     };
 
-    /**
-     * When the form is submitted, the goal image is set to the goalImage variable, and then the
-     * goal is added to the database.
-     * @param e - event
-     */
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
+
+        const translatedTitle = await translate(weekTitle.title);
+
         db.collection("week-titles")
             .doc(id)
             .update({
                 title: weekTitle.title,
+                S_title: translatedTitle,
                 updated: firebase.firestore.FieldValue.serverTimestamp(),
             })
             .then((res) => {
@@ -51,6 +48,17 @@ const EditWeekTitle = () => {
             });
     };
 
+    const translate = async (text) => {
+        const apiKey = "AIzaSyCbYHye0Yhs7nclncfItXxzfYfr-A0sPf8";
+        const response = await axios.post(
+            `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`,
+            {
+                q: text,
+                target: "es", // Translate to Spanish or your desired language
+            }
+        );
+        return response.data.data.translations[0].translatedText;
+    };
 
     return (
         <>
@@ -60,15 +68,12 @@ const EditWeekTitle = () => {
                     <div className="layout-page">
                         <Nav />
                         <div className="content-wrapper">
-                            {/* Content */}
                             <div className="container-xxl flex-grow-1 container-p-y">
                                 <h4 className="fw-bold py-3 mb-4">
                                     <span className="text-muted fw-light">{process.env.REACT_APP_NAME} /</span> Edit
                                     Week Title
                                 </h4>
-                                {/* Basic Layout & Basic with Icons */}
                                 <div className="row">
-                                    {/* Basic Layout */}
                                     <div className="col-xxl">
                                         <div className="card mb-4">
                                             <div className="card-body">
@@ -110,7 +115,6 @@ const EditWeekTitle = () => {
                                                             />
                                                         </div>
                                                     </div>
-
                                                     <div className="row justify-content-end">
                                                         <div className="col-sm-12">
                                                             <button
