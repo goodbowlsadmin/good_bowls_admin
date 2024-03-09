@@ -61,24 +61,45 @@ const AddCategory = () => {
       });
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     category.img = categoryImage;
+
+    // Translate the category name
+    const translatedName = await translate(category.name);
+
     db.collection("categories")
-      .doc(category.name)
+      .doc(category.name) // Store with translated name
       .set({
-        name: category.name,
+        S_name: translatedName,
         img: category.img,
+        name: category.name, // Add translated name field
         created: firebase.firestore.FieldValue.serverTimestamp(),
       })
       .then((res) => {
         toast.success("Category Added Successfully");
+        setTimeout(() => {
+          window.location.reload();
+      }, 1000);
         window.location.href = "/Categories";
       })
       .catch((err) => {
         console.log(err);
       });
-  };
+};
+
+  // Translation function using Google Translate API
+  const translate = async (text) => {
+        const apiKey = "AIzaSyCbYHye0Yhs7nclncfItXxzfYfr-A0sPf8";
+        const response = await axios.post(
+            `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`,
+            {
+                q: text,
+                target: "es", // Translate to Spanish
+            }
+        );
+        return response.data.data.translations[0].translatedText;
+    };
 
   return (
     <>

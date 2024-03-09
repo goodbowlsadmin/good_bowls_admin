@@ -10,23 +10,17 @@ import { v4 as uuidv4 } from "uuid";
 import MarkdownEditor from "@uiw/react-markdown-editor";
 import { sendFCMNotification } from "../../helpers/notification";
 
-
-const Types = [
-    "Breakfast", "Lunch", "Dinner", "Snacks", "Sides", "Desserts"
-];
-
+const Types = ["Breakfast", "Lunch", "Dinner", "Snacks", "Sides", "Desserts"];
 const MealTypes = ["Vegan", "Vegeterian", "Gluten Free", "Nut Free Ingredients", "Nutrient Type"];
 
-const AddRecepie = () => {
+const CombinedComponent = () => {
     const [imgloading, setImgLoading] = useState(false);
     const uid = uuidv4();
     const [progress, setProgress] = useState(0);
     const [description, setDescription] = useState("");
     const [ingredients, setIngredients] = useState("");
     const [servings, setServings] = useState("");
-    const [thumbImage, setThumbImg] = useState(
-        "https://brent-mccardle.org/img/placeholder-image.png"
-    );
+    const [thumbImage, setThumbImg] = useState("https://brent-mccardle.org/img/placeholder-image.png");
     const [recepie, setRecepie] = useState({
         title: "",
         type: "",
@@ -43,7 +37,6 @@ const AddRecepie = () => {
     });
     const batch = firebase.firestore().batch();
 
-
     const handleThumbImg = async (e) => {
         setImgLoading(true);
         const data = new FormData();
@@ -58,12 +51,7 @@ const AddRecepie = () => {
             },
         };
 
-        axios
-            .post(
-                "https://api.cloudinary.com/v1_1/dzrg2j6mv/image/upload",
-                data,
-                config
-            )
+        axios.post("https://api.cloudinary.com/v1_1/dzrg2j6mv/image/upload", data, config)
             .then((r) => {
                 setImgLoading(false);
                 setThumbImg(r.data.secure_url);
@@ -84,12 +72,19 @@ const AddRecepie = () => {
         });
     };
 
-    /**
-     * When the form is submitted, the recepie image is set to the recepieImage variable, and then the
-     * recepie is added to the database.
-     * @param e - event
-     */
-    const onSubmit = (e) => {
+    const translate = async (text) => {
+        const apiKey = "AIzaSyCbYHye0Yhs7nclncfItXxzfYfr-A0sPf8";
+        const response = await axios.post(
+            `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`,
+            {
+                q: text,
+                target: "es", // Translate to Spanish
+            }
+        );
+        return response.data.data.translations[0].translatedText;
+    };
+
+    const onSubmit = async (e) => {
         e.preventDefault();
         sendFCMNotification(
             'New Recipe',
@@ -104,17 +99,28 @@ const AddRecepie = () => {
                 created: firebase.firestore.FieldValue.serverTimestamp(),
             });
         recepie.created = firebase.firestore.FieldValue.serverTimestamp();
+
+        // Translate the fields
+        const translatedTitle = await translate(recepie.title);
+        const translatedDescription = await translate(description);
+        const translatedIngredients = await translate(ingredients);
+        const translatedServings = await translate(servings);
+
         batch.set(
             db.collection("recepies").doc(uid),
             {
                 id: uid,
                 thumb_img: thumbImage,
                 title: recepie.title,
-                type: recepie.type,
-                meal_type: recepie.meal_type,
                 description: description,
                 ingredients: ingredients,
                 servings: servings,
+                type: recepie.type,
+                meal_type: recepie.meal_type,
+                S_title: translatedTitle,
+                S_description: translatedDescription,
+                S_ingredients: translatedIngredients,
+                S_servings: translatedServings,
                 source: recepie.source,
                 carbs: recepie.carbs,
                 protein: recepie.protein,
@@ -123,12 +129,14 @@ const AddRecepie = () => {
                 created: firebase.firestore.FieldValue.serverTimestamp()
             }
         );
+
         batch.update(
             db.collection("recepies_id").doc("recepies_id"),
             {
                 [recepie.type]: firebase.firestore.FieldValue.arrayUnion(uid),
             }
         );
+
         batch.commit()
             .then((res) => {
                 toast.success("Recipe Added Successfully");
@@ -159,156 +167,56 @@ const AddRecepie = () => {
                                         <div className="card mb-4">
                                             <div className="card-body">
 
+                                                {/* Form Fields */}
+                                                {/* Type, Meal Type, Title */}
                                                 <div className="row">
                                                     <div className="mb-3 col-md-6">
-                                                        <label
-                                                            className="form-label"
-                                                            htmlFor="basic-default-fullname"
-                                                        >
-                                                            Select Type
-                                                        </label>
-                                                        <select
-                                                            className="form-select"
-                                                            name="type"
-                                                            required
-                                                            onChange={handleChange}
-                                                        >
-                                                            <option selected>----------------</option>
-
+                                                        <label className="form-label">Select Type</label>
+                                                        <select className="form-select" name="type" required onChange={handleChange}>
+                                                            <option value="">Select Type</option>
                                                             {Types.map((sub, i) => (
-                                                                <option value={sub} key={i}>
-                                                                    {sub}
-                                                                </option>))}
-                                                        </select>
-                                                    </div>
-
-                                                    <div className="mb-3 col-md-6">
-                                                        <label
-                                                            className="form-label"
-                                                            htmlFor="basic-default-fullname"
-                                                        >
-                                                            Select Meal Type
-                                                        </label>
-                                                        <select
-                                                            className="form-select"
-                                                            name="meal_type"
-                                                            required
-                                                            onChange={handleChange}
-                                                        >
-                                                            <option selected>----------------</option>
-
-                                                            {MealTypes.map((sub, i) => (
-                                                                <option value={sub} key={i}>
-                                                                    {sub}
-                                                                </option>
+                                                                <option value={sub} key={i}>{sub}</option>
                                                             ))}
                                                         </select>
                                                     </div>
-
                                                     <div className="mb-3 col-md-6">
-                                                        <label
-                                                            className="form-label"
-                                                            htmlFor="basic-default-fullname"
-                                                        >
-                                                            Add Title
-                                                        </label>
-                                                        <div>
-                                                            <input
-                                                                type="text"
-                                                                className="form-control"
-                                                                id="basic-default-name"
-                                                                placeholder="John Doe"
-                                                                name="title"
-                                                                onChange={handleChange}
-                                                            />
-                                                        </div>
+                                                        <label className="form-label">Select Meal Type</label>
+                                                        <select className="form-select" name="meal_type" required onChange={handleChange}>
+                                                            <option value="">Select Meal Type</option>
+                                                            {MealTypes.map((sub, i) => (
+                                                                <option value={sub} key={i}>{sub}</option>
+                                                            ))}
+                                                        </select>
+                                                    </div>
+                                                    <div className="mb-3 col-md-6">
+                                                        <label className="form-label">Add Title</label>
+                                                        <input type="text" className="form-control" placeholder="Title" name="title" onChange={handleChange} />
                                                     </div>
                                                 </div>
 
+                                                {/* Carbs, Proteins, Fat, Calories */}
                                                 <div className="row">
                                                     <div className="mb-3 col-md-6">
-                                                        <label
-                                                            className="form-label"
-                                                            htmlFor="basic-default-fullname"
-                                                        >
-                                                            Add Carbs
-                                                        </label>
-                                                        <div>
-                                                            <input
-                                                                type="text"
-                                                                className="form-control"
-                                                                id="basic-default-name"
-                                                                placeholder="120"
-                                                                name="carbs"
-                                                                onChange={handleChange}
-                                                            />
-                                                        </div>
-                                                    </div>
-
-                                                    <div className="mb-3 col-md-6">
-                                                        <label
-                                                            className="form-label"
-                                                            htmlFor="basic-default-fullname"
-                                                        >
-                                                            Add Protiens
-                                                        </label>
-                                                        <div>
-                                                            <input
-                                                                type="text"
-                                                                className="form-control"
-                                                                id="basic-default-name"
-                                                                placeholder="50"
-                                                                name="protein"
-                                                                onChange={handleChange}
-                                                            />
-                                                        </div>
-                                                    </div>
-
-                                                    <div className="mb-3 col-md-6">
-                                                        <label
-                                                            className="form-label"
-                                                            htmlFor="basic-default-fullname"
-                                                        >
-                                                            Add Fat
-                                                        </label>
-                                                        <div>
-                                                            <input
-                                                                type="text"
-                                                                className="form-control"
-                                                                id="basic-default-name"
-                                                                placeholder="50"
-                                                                name="fat"
-                                                                onChange={handleChange}
-                                                            />
-                                                        </div>
+                                                        <label className="form-label">Add Carbs</label>
+                                                        <input type="text" className="form-control" placeholder="Carbs" name="carbs" onChange={handleChange} />
                                                     </div>
                                                     <div className="mb-3 col-md-6">
-                                                        <label
-                                                            className="form-label"
-                                                            htmlFor="basic-default-fullname"
-                                                        >
-                                                            Add Calories
-                                                        </label>
-                                                        <div>
-                                                            <input
-                                                                type="text"
-                                                                className="form-control"
-                                                                id="basic-default-name"
-                                                                placeholder="50"
-                                                                name="calories"
-                                                                onChange={handleChange}
-                                                            />
-                                                        </div>
+                                                        <label className="form-label">Add Proteins</label>
+                                                        <input type="text" className="form-control" placeholder="Proteins" name="protein" onChange={handleChange} />
+                                                    </div>
+                                                    <div className="mb-3 col-md-6">
+                                                        <label className="form-label">Add Fat</label>
+                                                        <input type="text" className="form-control" placeholder="Fat" name="fat" onChange={handleChange} />
+                                                    </div>
+                                                    <div className="mb-3 col-md-6">
+                                                        <label className="form-label">Add Calories</label>
+                                                        <input type="text" className="form-control" placeholder="Calories" name="calories" onChange={handleChange} />
                                                     </div>
                                                 </div>
 
+                                                {/* Servings */}
                                                 <div className="row mb-3">
-                                                    <label
-                                                        className="form-label"
-                                                        htmlFor="basic-default-fullname"
-                                                    >
-                                                        Add Servings
-                                                    </label>
+                                                    <label className="form-label">Add Servings</label>
                                                     <div>
                                                         <MarkdownEditor
                                                             name="servings"
@@ -335,13 +243,9 @@ const AddRecepie = () => {
                                                     </div>
                                                 </div>
 
+                                                {/* Description */}
                                                 <div className="row mb-3">
-                                                    <label
-                                                        className="form-label"
-                                                        htmlFor="basic-default-fullname"
-                                                    >
-                                                        Add Instructions
-                                                    </label>
+                                                    <label className="form-label">Add Instructions</label>
                                                     <div>
                                                         <MarkdownEditor
                                                             name="description"
@@ -368,13 +272,9 @@ const AddRecepie = () => {
                                                     </div>
                                                 </div>
 
+                                                {/* Ingredients */}
                                                 <div className="row mb-3">
-                                                    <label
-                                                        className="form-label"
-                                                        htmlFor="basic-default-fullname"
-                                                    >
-                                                        Add Ingredients
-                                                    </label>
+                                                    <label className="form-label">Add Ingredients</label>
                                                     <div>
                                                         <MarkdownEditor
                                                             name="ingredients"
@@ -401,64 +301,29 @@ const AddRecepie = () => {
                                                     </div>
                                                 </div>
 
+                                                {/* Recipe Image */}
                                                 <div className="row">
-
                                                     <div className="mb-3 col-md-6">
-                                                        <label
-                                                            className="col-sm-2 col-form-label"
-                                                            htmlFor="basic-default-company"
-                                                        >
-                                                            Recipe Image / Icon
-                                                        </label>
-
-                                                        <div className="col-sm-10">
-                                                            <input
-                                                                type="file"
-                                                                className="form-control"
-                                                                id="inputGroupFile02"
-                                                                accept=".jpg, .jpeg, .png"
-                                                                onChange={handleThumbImg}
-                                                            />
-                                                            <br />
-                                                            {imgloading === true ? (
-                                                                <h4>Uploading Image {progress} %</h4>
-                                                            ) : (
-                                                                <></>
-                                                            )}
-                                                            <img
-                                                                src={thumbImage}
-                                                                className="image"
-                                                                alt="uploading_image"
-                                                            />
-                                                        </div>
+                                                        <label className="form-label">Recipe Image / Icon</label>
+                                                        <input type="file" className="form-control" accept=".jpg, .jpeg, .png" onChange={handleThumbImg} />
+                                                        <br />
+                                                        {imgloading && <h4>Uploading Image {progress} %</h4>}
+                                                        <img src={thumbImage} className="image" alt="uploading_image" />
                                                     </div>
                                                 </div>
-                                                <div className="mb-3 col-md-6">
-                                                    <label
-                                                        className="form-label"
-                                                        htmlFor="basic-default-fullname"
-                                                    >
-                                                        Add Source
-                                                    </label>
+
+                                                {/* Source */}
+                                                <div className="row mb-3">
+                                                    <label className="form-label">Add Source</label>
                                                     <div>
-                                                        <input
-                                                            type="text"
-                                                            className="form-control"
-                                                            id="basic-default-name"
-                                                            placeholder="https://www.google.com/"
-                                                            name="source"
-                                                            onChange={handleChange}
-                                                        />
+                                                        <input type="text" className="form-control" placeholder="Source URL" name="source" onChange={handleChange} />
                                                     </div>
                                                 </div>
 
+                                                {/* Submit Button */}
                                                 <div className="row justify-content-end">
                                                     <div className="col-sm-10">
-                                                        <button
-                                                            type="submit"
-                                                            className="btn btn-primary"
-                                                            onClick={onSubmit}
-                                                        >
+                                                        <button type="submit" className="btn btn-primary" onClick={onSubmit}>
                                                             ADD RECIPE
                                                         </button>
                                                     </div>
@@ -478,4 +343,4 @@ const AddRecepie = () => {
     );
 };
 
-export default AddRecepie;
+export default CombinedComponent;

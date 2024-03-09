@@ -15,7 +15,7 @@ const Types = [
 
 const MealTypes = ["Vegan", "Vegeterian", "Gluten Free", "Nut Free Ingredients", "Nutrient Type"];
 
-const EditRecepie = () => {
+const CombinedComponent = () => {
     const [imgloading, setImgLoading] = useState(false);
     const [progress, setProgress] = useState(0);
     const [description, setDescription] = useState("");
@@ -90,14 +90,27 @@ const EditRecepie = () => {
         });
     };
 
-    /**
-     * When the form is submitted, the recepie image is set to the recepieImage variable, and then the
-     * recepie is added to the database.
-     * @param e - event
-     */
-    const onSubmit = (e) => {
+    const translate = async (text) => {
+        const apiKey = "AIzaSyCbYHye0Yhs7nclncfItXxzfYfr-A0sPf8";
+        const response = await axios.post(
+            `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`,
+            {
+                q: text,
+                target: "es", // Translate to Spanish
+            }
+        );
+        return response.data.data.translations[0].translatedText;
+    };
+
+    const onSubmit = async (e) => {
         e.preventDefault();
         recepie.created = firebase.firestore.FieldValue.serverTimestamp();
+
+        const translatedTitle = await translate(recepie.title);
+        const translatedDescription = await translate(description);
+        const translatedIngredients = await translate(ingredients);
+        const translatedServings = await translate(servings);
+
         db.collection("recepies")
             .doc(id)
             .update({
@@ -114,6 +127,10 @@ const EditRecepie = () => {
                 carbs: recepie.carbs,
                 source: recepie.source,
                 updated: firebase.firestore.FieldValue.serverTimestamp(),
+                S_title: translatedTitle,
+                S_description: translatedDescription,
+                S_ingredients: translatedIngredients,
+                S_servings: translatedServings,
             })
             .then((res) => {
                 toast.success("Recipe Updated Successfully");
@@ -131,19 +148,15 @@ const EditRecepie = () => {
                     <div className="layout-page">
                         <Nav />
                         <div className="content-wrapper">
-                            {/* Content */}
                             <div className="container-xxl flex-grow-1 container-p-y">
                                 <h4 className="fw-bold py-3 mb-4">
                                     <span className="text-muted fw-light">{process.env.REACT_APP_NAME} /</span> Update
                                     Recipe
                                 </h4>
-                                {/* Basic Layout & Basic with Icons */}
                                 <div className="row">
-                                    {/* Basic Layout */}
                                     <div className="col-xxl">
                                         <div className="card mb-4">
                                             <div className="card-body">
-
                                                 <div className="row">
                                                     <div className="mb-3 col-md-6">
                                                         <label
@@ -160,17 +173,13 @@ const EditRecepie = () => {
                                                             onChange={handleChange}
                                                         >
                                                             <option selected>----------------</option>
-
                                                             {Types.map((sub, i) => (
-                                                                <>
-                                                                    <option value={sub} key={i}>
-                                                                        {sub}
-                                                                    </option>
-                                                                </>
+                                                                <option value={sub} key={i}>
+                                                                    {sub}
+                                                                </option>
                                                             ))}
                                                         </select>
                                                     </div>
-
                                                     <div className="mb-3 col-md-6">
                                                         <label
                                                             className="form-label"
@@ -186,17 +195,13 @@ const EditRecepie = () => {
                                                             onChange={handleChange}
                                                         >
                                                             <option selected>----------------</option>
-
                                                             {MealTypes.map((sub, i) => (
-                                                                <>
-                                                                    <option value={sub} key={i}>
-                                                                        {sub}
-                                                                    </option>
-                                                                </>
+                                                                <option value={sub} key={i}>
+                                                                    {sub}
+                                                                </option>
                                                             ))}
                                                         </select>
                                                     </div>
-
                                                     <div className="mb-3 col-md-6">
                                                         <label
                                                             className="form-label"
@@ -217,7 +222,6 @@ const EditRecepie = () => {
                                                         </div>
                                                     </div>
                                                 </div>
-
                                                 <div className="row">
                                                     <div className="mb-3 col-md-6">
                                                         <label
@@ -238,7 +242,6 @@ const EditRecepie = () => {
                                                             />
                                                         </div>
                                                     </div>
-
                                                     <div className="mb-3 col-md-6">
                                                         <label
                                                             className="form-label"
@@ -258,7 +261,6 @@ const EditRecepie = () => {
                                                             />
                                                         </div>
                                                     </div>
-
                                                     <div className="mb-3 col-md-6">
                                                         <label
                                                             className="form-label"
@@ -278,7 +280,6 @@ const EditRecepie = () => {
                                                             />
                                                         </div>
                                                     </div>
-
                                                     <div className="mb-3 col-md-6">
                                                         <label
                                                             className="form-label"
@@ -299,8 +300,6 @@ const EditRecepie = () => {
                                                         </div>
                                                     </div>
                                                 </div>
-
-
                                                 <div className="row mb-3">
                                                     <label
                                                         className="form-label"
@@ -333,7 +332,6 @@ const EditRecepie = () => {
                                                         />
                                                     </div>
                                                 </div>
-
                                                 <div className="row mb-3">
                                                     <label
                                                         className="form-label"
@@ -366,7 +364,6 @@ const EditRecepie = () => {
                                                         />
                                                     </div>
                                                 </div>
-
                                                 <div className="row mb-3">
                                                     <label
                                                         className="form-label"
@@ -399,9 +396,6 @@ const EditRecepie = () => {
                                                         />
                                                     </div>
                                                 </div>
-
-
-
                                                 <div className="row">
                                                     <div className="mb-3 col-md-6">
                                                         <label
@@ -410,7 +404,6 @@ const EditRecepie = () => {
                                                         >
                                                             Recipe Image / Icon
                                                         </label>
-
                                                         <div className="col-sm-10">
                                                             <input
                                                                 type="file"
@@ -421,9 +414,7 @@ const EditRecepie = () => {
                                                             />
                                                             <br />
                                                             {imgloading === true ? (
-                                                                <>
-                                                                    <h4>Uploading Image {progress} %</h4>
-                                                                </>
+                                                                <h4>Uploading Image {progress} %</h4>
                                                             ) : (
                                                                 <></>
                                                             )}
@@ -454,7 +445,6 @@ const EditRecepie = () => {
                                                         />
                                                     </div>
                                                 </div>
-
                                                 <div className="row justify-content-end">
                                                     <div className="col-sm-10">
                                                         <button
@@ -481,4 +471,4 @@ const EditRecepie = () => {
     );
 };
 
-export default EditRecepie;
+export default CombinedComponent;
