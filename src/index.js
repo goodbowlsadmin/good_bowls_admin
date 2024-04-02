@@ -52,6 +52,7 @@ import EditWeekTitle from "./components/Weeks/EditWeekTitle";
 import EditUser from "./components/Users/EditUser";
 import AddNotifications from "./components/Notifications/AddNotification";
 import Notifications from "./components/Notifications/ViewNotifications";
+import Analytics from "./components/Analytics/Analytics";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -275,6 +276,13 @@ root.render(
               <Users />
             </ProtectedRoute>
           } />
+          <Route
+          path="/Analytics"
+          element={
+            <ProtectedRoute>
+              <Analytics />
+            </ProtectedRoute>
+          } />
         <Route
           path="/User-Posts/:id"
           element={
@@ -415,6 +423,15 @@ root.render(
               <Notifications />
             </ProtectedRoute>
           } />
+          
+          <Route
+          path="/Course/:week/:day"
+          element={
+            <ProtectedRoute>
+              <SingleDayView />
+            </ProtectedRoute>
+          } />
+    
 
       </Routes>
     </AuthContextProvider>

@@ -1,6 +1,6 @@
 import React from "react";
 import $ from "jquery";
-import { Users, User, House, X, VideoCamera, Info, Image, FilmScript, FilmStrip, ChartBar, Target, Calendar, MonitorPlay, Note, Bell } from "phosphor-react";
+import { Users, User, House, X, VideoCamera, Info, Image, FilmScript, FilmStrip, ChartBar, Target, Calendar, MonitorPlay, Note, Bell, ChartLine } from "phosphor-react";
 import { UserAuth } from "./AuthContext";
 import "../App.css";
 
@@ -377,6 +377,15 @@ const Header = () => {
             <div data-i18n="Analytics">Users</div>
           </a>
         </li>
+
+
+        <li className="menu-item">
+          <a href="/Analytics" className="menu-link">
+            <ChartLine size={22} className="menu-icon" />
+            <div data-i18n="Analytics">Analytics</div>
+          </a>
+        </li>
+
 
       </ul>
     </aside>
