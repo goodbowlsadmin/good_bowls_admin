@@ -1,7 +1,7 @@
 import React from "react";
 
 export function Table({ reports }) {
-  const { dimensionHeaders, metricHeaders, rows } = reports;
+  const { dimensionHeaders = [], metricHeaders = [], rows = [] } = reports;
 
   return (
     <table>

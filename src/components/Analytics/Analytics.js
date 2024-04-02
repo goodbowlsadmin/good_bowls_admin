@@ -1,21 +1,30 @@
 import React, { useState, useEffect } from "react";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+  getRedirectResult,
+} from "firebase/auth";
 import { auth } from "../../FirebaseConfig";
 import { Table } from "./Table";
+import { DateRangePicker } from "./DateRangePicker";
 
 const Analytics = () => {
   const [authenticated, setAuthenticated] = useState(
     !!localStorage.getItem("accessToken")
   );
   const [errors, setError] = useState("");
-  const [report, setReport] = useState(null);
+  const [report, setReport] = useState([]);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [loadReport, fetchReport] = useState(false);
+
   const propertyId = "406180211";
 
   useEffect(() => {
-    if (authenticated) {
-      runReport();
+    if (authenticated && loadReport) {
+      runReport(startDate, endDate);
     }
-  }, [authenticated]);
+  }, [authenticated, loadReport]);
 
   async function signIn() {
     if (!authenticated) {
@@ -23,8 +32,13 @@ const Analytics = () => {
       provider.addScope("https://www.googleapis.com/auth/analytics.readonly");
       provider.addScope("https://www.googleapis.com/auth/analytics");
 
+      const yo = await getRedirectResult(auth);
+      console.log(yo);
+      localStorage.setItem("redirect", yo);
+
       try {
         const result = await signInWithPopup(auth, provider);
+        getRedirectResult();
         const user = result.user;
         const credentials = user.stsTokenManager;
         localStorage.setItem("refreshToken", credentials.refreshToken);
@@ -33,22 +47,24 @@ const Analytics = () => {
         localStorage.setItem("user", user);
         setAuthenticated(true);
       } catch (error) {
-        console.log(error);
+        console.error(error);
+        alert(error);
         setError(error);
         setAuthenticated(false);
+        setReport([]);
       }
     } else {
       setAuthenticated(true);
     }
   }
 
-  async function runReport() {
+  async function runReport(startDate, endDate) {
     var options = {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        Authorization: `Bearer ${localStorage.getItem("refreshToken")}`,
       },
       body: JSON.stringify({
         dimensions: [
@@ -63,18 +79,27 @@ const Analytics = () => {
         ],
         dateRanges: [
           {
-            startDate: "2024-01-01",
-            endDate: "2024-04-01",
+            startDate: startDate,
+            endDate: endDate,
           },
         ],
       }),
     };
-    await fetch(
-      `https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`,
-      options
-    )
-      .then((response) => response.json())
-      .then((data) => setReport(data));
+
+    try {
+      const response = await fetch(
+        `https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`,
+        options
+      );
+      const data = await response.json();
+      setReport(data);
+      fetchReport(false);
+    } catch (error) {
+      console.error(error);
+      setError(error);
+      fetchReport(false);
+      setReport(null);
+    }
   }
 
   return (
@@ -91,8 +116,21 @@ const Analytics = () => {
           Sign In To Google
         </button>
       )}
-
-      {report ? <Table reports={report} /> : "Loading..."}
+      <DateRangePicker
+        setEndDate={setEndDate}
+        setStartDate={setStartDate}
+        startDate={startDate}
+        endDate={endDate}
+      />
+      <button
+        disabled={startDate === "" || endDate === ""}
+        onClick={() => {
+          fetchReport(true);
+        }}
+      >
+        Get Report
+      </button>
+      {report ? <Table reports={report} /> : null}
     </div>
   );
 };
