@@ -1,73 +1,22 @@
-import React, { useEffect, useState } from "react";
+// AddPolls.js
+
+import React, { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { db } from "../../FirebaseConfig";
 import Header from "../Header";
-import firebase from "firebase/compat/app";
 import Nav from "../Nav";
-import { useParams } from "react-router-dom";
+import "../../App.css";
+import { db } from "../../FirebaseConfig";
+import { v4 as uuidv4 } from "uuid";
+import { sendFCMNotification } from "../../helpers/notification";
+import firebase from "firebase/compat/app";
 import axios from "axios";
 
-const Units = ["ml", "g", "min", "servings", "oz", "days", "cups", "lbs", "kg"];
-
-const EditGoals = () => {
-    const { id } = useParams();
-    const [goal, setGoal] = useState({
-        name: "",
-        target: "",
-        unit: "",
-        type: ""
-    });
-
-    useEffect(() => {
-        db.collection('goals').doc(id).get().then((data) => {
-            setGoal(data.data());
-        })
-    }, [id])
-
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setGoal((event) => {
-            return {
-                ...event,
-                [name]: value,
-            };
-        });
-    };
-
-    /**
-     * When the form is submitted, the goal image is set to the goalImage variable, and then the
-     * goal is added to the database.
-     * @param e - event
-     */
-    const onSubmit = async (e) => {
-        e.preventDefault();
-        goal.created = firebase.firestore.FieldValue.serverTimestamp();
-        try {
-            const translatedName = await translate(goal.name);
-            const updatedGoal = {
-                name: goal.name,
-                target: goal.target,
-                unit: goal.unit,
-                type: goal.type,
-                S_name: translatedName,
-                updated: firebase.firestore.FieldValue.serverTimestamp(),
-            };
-            await db.collection("goals").doc(id).update(updatedGoal);
-            toast.success("Goal Updated Successfully");
-            setTimeout(() => {
-                window.location.reload();
-            }, 1000);
-        } catch (error) {
-            console.error("Error translating goal name:", error);
-            toast.error("Failed to update goal. Please try again.");
-        }
-    };
-    
-    
+const AddPolls = () => {
+    const [status, setStatus] = useState(false);
+    const id = uuidv4();
 
     const translate = async (text) => {
-        const apiKey = "AIzaSyCbYHye0Yhs7nclncfItXxzfYfr-A0sPf8";
+        const apiKey = "YOUR_API_KEY";
         const response = await axios.post(
             `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`,
             {
@@ -76,6 +25,59 @@ const EditGoals = () => {
             }
         );
         return response.data.data.translations[0].translatedText;
+    };
+
+    const addPoll = async ({ question, options }) => {
+        setStatus(true);
+        try {
+            sendFCMNotification(
+                'New Poll',
+                'A new poll has been added. Please check it out.'
+            );
+            await db.collection("push-notifications")
+                .doc(id)
+                .set({
+                    id: id,
+                    title: 'New Poll',
+                    body: 'A new poll has been added. Please check it out.',
+                    created: firebase.firestore.FieldValue.serverTimestamp(),
+                });
+
+            // Translate question
+            const translatedQuestion = await translate(question);
+
+            // Translate options
+            const translatedOptions = await translate(options);
+            const optionsArray = translatedOptions.split(';');
+            const formattedOptions = optionsArray.map((option) => ({
+                answer: option,
+                percent: 0,
+            }));
+            
+            const pollCollection = db.collection('polls');
+            
+            const data = {
+                id: id,
+                dateCreated: new Date(),
+                poll: {
+                    total_votes: 0,
+                    voters: [],
+                    options: formattedOptions,
+                    question: question,
+                    S_question: translatedQuestion,
+                },
+            };
+
+            await pollCollection.doc(id).set(data);
+            toast.success('Poll Created');
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
+        } catch (error) {
+            toast.error(error.message || 'Please try again...');
+        } finally {
+            setStatus(false);
+        }
     };
 
     return (
@@ -89,7 +91,7 @@ const EditGoals = () => {
                             {/* Content */}
                             <div className="container-xxl flex-grow-1 container-p-y">
                                 <h4 className="fw-bold py-3 mb-4">
-                                    <span className="text-muted fw-light">{process.env.REACT_APP_NAME} /</span> Edit
+                                    <span className="text-muted fw-light">{process.env.REACT_APP_NAME} /</span> Add
                                     Goal
                                 </h4>
                                 {/* Basic Layout & Basic with Icons */}
@@ -98,108 +100,59 @@ const EditGoals = () => {
                                     <div className="col-xxl">
                                         <div className="card mb-4">
                                             <div className="card-body">
-                                                <form>
-                                                    <div className="row">
-                                                        <div className="mb-3 col-md-6">
-                                                            <label
-                                                                className="form-label"
-                                                                htmlFor="basic-default-name"
-                                                            >
-                                                                Goal
-                                                            </label>
+                                                <form
+                                                    onSubmit={(e) => {
+                                                        e.preventDefault();
+                                                        const question = e.target.question.value;
+                                                        const optionsInput = e.target.options.value;
+                                                        addPoll({ question, options: optionsInput });
+                                                    }}
+                                                >
+                                                    <div className="row mb-3">
+                                                        <label
+                                                            className="col-sm-2 col-form-label"
+                                                            htmlFor="basic-default-name"
+                                                        >
+                                                            Question :
+                                                        </label>
+                                                        <div className="col-sm-10">
                                                             <input
                                                                 type="text"
                                                                 className="form-control"
                                                                 id="basic-default-name"
                                                                 placeholder="John Doe"
-                                                                name="name"
-                                                                value={goal.name}
-                                                                onChange={handleChange}
+                                                                name="question"
                                                             />
-
                                                         </div>
-
-                                                        <div className="mb-3 col-md-6">
-                                                            <label
-                                                                className="form-label"
-                                                                htmlFor="basic-default-name"
-                                                            >
-                                                                Target
-                                                            </label>
+                                                    </div>
+                                                    <div className="row mb-3">
+                                                        <label
+                                                            className="col-sm-2 col-form-label"
+                                                            htmlFor="basic-default-name"
+                                                        >
+                                                            Options {" "}: <br />
+                                                        </label>
+                                                        <div className="col-sm-10">
                                                             <input
                                                                 type="text"
                                                                 className="form-control"
                                                                 id="basic-default-name"
-                                                                placeholder="5"
-                                                                name="target"
-                                                                value={goal.target}
-                                                                onChange={handleChange}
+                                                                placeholder="John Doe"
+                                                                name="options"
                                                             />
                                                         </div>
+                                                        <br />
+                                                        <small>Note: Don't put semicolon for last option <br />
+                                                            Example: Option 1; Option 2; Option 3; Option 4 ✅ <br />
+                                                            Example: Option 1; Option 2; Option 3; Option 4; ❌
+                                                        </small>
                                                     </div>
 
-                                                    <div className="row">
-                                                        <div className="mb-3 col-md-6">
-                                                            <label
-                                                                className="form-label"
-                                                                htmlFor="basic-default-name"
-                                                            >
-                                                                Unit
-                                                            </label>
-                                                            <input
-                                                                type="text"
-                                                                className="form-control"
-                                                                id="basic-default-name"
-                                                                placeholder="10"
-                                                                name="unit"
-                                                                value={goal.unit}
-                                                                onChange={handleChange}
-                                                            />
-                                                            <p className="text-muted">
-                                                                Note: How unit and target works ? <br />
-                                                                If you want to set target for 10 ml, then set unit as 10 and target as 1 or vice versa. <br />
-                                                            </p>
-                                                        </div>
-
-                                                        <div className="mb-3 col-md-6">
-                                                            <label
-                                                                className="form-label"
-                                                                htmlFor="basic-default-fullname"
-                                                            >
-                                                                Select Unit Type
-                                                            </label>
-                                                            <select
-                                                                className="form-select"
-                                                                name="type"
-                                                                required
-                                                                value={goal.type}
-                                                                onChange={handleChange}
-                                                            >
-                                                                <option selected>----------------</option>
-
-                                                                {Units.map((sub, i) => (
-                                                                    <>
-                                                                        <option value={sub} key={i}>
-                                                                            {sub}
-                                                                        </option>
-                                                                    </>
-                                                                ))}
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-                                                    <div className="row justify-content-end">
-                                                        <div className="col-sm-12">
-                                                            <button
-                                                                type="submit"
-                                                                className="btn btn-primary"
-                                                                onClick={onSubmit}
-                                                            >
-                                                                Update
-                                                            </button>
-                                                        </div>
-                                                    </div>
+                                                    <button type="submit" disabled={status} className="btn btn-primary">
+                                                        Create Poll
+                                                    </button>
                                                 </form>
+
                                             </div>
                                         </div>
                                     </div>
@@ -215,4 +168,4 @@ const EditGoals = () => {
     );
 };
 
-export default EditGoals;
+export default AddPolls;
