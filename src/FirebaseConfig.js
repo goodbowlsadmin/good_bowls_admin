@@ -10,6 +10,7 @@ const firebaseConfig = {
   projectId: process.env.REACT_APP_FIREBASE_PROJECTID,
   storageBucket: process.env.REACT_APP_FIREBASE_STORAGEBUCKET,
   messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGINGSENDERID,
+  databaseURL: "https://good-bowls-398419-default-rtdb.firebaseio.com",
 };
 
 // Initialize Firebase
