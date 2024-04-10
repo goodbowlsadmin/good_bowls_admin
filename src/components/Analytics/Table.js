@@ -4,14 +4,14 @@ export function Table({ reports }) {
   const { dimensionHeaders = [], metricHeaders = [], rows = [] } = reports;
 
   return (
-    <table>
+    <table className="table">
       <thead>
         <tr>
           {dimensionHeaders.map((header, index) => (
-            <th key={index}>{header.name}</th>
+            <th key={index}><strong>{header.name}</strong></th>
           ))}
           {metricHeaders.map((header, index) => (
-            <th key={index}>{header.name}</th>
+            <th key={index}><strong>{header.name}</strong></th>
           ))}
         </tr>
       </thead>

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import {
   GoogleAuthProvider,
   signInWithPopup,
-  getRedirectResult,
 } from "firebase/auth";
 import { auth } from "../../FirebaseConfig";
 import { Table } from "./Table";
@@ -10,7 +9,7 @@ import { DateRangePicker } from "./DateRangePicker";
 
 const Analytics = () => {
   const [authenticated, setAuthenticated] = useState(
-    !!localStorage.getItem("accessToken")
+    !!localStorage.getItem("refreshToken")
   );
   const [errors, setError] = useState("");
   const [report, setReport] = useState([]);
@@ -31,17 +30,15 @@ const Analytics = () => {
       const provider = new GoogleAuthProvider();
       provider.addScope("https://www.googleapis.com/auth/analytics.readonly");
       provider.addScope("https://www.googleapis.com/auth/analytics");
-
-      const yo = await getRedirectResult(auth);
-      console.log(yo);
-      localStorage.setItem("redirect", yo);
+      provider.addScope("https://www.googleapis.com/auth/yt-analytics.readonly")
 
       try {
         const result = await signInWithPopup(auth, provider);
-        getRedirectResult();
+        console.log(result);
         const user = result.user;
         const credentials = user.stsTokenManager;
-        localStorage.setItem("refreshToken", credentials.refreshToken);
+        const tokenResponse = user._tokenResponse.oauthAccessToken;
+        localStorage.setItem("refreshToken", tokenResponse);
         localStorage.setItem("accessToken", credentials.accessToken);
         localStorage.setItem("name", user.displayName);
         localStorage.setItem("user", user);
@@ -92,6 +89,12 @@ const Analytics = () => {
         options
       );
       const data = await response.json();
+      if (data.error) {
+        setError(data.error.message);
+        fetchReport(false);
+        setReport(null);
+        return;
+      }
       setReport(data);
       fetchReport(false);
     } catch (error) {
@@ -104,9 +107,9 @@ const Analytics = () => {
 
   return (
     <div>
-      {errors && <p>{errors}</p>}
       <h1>Analytics</h1>
-      <h1>Welcome Back {localStorage.getItem("name")}</h1>
+      <h1>Welcome Back {localStorage.getItem("name") || "Guest"}</h1>
+      <p>In order to see the Google Analytics you will need sign into  <strong>Goodbowlsadmin@ncsu.edu</strong> or have the appropriate permissions </p>
       {!authenticated && (
         <button
           onClick={async () => {
@@ -126,10 +129,14 @@ const Analytics = () => {
         disabled={startDate === "" || endDate === ""}
         onClick={() => {
           fetchReport(true);
+          setError("");
         }}
       >
         Get Report
       </button>
+      <div>
+        {errors && <strong>{errors}</strong>}
+      </div>
       {report ? <Table reports={report} /> : null}
     </div>
   );

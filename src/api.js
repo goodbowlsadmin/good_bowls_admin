@@ -11,5 +11,6 @@ const api_key = "AIzaSyCbYHye0Yhs7nclncfItXxzfYfr-A0sPf8";
     let translation = res.data.data.translations[0].translatedText;
     return translation;
   }
+  
 
 export default translate()
