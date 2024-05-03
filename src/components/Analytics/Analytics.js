@@ -34,7 +34,6 @@ const Analytics = () => {
 
       try {
         const result = await signInWithPopup(auth, provider);
-        console.log(result);
         const user = result.user;
         const credentials = user.stsTokenManager;
         const tokenResponse = user._tokenResponse.oauthAccessToken;
@@ -44,7 +43,6 @@ const Analytics = () => {
         localStorage.setItem("user", user);
         setAuthenticated(true);
       } catch (error) {
-        console.error(error);
         alert(error);
         setError(error);
         setAuthenticated(false);
